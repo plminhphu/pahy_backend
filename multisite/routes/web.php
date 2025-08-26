@@ -2,17 +2,32 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::domain('{sub}.pahy.vn')->group(function () {
-    Route::get('/', function ($sub) {
-        return view('pahy.home');
-    });
+
+// Domain pahy.vn
+Route::domain('pahy.vn')->group(function () {
+    Route::get('/', [App\Http\Controllers\Pahy\HomeController::class, 'index']);
 });
 
-Route::domain('pahy.vn')->group(function () {
-    Route::get('/', function () {
-        return view('pahy.home');
-    });
+// Domain plminhphu.com
+Route::domain('plminhphu.com')->group(function () {
+    Route::get('/', [App\Http\Controllers\Phucom\HomeController::class, 'index']);
+    Route::get('/chinh-sach-bao-mat-du-lieu-thuy-chuan-vn', [App\Http\Controllers\Tracdia\HomeController::class, 'thuychuan']);
 });
-Route::get('/', function () {
-    return view('pahy.home');
+// Domain plminhphu.vn
+Route::domain('plminhphu.vn')->group(function () {
+    Route::get('/', [App\Http\Controllers\Phuvn\HomeController::class, 'index']);
+});
+// Domain tracdiamiennam.vn
+Route::domain('tracdiamiennam.vn')->group(function () {
+    Route::get('/', [App\Http\Controllers\Tracdia\HomeController::class, 'index']);
+    Route::get('/chinh-sach-bao-mat-du-lieu-thuy-chuan-vn', [App\Http\Controllers\Tracdia\HomeController::class, 'thuychuan']);
+});
+// Domain aquafiltr-shop.com
+Route::domain('aquafiltr-shop.com')->group(function () {
+    Route::get('/', [App\Http\Controllers\Aquafiltr\HomeController::class, 'index']);
+});
+
+// còn lại
+Route::domain('{sub}.pahy.vn')->group(function () {
+    Route::get('/', [App\Http\Controllers\Sites\HomeController::class, 'index']);
 });
