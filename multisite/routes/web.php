@@ -22,9 +22,14 @@ Route::domain('tracdiamiennam.vn')->group(function () {
     Route::get('/', [App\Http\Controllers\Tracdia\HomeController::class, 'index']);
     Route::get('/chinh-sach-bao-mat-du-lieu-thuy-chuan-vn', [App\Http\Controllers\Tracdia\HomeController::class, 'thuychuan']);
 });
+
 // Domain aquafiltr-shop.com
 Route::domain('aquafiltr-shop.com')->group(function () {
     Route::get('/', [App\Http\Controllers\Aquafiltr\HomeController::class, 'index']);
+    Route::prefix('/admin')->group(function () {
+        // Route::get('/', function() { return 'OK'; });
+        Route::resource('/appointment', App\Http\Controllers\Aquafiltr\Admin\AppointmentController::class);
+    });
 });
 
 // còn lại
