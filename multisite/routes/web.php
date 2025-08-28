@@ -28,7 +28,20 @@ Route::domain('aquafiltr-shop.com')->group(function () {
     Route::get('/', [App\Http\Controllers\Aquafiltr\HomeController::class, 'index']);
     Route::prefix('/admin')->group(function () {
         // Route::get('/', function() { return 'OK'; });
-        Route::resource('/appointment', App\Http\Controllers\Aquafiltr\Admin\AppointmentController::class);
+        Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [App\Http\Controllers\ProfileController::class, 'destroy'])->name('profile.destroy');
+        Route::post('/logout', [App\Http\Controllers\ProfileController::class, 'logout'])->name('logout');
+
+
+        Route::resource('appointments', App\Http\Controllers\Aquafiltr\Admin\AppointmentController::class);
+        // Route::resource('dashboard', App\Http\Controllers\Aquafiltr\Admin\DashboardController::class);
+        Route::get('/dashboard', function () {
+            return view('dashboard');
+        })->name('dashboard');
+        // bổ sung route xuất PDF & mã vạch
+        Route::get('appointments/{id}/invoice', [App\Http\Controllers\Aquafiltr\Admin\AppointmentController::class, 'invoice'])->name('appointments.invoice');
+        Route::get('appointments/{id}/barcode', [App\Http\Controllers\Aquafiltr\Admin\AppointmentController::class, 'barcode'])->name('appointments.barcode');
     });
 });
 

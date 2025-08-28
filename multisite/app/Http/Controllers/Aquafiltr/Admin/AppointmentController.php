@@ -5,124 +5,82 @@ namespace App\Http\Controllers\Aquafiltr\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Appointment;
-use App\Models\Customer;
 use Picqer\Barcode\BarcodeGeneratorPNG;
+use Illuminate\Support\Facades\Response;
 
 class AppointmentController extends Controller
 {
-    // Lấy danh sách lịch hẹn
+    // Hiển thị danh sách lịch hẹn
     public function index()
     {
-        $appointments = Appointment::with('customer')->orderBy('appointment_at','desc')->get();
-        return response()->json($appointments);
+        $appointments = Appointment::orderBy('id', 'desc')->paginate(10);
+        return view('aquafiltr.admin.appointments.index', compact('appointments'));
+    }
+
+    // Form tạo mới
+    public function create()
+    {
+        return view('aquafiltr.admin.appointments.create');
+    }
+
+    // Lưu lịch hẹn mới
+    public function store(Request $request)
+    {
+        $request->validate([
+            'customer_name' => 'required',
+            'phone' => 'required',
+            'address' => 'required',
+            'product_type' => 'required',
+            'sale_date' => 'required|date',
+            'appointment_date' => 'required|date',
+        ]);
+
+        // Sinh mã khách hàng tự động KH000X
+        $last = Appointment::orderBy('id', 'desc')->first();
+        $nextId = $last ? $last->id + 1 : 1;
+        $customerCode = 'KH' . str_pad($nextId, 4, '0', STR_PAD_LEFT);
+
+        $id = Appointment::insertGetId([
+            'customer_code'   => $customerCode,
+            'customer_name'   => $request->customer_name,
+            'phone'           => $request->phone,
+            'address'         => $request->address,
+            'region'          => $request->region,
+            'product_type'    => $request->product_type,
+            'service'         => $request->service,
+            'sale_date'       => $request->sale_date,
+            'appointment_date'=> $request->appointment_date,
+            'created_at'      => now(),
+            'updated_at'      => now(),
+        ]);
+
+        return redirect()->route('aquafiltr.admin.appointments.show', $id)
+                         ->with('success', 'Lịch hẹn đã được tạo thành công.');
     }
 
     // Xem chi tiết lịch hẹn
     public function show($id)
     {
-        $appointment = Appointment::with('customer')->findOrFail($id);
-        return response()->json($appointment);
+        $appointment = Appointment::find($id);
+        return view('aquafiltr.admin.appointments.show', compact('appointment'));
     }
 
-    // Tạo mới lịch hẹn
-    public function store(Request $request)
+    // Xuất hóa đơn PDF
+    public function invoice($id)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'phone' => 'required|string',
-            'address' => 'required|string',
-            'appointment_at' => 'required|date',
-            'device_code' => 'nullable|string'
-        ]);
-
-        // Sinh mã khách hàng
-        $customer_code = $this->generateCustomerCode();
-
-        // Tạo khách hàng
-        $customer = Customer::create([
-            'customer_code' => $customer_code,
-            'name' => $request->name,
-            'phone' => $request->phone,
-            'address' => $request->address,
-            'product_type' => $request->device_code ?? null,
-            'sale_date' => now()->toDateString()
-        ]);
-
-        // Tạo lịch hẹn
-        $appointment = Appointment::create([
-            'customer_id' => $customer->id,
-            'appointment_at' => $request->appointment_at
-        ]);
-
-        // Sinh barcode
-        $this->generateBarcode($customer->customer_code);
-
-        return response()->json([
-            'message' => 'Tạo lịch hẹn thành công',
-            'appointment' => $appointment,
-            'customer_code' => $customer_code
-        ]);
+        $appointment = Appointment::find($id);
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('appointments.invoice', compact('appointment'));
+        return $pdf->download("invoice_{$appointment->customer_code}.pdf");
     }
 
-    // Cập nhật lịch hẹn
-    public function update(Request $request, $id)
+    // In mã vạch (barcode)
+    public function barcode($id)
     {
-        $appointment = Appointment::findOrFail($id);
+        $appointment = Appointment::find($id);
 
-        $request->validate([
-            'appointment_at' => 'required|date',
-            'status' => 'nullable|in:pending,completed,cancelled'
-        ]);
-
-        $appointment->update([
-            'appointment_at' => $request->appointment_at,
-            'status' => $request->status ?? $appointment->status
-        ]);
-
-        return response()->json([
-            'message' => 'Cập nhật lịch hẹn thành công',
-            'appointment' => $appointment
-        ]);
-    }
-
-    // Xóa lịch hẹn
-    public function destroy($id)
-    {
-        $appointment = Appointment::findOrFail($id);
-        $appointment->delete();
-
-        return response()->json([
-            'message' => 'Xóa lịch hẹn thành công'
-        ]);
-    }
-
-    // -----------------------------
-    // Hàm sinh mã khách hàng tự tăng
-    // -----------------------------
-    private function generateCustomerCode()
-    {
-        $lastCustomer = Customer::orderBy('id','desc')->first();
-        if(!$lastCustomer){
-            return 'KH0001';
-        }
-        $lastNumber = intval(substr($lastCustomer->customer_code,2));
-        $newNumber = $lastNumber + 1;
-        return 'KH' . str_pad($newNumber,4,'0',STR_PAD_LEFT);
-    }
-
-    // -----------------------------
-    // Hàm sinh barcode và lưu public/barcodes
-    // -----------------------------
-    private function generateBarcode($customer_code)
-    {
         $generator = new BarcodeGeneratorPNG();
-        $barcode = $generator->getBarcode($customer_code, $generator::TYPE_CODE_128);
+        $barcode = $generator->getBarcode($appointment->customer_code, $generator::TYPE_CODE_128);
 
-        $path = public_path('barcodes');
-        if(!is_dir($path)){
-            mkdir($path, 0777, true);
-        }
-
-        file_put_contents($path.'/'.$customer_code.'.png', $barcode);
+        return Response::make($barcode, 200, ['Content-Type' => 'image/png']);
     }
 }
