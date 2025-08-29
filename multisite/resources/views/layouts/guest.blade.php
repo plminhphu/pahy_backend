@@ -13,4 +13,5 @@
 {{ @$slot }}
 </main>
 </body>
+@include('layouts.components.foot')
 </html>

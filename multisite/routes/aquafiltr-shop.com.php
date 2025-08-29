@@ -13,12 +13,12 @@ Route::domain('aquafiltr-shop.com')->group(function () {
             Route::get('/', [App\Http\Controllers\Aquafiltr\DashboardController::class, 'index'])->name('admin');
             Route::get('/dashboard', [App\Http\Controllers\Aquafiltr\DashboardController::class, 'index'])->name('dashboard');
             // nhóm hồ sơ
-            Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
-            Route::post('/profile', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
-            // Route::delete('/profile', [App\Http\Controllers\ProfileController::class, 'destroy'])->name('profile.destroy');
-            Route::get('/password', [App\Http\Controllers\ProfileController::class, 'password'])->name('password.edit');
-            Route::post('/password', [App\Http\Controllers\ProfileController::class, 'updatePassword'])->name('password.update');
-
+            Route::prefix('/profile')->group(function () {
+                Route::get('/', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+                Route::post('/', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+                Route::get('/password', [App\Http\Controllers\ProfileController::class, 'password'])->name('password.edit');
+                Route::post('/password', [App\Http\Controllers\ProfileController::class, 'updatePassword'])->name('password.update');
+            });
             // nhóm lịch hẹn
             Route::resource('appointment', App\Http\Controllers\Aquafiltr\AppointmentController::class);
             Route::get('appointment/{id}/invoice', [App\Http\Controllers\Aquafiltr\AppointmentController::class, 'invoice'])->name('appointment.invoice');

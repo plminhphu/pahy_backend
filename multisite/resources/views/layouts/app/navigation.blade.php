@@ -2,7 +2,7 @@
     <div class="container">
         <a class="navbar-brand d-flex align-items-center" href="{{ route('dashboard') }}">
             <x-application-logo class="me-2" style="height:32px;" />
-            <span class="fw-semibold text-dark">MyApp</span>
+            <span class="fw-semibold text-dark">{{ __('Dashboard') }}</span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
             data-bs-target="#navbarContent" aria-controls="navbarContent"
@@ -10,14 +10,6 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('dashboard') ? 'active fw-bold' : '' }}"
-                       href="{{ route('dashboard') }}">
-                        {{ __('Dashboard') }}
-                    </a>
-                </li>
-            </ul>
             <ul class="navbar-nav ms-auto">
                 @auth
                     <sl-dropdown hoist>
