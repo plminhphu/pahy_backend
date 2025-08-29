@@ -7,6 +7,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-      return view('aquafiltr.admin.index');
+      $title = 'Dashboard';
+      return view('aquafiltr.admin.index', ['title' => $title]);
     }
 }

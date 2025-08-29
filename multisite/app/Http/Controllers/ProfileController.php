@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Hash;
 class ProfileController extends Controller
 {
     public function edit() {
-        return view('profile.edit');
+        $title = 'Chỉnh sửa hồ sơ';
+        return view('profile.edit', ['title' => $title]);
     }
 
     public function update(Request $request) {
@@ -19,7 +20,8 @@ class ProfileController extends Controller
     }
 
     public function password() {
-        return view('profile.password');
+        $title = 'Đổi mật khẩu';
+        return view('profile.password', ['title' => $title]);
     }
 
     public function updatePassword(Request $request) {

@@ -1,61 +1,94 @@
-<x-app-layout>
-  <div class="login-box mx-auto mt-5 p-4 bg-white rounded shadow-lg" style="max-width:360px">
+@extends('layouts.app')
+@section('content')
+  <div class="mx-auto mt-5 p-4 bg-white rounded shadow-lg" style="max-width:360px">
     <h4 class="mb-3 text-center">Đổi mật khẩu</h4>
-    <div id="changePasswordForm">
-        <div class="mb-3">
-          <sl-input id="current_password" name="current_password" type="password" label="Mật khẩu hiện tại" required password-toggle></sl-input>
+    <form id="changePasswordForm" autocomplete="off">
+      <div class="mb-3">
+        <label for="current_password" class="form-label">Mật khẩu hiện tại</label>
+        <div class="input-group">
+          <input type="password" class="form-control" id="current_password" name="current_password" required>
+          <button type="button" class="btn btn-outline-secondary toggle-password" data-target="#current_password">
+            <i class="bi bi-eye"></i>
+          </button>
         </div>
-        <div class="mb-3">
-          <sl-input id="new_password" name="new_password" type="password" label="Mật khẩu mới" required password-toggle></sl-input>
+      </div>
+      <div class="mb-3">
+        <label for="new_password" class="form-label">Mật khẩu mới</label>
+        <div class="input-group">
+          <input type="password" class="form-control" id="new_password" name="new_password" required>
+          <button type="button" class="btn btn-outline-secondary toggle-password" data-target="#new_password">
+            <i class="bi bi-eye"></i>
+          </button>
         </div>
-        <div class="mb-3">
-          <sl-input id="new_password_confirmation" name="new_password_confirmation" type="password" label="Nhập lại mật khẩu mới" required password-toggle></sl-input>
+      </div>
+      <div class="mb-3">
+        <label for="new_password_confirmation" class="form-label">Nhập lại mật khẩu mới</label>
+        <div class="input-group">
+          <input type="password" class="form-control" id="new_password_confirmation" name="new_password_confirmation" required>
+          <button type="button" class="btn btn-outline-secondary toggle-password" data-target="#new_password_confirmation">
+            <i class="bi bi-eye"></i>
+          </button>
         </div>
-        <sl-button id="btnChangePassword" variant="primary" class="w-100">
-          <sl-spinner slot="prefix" style="display:none" id="loading"></sl-spinner>
-          Đổi mật khẩu
-        </sl-button>
-    </div>
+      </div>
+      <button type="button" id="btnChangePassword" class="btn btn-primary w-100 position-relative">
+        <span id="loading" class="spinner-border spinner-border-sm position-absolute start-0 ms-3" style="display:none"></span>
+        Đổi mật khẩu
+      </button>
+    </form>
   </div>
-
   <script>
   $(function () {
-      $("#btnChangePassword").on("click", function () {
-        let current_password = $("#current_password").val().trim();
-        let new_password = $("#new_password").val().trim();
-        let new_password_confirmation = $("#new_password_confirmation").val().trim();
+    // Nút ẩn/hiện mật khẩu
+    $(".toggle-password").on("click", function () {
+      const target = $($(this).data("target"));
+      const icon = $(this).find("i");
+      if (target.attr("type") === "password") {
+        target.attr("type", "text");
+        icon.removeClass("bi-eye").addClass("bi-eye-slash");
+      } else {
+        target.attr("type", "password");
+        icon.removeClass("bi-eye-slash").addClass("bi-eye");
+      }
+    });
 
-        if (!current_password || !new_password || !new_password_confirmation) {
-            return showToast("Vui lòng nhập đầy đủ các trường!", "danger");
-        }
-        if (new_password !== new_password_confirmation) {
-            return showToast("Mật khẩu nhập lại không khớp!", "danger");
-        }
+    $("#btnChangePassword").on("click", function () {
+      let current_password = $("#current_password").val().trim();
+      let new_password = $("#new_password").val().trim();
+      let new_password_confirmation = $("#new_password_confirmation").val().trim();
 
-        $("#loading").show();
-        $("#btnChangePassword").attr("disabled", true);
-        $.ajax({
-            url: "{{ route('password.update') }}",
-            method: "POST",
-            data: {
-              _token: "{{ csrf_token() }}",
-              current_password,
-              new_password,
-              new_password_confirmation
-            },
-            success: (res) => {
-                showToast(res.message || "Đổi mật khẩu thành công!", "success");
-                $("#loading").hide();
-                $("#btnChangePassword").attr("disabled", false);
-                $("#current_password, #new_password, #new_password_confirmation").val("");
-            },
-            error: (xhr) => {
-                $("#loading").hide();
-                $("#btnChangePassword").attr("disabled", false);
-                showToast(xhr.responseJSON?.message || "Đổi mật khẩu thất bại", "danger");
-            }
-        });
+      if (!current_password || !new_password || !new_password_confirmation) {
+        showBootstrapToast("Vui lòng nhập đầy đủ các trường!", "danger");
+        return;
+      }
+      if (new_password !== new_password_confirmation) {
+        showBootstrapToast("Mật khẩu nhập lại không khớp!", "danger");
+        return;
+      }
+
+      $("#loading").show();
+      $("#btnChangePassword").attr("disabled", true);
+      $.ajax({
+        url: "{{ route('password.update') }}",
+        method: "POST",
+        data: {
+          _token: "{{ csrf_token() }}",
+          current_password,
+          new_password,
+          new_password_confirmation
+        },
+        success: (res) => {
+          showBootstrapToast(res.message || "Đổi mật khẩu thành công!", "success");
+          $("#loading").hide();
+          $("#btnChangePassword").attr("disabled", false);
+          $("#current_password, #new_password, #new_password_confirmation").val("");
+        },
+        error: (xhr) => {
+          $("#loading").hide();
+          $("#btnChangePassword").attr("disabled", false);
+          showBootstrapToast(xhr.responseJSON?.message || "Đổi mật khẩu thất bại", "danger");
+        }
       });
+    });
   });
   </script>
-</x-app-layout>
+@endsection

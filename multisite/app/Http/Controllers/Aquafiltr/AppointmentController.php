@@ -13,14 +13,16 @@ class AppointmentController extends Controller
     // Hiển thị danh sách lịch hẹn
     public function index()
     {
+        $title = 'Quản lý lịch hẹn';
         $appointments = Appointment::orderBy('id', 'desc')->paginate(10);
-        return view('aquafiltr.admin.appointments.index', compact('appointments'));
+        return view('aquafiltr.admin.appointments.index', ['title' => $title, 'appointments' => $appointments]);
     }
 
     // Form tạo mới
     public function create()
     {
-        return view('aquafiltr.admin.appointments.create');
+        $title = 'Tạo lịch hẹn mới';
+        return view('aquafiltr.admin.appointments.create', ['title' => $title]);
     }
 
     // Lưu lịch hẹn mới
@@ -62,14 +64,15 @@ class AppointmentController extends Controller
     public function show($id)
     {
         $appointment = Appointment::find($id);
-        return view('aquafiltr.admin.appointments.show', compact('appointment'));
+        $title = 'Chi tiết lịch hẹn';
+        return view('aquafiltr.admin.appointments.show', ['title' => $title, 'appointment' => $appointment]);
     }
 
     // Xuất hóa đơn PDF
     public function invoice($id)
     {
         $appointment = Appointment::find($id);
-        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('appointments.invoice', compact('appointment'));
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('appointments.invoice', ['appointment' => $appointment]);
         return $pdf->download("invoice_{$appointment->customer_code}.pdf");
     }
 

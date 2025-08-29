@@ -1,4 +1,5 @@
-<x-app-layout>
+@extends('layouts.app')
+@section('content')
     <div class="py-2">
         <div class="container">
             <div class="card shadow-sm">
@@ -54,4 +55,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection

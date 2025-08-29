@@ -8,6 +8,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        return view('coming-soon');
+        $title = 'Trang chủ'; $auth = 'Tuấn NA';
+        return view('coming-soon', ['title' => $title, 'auth' => $auth]);
     }
 }

@@ -11,7 +11,8 @@ class AuthController extends Controller
     // Hiển thị form login
     public function showLogin()
     {
-        return view('auth.login');
+        $title = 'Đăng nhập hệ thống';
+        return view('auth.login', ['title' => $title]);
     }
     public function handleLogin(Request $request)
     {
@@ -39,7 +40,8 @@ class AuthController extends Controller
     // Hiển thị form quên mật khẩu
     public function showForgotPassword()
     {
-        return view('auth.forgot-password');
+        $title = 'Quên mật khẩu';
+        return view('auth.forgot-password', ['title' => $title]);
     }
 
     // Gửi link reset mật khẩu

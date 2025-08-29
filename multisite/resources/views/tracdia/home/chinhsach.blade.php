@@ -1,4 +1,5 @@
-<x-guest-layout>
+@extends('layouts.guest')
+@section('content')
 <div class="container py-5">
   <h1 class="h3 fw-bold mb-3">Chính sách bảo mật dữ liệu ứng dụng Thủy Chuẩn VN</h1>
   <p class="fst-italic mb-4">Cập nhật ngày: 25 tháng 7 năm 2025</p>
@@ -71,4 +72,4 @@
 
   <p class="fst-italic">Cảm ơn bạn đã tin tưởng và sử dụng ứng dụng Thủy Chuẩn VN!</p>
 </div>
-</x-guest-layout>
+@endsection
