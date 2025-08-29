@@ -16,4 +16,12 @@ class ProfileController extends Controller
     public function destroy() {
         // logic delete
     }
+
+    public function password() {
+        return view('profile.password');
+    }
+
+    public function updatePassword(Request $request) {
+        // logic update password
+    }
 }

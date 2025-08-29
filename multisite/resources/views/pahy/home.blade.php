@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.components')
 @section('title', 'Trang chủ')
 @section('content')
   <!-- Hero -->

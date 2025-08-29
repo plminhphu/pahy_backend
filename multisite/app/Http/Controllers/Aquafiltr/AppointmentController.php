@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Aquafiltr\Admin;
+namespace App\Http\Controllers\Aquafiltr;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;

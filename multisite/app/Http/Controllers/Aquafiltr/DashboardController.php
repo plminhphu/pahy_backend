@@ -1,13 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\Aquafiltr;
-
 use App\Http\Controllers\Controller;
 
-class HomeController extends Controller
+class DashboardController extends Controller
 {
     public function index()
     {
-        return view('coming-soon');
+      return view('aquafiltr.admin.index');
     }
 }
