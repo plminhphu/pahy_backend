@@ -10,12 +10,20 @@
 </div>
 <script>
 function showBootstrapToast(message, type = 'danger') {
-		const toastEl = $('#appToast');
-		const toastBody = $('#appToastBody');
-		toastBody.text(message);
-		toastEl.removeClass('text-bg-danger text-bg-success text-bg-warning text-bg-info')
-					 .addClass('text-bg-' + type);
-		const toast = new bootstrap.Toast(toastEl[0]);
-		toast.show();
+	const toastEl = $('#appToast');
+	const toastBody = $('#appToastBody');
+	toastBody.text(message);
+	toastEl.removeClass('text-bg-danger text-bg-success text-bg-warning text-bg-info')
+					.addClass('text-bg-' + type);
+	const toast = new bootstrap.Toast(toastEl[0]);
+	toast.show();
 }
+document.getElementById('openMenu')?.addEventListener('click', function () {
+	document.getElementById('menu').classList.remove('collapsed');
+	document.getElementById('openMenuI').classList.remove('d-md-block');
+});
+document.getElementById('closeMenu')?.addEventListener('click', function () {
+	document.getElementById('menu').classList.add('collapsed');
+	document.getElementById('openMenuI').classList.add('d-md-block');
+});
 </script>

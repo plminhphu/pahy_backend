@@ -13,10 +13,42 @@
 <meta name="twitter:description" content="{{ @$description  }}">
 <meta name="twitter:image" content="{{ asset('images/seo.webp') }}">
 <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}">
-<script src="{{ asset('public/js/jquery-3.7.1.min.js') }}"></script>
 <link href="{{ asset('public/css/bootstrap.min.css') }}" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+<link href="{{ asset('public/css/font-family.css') }}" rel="stylesheet">
+<link href="{{ asset('public/css/bootstrap-icons.css') }}" rel="stylesheet">
+<script src="{{ asset('public/js/jquery-3.7.1.min.js') }}"></script>
 <style>body{font-family:'Quicksand',sans-serif;}</style>
+<style>
+  #menu {
+    width: 80vw;
+  }
+  /* hiệu ứng xoay */
+  .rotate-180 {
+    transform: rotate(180deg);
+    transition: transform 0.2s ease;
+  }
+  @media (min-width: 992px) {
+    /* Sidebar flex item */
+    #menu {
+      position: relative !important;
+      transform: none !important;
+      visibility: visible !important;
+      top: 0; left: 0; bottom: 0;
+      width: 320px;
+      transition: width 0.2s ease;
+    }
+    /* Thu gọn */
+    #menu.collapsed {
+      width: 0;
+      padding: 0 !important;
+      border: none !important;
+      overflow: hidden;
+    }
+    .offcanvas-backdrop {
+      display: none;
+    }
+  }
+  .offcanvas-header, nav{
+    height: 56px;
+  }
+</style>
