@@ -9,7 +9,7 @@ class Customer extends Model
     use HasFactory;
 
     protected $fillable = [
-        'customer_code','name','phone','address','region','product_type','service','sale_date'
+        'code','name','phone','address','region','product_type','service','sale_date'
     ];
 
     public function appointments()

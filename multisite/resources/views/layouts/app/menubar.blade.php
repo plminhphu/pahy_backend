@@ -14,11 +14,6 @@ $menuItems = [
         'icon' => 'bi bi-person-bounding-box',
         'route' => route('customer.index'),
       ],
-      [
-        'label' => 'Thêm khách mới',
-        'icon' => 'bi bi-person-hearts',
-        'route' => route('customer.create'),
-      ],
     ],
   ],
   [
@@ -30,11 +25,6 @@ $menuItems = [
         'icon' => 'bi bi-calendar-date',
         'route' => route('appointment.index'),
       ],
-      [
-        'label' => 'Thêm lịch hẹn',
-        'icon' => 'bi bi-calendar-plus',
-        'route' => route('appointment.create'),
-      ],
     ],
   ],
   [
@@ -45,11 +35,6 @@ $menuItems = [
         'label' => 'DS thiết bị',
         'icon' => 'bi bi-list',
         'route' => route('device.index'),
-      ],
-      [
-        'label' => 'Thêm thiết bị',
-        'icon' => 'bi bi-plus',
-        'route' => route('device.create'),
       ],
     ],
   ],

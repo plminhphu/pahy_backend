@@ -1,12 +1,12 @@
 <form id="formCreateRole" action="{{ route('role.store') }}" method="POST">
     @csrf
     <div class="mb-3">
-        <label for="name" class="form-label">Mã phân quyền</label>
+        <label for="name" class="form-label">Mã phân quyền:</label>
         <input type="text" name="name" id="name" class="form-control" required autocomplete="off">
         <div class="invalid-feedback" id="nameError"></div>
     </div>
     <div class="mb-2">
-        <label for="title" class="form-label">Tên phân quyền</label>
+        <label for="title" class="form-label">Tên phân quyền:</label>
         <input type="text" name="title" id="title" class="form-control" required autocomplete="off">
         <div class="invalid-feedback" id="titleError"></div>
     </div>

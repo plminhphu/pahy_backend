@@ -1,29 +1,29 @@
-<form id="formEditUser" action="{{ route('user.update', $user->id) }}" method="POST">
+<form id="formEditCustomer" action="{{ route('customer.update', $customer->id) }}" method="POST">
     @csrf
     @method('PUT')
     <div class="mb-3">
+        <label for="code" class="form-label">Mã khách hàng:</label>
+        <input type="text" name="code" id="code" class="form-control" value="{{ $customer->code }}" required>
+    </div>
+    <div class="mb-3">
         <label for="name" class="form-label">Tên khách hàng:</label>
-        <input type="text" name="name" id="name" class="form-control" value="{{ $user->name }}" required>
+        <input type="text" name="name" id="name" class="form-control" value="{{ $customer->name }}" required>
     </div>
     <div class="mb-3">
-        <label for="email" class="form-label">Tài khoản - Email:</label>
-        <input type="email" name="email" id="email" class="form-control" value="{{ $user->email }}" required>
+        <label for="phone" class="form-label">Số điện thoại:</label>
+        <input type="text" name="phone" id="phone" class="form-control" value="{{ $customer->phone }}" required>
     </div>
     <div class="mb-3">
-        <label for="password" class="form-label">Mật khẩu mới:</label>
-        <input type="password" name="password" id="password" class="form-control" placeholder="Để trống nếu không đổi">
+        <label for="address" class="form-label">Địa chỉ:</label>
+        <input type="text" name="address" id="address" class="form-control" value="{{ $customer->address }}" required>
     </div>
     <div class="mb-3">
-        <label for="role_id" class="form-label">Vai trò:</label>
-        <select name="role_id" id="role_id" class="form-select" required>
-            @foreach ($roles as $role)
-                <option value="{{ $role->id }}" {{ $user->role_id == $role->id ? 'selected' : '' }}>{{ $role->name }}</option>
-            @endforeach
-        </select>
+        <label for="region" class="form-label">Vùng:</label>
+        <input type="text" name="region" id="region" class="form-control" value="{{ $customer->region }}" required>
     </div>
     <hr class="my-4">
     <div class="d-flex justify-content-end gap-2">
-        <button type="submit" class="btn btn-primary" id="btnUpdateUser">
+        <button type="submit" class="btn btn-primary" id="btnUpdateCustomer">
             Cập nhật
         </button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
@@ -31,9 +31,9 @@
 </form>
 <script>
 $(function() {
-    $('#formEditUser').on('submit', function(e) {
+    $('#formEditCustomer').on('submit', function(e) {
         e.preventDefault();
-        var $btn = $('#btnUpdateUser');
+        var $btn = $('#btnUpdateCustomer');
         var $htmlBtn = $btn.html();
         $btn.attr('disabled', true);
         $btn.html('<span class="spinner-border spinner-border-sm" role="status"></span>');
@@ -47,7 +47,7 @@ $(function() {
                     $btn.html($htmlBtn);
                     if (xhr.status === 202) {
                         showBootstrapToast(res.message ?? 'Cập nhật thành công!', "success");
-                        $('#userEditModal').modal('hide');
+                        $('#customerEditModal').modal('hide');
                         loadListData();
                     } else {
                         showBootstrapToast(res.message ?? "Vui lòng kiểm tra lại thông tin đã nhập", "danger");

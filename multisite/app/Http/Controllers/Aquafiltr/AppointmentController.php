@@ -81,7 +81,7 @@ class AppointmentController extends Controller
         $customerCode = 'KH' . str_pad($nextId, 4, '0', STR_PAD_LEFT);
 
         $appointment = Appointment::create([
-            'customer_code'   => $customerCode,
+            'code'   => $customerCode,
             'customer_name'   => $request->customer_name,
             'phone'           => $request->phone,
             'address'         => $request->address,
@@ -125,7 +125,7 @@ class AppointmentController extends Controller
     {
         $appointment = Appointment::find($id);
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('aquafiltr.admin.appointment.invoice', ['appointment' => $appointment]);
-        return $pdf->download("invoice_{$appointment->customer_code}.pdf");
+        return $pdf->download("invoice_{$appointment->code}.pdf");
     }
 
     // In mã vạch (barcode)
@@ -134,7 +134,7 @@ class AppointmentController extends Controller
         $appointment = Appointment::find($id);
 
         // $generator = new BarcodeGeneratorPNG();
-        // $barcode = $generator->getBarcode($appointment->customer_code, $generator::TYPE_CODE_128);
+        // $barcode = $generator->getBarcode($appointment->code, $generator::TYPE_CODE_128);
 
         // return Response::make($barcode, 200, ['Content-Type' => 'image/png']);
     }

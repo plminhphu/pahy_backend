@@ -3,11 +3,11 @@
     @csrf
     @method('PUT')
     <div class="mb-3">
-        <label for="name" class="form-label">Mã phân quyền</label>
+        <label for="name" class="form-label">Mã phân quyền:</label>
         <input type="text" name="name" id="name" class="form-control" value="{{ $role->name }}" required>
     </div>
     <div class="mb-3">
-        <label for="title" class="form-label">Tên phân quyền</label>
+        <label for="title" class="form-label">Tên phân quyền:</label>
         <input type="text" name="title" id="title" class="form-control" value="{{ $role->title }}" required>
     </div>
     <div class="my-4">

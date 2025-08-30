@@ -24,7 +24,7 @@ Route::domain('aquafiltr-shop.com')->group(function () {
             Route::get('appointment/{id}/invoice', [App\Http\Controllers\Aquafiltr\AppointmentController::class, 'invoice'])->name('appointment.invoice');
             Route::get('appointment/{id}/barcode', [App\Http\Controllers\Aquafiltr\AppointmentController::class, 'barcode'])->name('appointment.barcode');
             // nhóm khách hàng
-            Route::resource('customer', App\Http\Controllers\Aquafiltr\AppointmentController::class);
+            Route::resource('customer', App\Http\Controllers\Aquafiltr\CustomerController::class);
             // nhóm thiết bị
             Route::resource('device', App\Http\Controllers\Aquafiltr\AppointmentController::class);
             // nhóm tài khoản

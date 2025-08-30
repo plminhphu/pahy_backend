@@ -1,47 +1,49 @@
 
-<form id="formCreateUser" action="{{ route('user.store') }}" method="POST">
+<form id="formCreateCustomer" action="{{ route('customer.store') }}" method="POST">
     @csrf
     <div class="mb-3">
-        <label for="name" class="form-label">Tên nhân viên:</label>
+        <label for="code" class="form-label">Mã khách hàng:</label>
+        <input type="text" name="code" id="code" class="form-control @error('name') is-invalid @enderror"
+            value="{{ old('code') }}" required>
+        @error('code')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
+    <div class="mb-3">
+        <label for="name" class="form-label">Tên khách hàng:</label>
         <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror"
             value="{{ old('name') }}" required>
         @error('name')
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror
     </div>
-
     <div class="mb-3">
-        <label for="email" class="form-label">Tài khoản - Email:</label>
-        <input type="email" name="email" id="email"
-            class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" required>
-        @error('email')
+        <label for="phone" class="form-label">Số điện thoại:</label>
+        <input type="tel" name="phone" id="phone"
+            class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone') }}" required>
+        @error('phone')
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror
     </div>
-
     <div class="mb-3">
-        <label for="password" class="form-label">Mật khẩu:</label>
-        <input type="password" name="password" id="password"
-            class="form-control @error('password') is-invalid @enderror" required>
-        @error('password')
+        <label for="address" class="form-label">Địa chỉ:</label>
+        <input type="text" name="address" id="address"
+            class="form-control @error('address') is-invalid @enderror" value="{{ old('address') }}" required>
+        @error('address')
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror
     </div>
-
     <div class="mb-3">
-        <label for="role_id" class="form-label">Vai trò:</label>
-        <select name="role_id" id="role_id" class="form-select" required>
-            @foreach ($roles as $role)
-                <option value="{{ $role->id }}"
-                    {{ collect(old('roles'))->contains($role->id) ? 'selected' : '' }}>
-                    {{ $role->name }}
-                </option>
-            @endforeach
-        </select>
+        <label for="region" class="form-label">Vùng:</label>
+        <input type="text" name="region" id="region"
+            class="form-control @error('region') is-invalid @enderror" value="{{ old('region') }}" required>
+        @error('region')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
     </div>
     <hr class="my-4">
     <div class="d-flex justify-content-end gap-2">
-        <button type="submit" class="btn btn-primary" id="btnSaveUser">
+        <button type="submit" class="btn btn-primary" id="btnSaveCustomer">
             Tạo mới
         </button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
@@ -50,9 +52,9 @@
 
 <script>
 $(function() {
-    $('#formCreateUser').on('submit', function(e) {
+    $('#formCreateCustomer').on('submit', function(e) {
         e.preventDefault();
-        var $btn = $('#btnSaveUser');
+        var $btn = $('#btnSaveCustomer');
         var $htmlBtn = $btn.html();
         $btn.attr('disabled', true);
         $btn.html('<span class="spinner-border spinner-border-sm" role="status"></span>');
@@ -66,7 +68,7 @@ $(function() {
                     $btn.html($htmlBtn);
                     if (xhr.status === 201) {
                         showBootstrapToast(res.message ?? 'Tạo mới thành công!', "success");
-                        $('#userCreateModal').modal('hide');
+                        $('#customerCreateModal').modal('hide');
                         loadListData();
                     } else {
                         showBootstrapToast(res.message ?? "Vui lòng kiểm tra lại thông tin đã nhập", "danger");

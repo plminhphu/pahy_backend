@@ -36,7 +36,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="7" class="text-center text-muted">Chưa có lịch hẹn nào</td>
+                    <td colspan="7" class="text-center text-muted my-5 py-5">Chưa có lịch hẹn nào</td>
                 </tr>
             @endforelse
         </tbody>
