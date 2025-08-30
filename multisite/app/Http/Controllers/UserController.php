@@ -30,10 +30,20 @@ class UserController extends Controller
     {
         if ($request->page) {
             // join với bảng roles để lấy tên vai trò
+            // kèm tìm kiếm theo keywords và phân trang
+            $keywords = $request->keywords ?? '';
+            $page = $request->page ?? 1;
             $users = User::select('users.*', 'roles.name as role_name')
                 ->leftJoin('roles', 'users.role_id', '=', 'roles.id')
-                ->latest('users.id')
-                ->paginate(10);
+                ->where(function($query) use ($keywords) {
+                    if ($keywords) {
+                        $query->where('users.name', 'like', "%$keywords%")
+                              ->orWhere('users.email', 'like', "%$keywords%")
+                              ->orWhere('roles.name', 'like', "%$keywords%");
+                    }
+                })
+                ->orderBy('users.created_at', 'desc')
+                ->paginate(10, ['*'], 'page', $page);
             return view('user.list', compact('users'))->render();
         } else {
             $title = 'Danh sách nhân viên';

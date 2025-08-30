@@ -1,4 +1,3 @@
-
 <div class="table-scroll mb-4">
     <table class="table table-bordered table-hover align-middle">
         <thead class="table-light">
@@ -44,14 +43,92 @@
 </div>
 {!! $users->links('pagination::bootstrap-5') !!}
 <script>
-$(function() {
-    $('#userListData').off('click', '.pagination a').on('click', '.pagination a', function(e) {
-        e.preventDefault();
-        var url = $(this).attr('href');
-        var page = 1;
-        var match = url.match(/page=(\d+)/);
-        if (match) page = match[1];
-        loadListData(page);
+    $(function() {
+        $('#userListData').off('click', '.pagination a').on('click', '.pagination a', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            var page = 1;
+            var match = url.match(/page=(\d+)/);
+            if (match) page = match[1];
+            loadListData();
+        });
+
+        // Thêm user
+        $('#btnCreateUser').on('click', function() {
+            $('#userCreateModalBody').html(shimmerloader);
+            $.get("{{ route('user.create') }}", function(data) {
+                $('#userCreateModalBody').html(data);
+            }).fail(function(err) {
+                let msg = err.responseJSON && err.responseJSON.message ? err.responseJSON
+                    .message : (err.message ?? 'Lỗi quyền truy cập!');
+                showBootstrapToast(msg, 'danger');
+            });
+        });
+        // Xem user
+        $('.btnShowUser').on('click', function() {
+            $('#userShowModalBody').html(shimmerloader);
+            var route = $(this).data('route');
+            $.get(route, function(data) {
+                $('#userShowModalBody').html(data);
+                $('#userShowModal').modal('show');
+            }).fail(function(err) {
+                let msg = err.responseJSON && err.responseJSON.message ? err.responseJSON
+                    .message : (err.message ?? 'Lỗi quyền truy cập!');
+                showBootstrapToast(msg, 'danger');
+            });
+        });
+        // Sửa user
+        $('.btnEditUser').on('click', function() {
+            $('#userEditModalBody').html(shimmerloader);
+            var route = $(this).data('route');
+            $.get(route, function(data) {
+                $('#userEditModalBody').html(data);
+                $('#userEditModal').modal('show');
+            }).fail(function(err) {
+                let msg = err.responseJSON && err.responseJSON.message ? err.responseJSON
+                    .message : (err.message ?? 'Lỗi quyền truy cập!');
+                showBootstrapToast(msg, 'danger');
+            });
+        });
+        // Xóa user
+        $('.btnDeleteUser').on('click', function() {
+            var id = $(this).data('id');
+            $('#userDeleteModalBody').html(
+                '<p>Bạn có chắc muốn xóa nhân viên này?</p><div class="d-flex justify-content-end gap-2"><button class="btn btn-danger" id="confirmDeleteUser">Xóa</button><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button></div>'
+            );
+            $('#userDeleteModal').modal('show');
+            var route = $(this).data('route');
+            $(document).off('click', '#confirmDeleteUser').on('click',
+                '#confirmDeleteUser',
+                function() {
+                    $.ajax({
+                        url: route,
+                        type: 'DELETE',
+                        data: {
+                            _token: "{{ csrf_token() }}"
+                        },
+                        success: function(res, status, xhr) {
+                            if (xhr.status === 202) {
+                                showBootstrapToast(res
+                                    .message ??
+                                    'Xóa thành công!',
+                                    'success');
+                                $('#userDeleteModal').modal(
+                                    'hide');
+                                loadListData();
+                            } else {
+                                showBootstrapToast(res
+                                    .message ??
+                                    "Lỗi khi xóa nhân viên!",
+                                    "danger");
+                            }
+                        },
+                        error: function(err) {
+                            showBootstrapToast(err.responseJSON.message ??
+                                'Lỗi quyền truy cập!', 'danger');
+                        }
+                    });
+                });
+        });
     });
-});
 </script>

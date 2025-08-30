@@ -67,7 +67,7 @@ $(function() {
                     if (xhr.status === 201) {
                         showBootstrapToast(res.message ?? 'Tạo mới thành công!', "success");
                         $('#userCreateModal').modal('hide');
-                        loadListData(page);
+                        loadListData();
                     } else {
                         showBootstrapToast(res.message ?? "Vui lòng kiểm tra lại thông tin đã nhập", "danger");
                     }

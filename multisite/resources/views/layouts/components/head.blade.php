@@ -70,7 +70,7 @@
         backdrop-filter: blur(.2rem);
         opacity: 1;
     }
-
+.input-group-text,
     .form-control {
         border-color: var(--bs-gray);
     }

@@ -6,6 +6,11 @@
                 id="btnCreateUser">
                 <i class="bi bi-person-plus"></i> Thêm nhân viên
             </button>
+            <div class="input-group" style="max-width: 300px; float: right;">
+                <span class="input-group-text" id="searching-data"><i class="bi bi-search"></i></span>
+                <input type="text" class="form-control" placeholder="Tìm kiếm..." aria-label="Search"
+                    aria-describedby="searching-data" id="searchInput">
+            </div>
         </div>
         <div id="userListData">
             <div class="shimmer-loader" style="min-height:60vh;">
@@ -68,101 +73,47 @@
     </div>
 `;
         var page = 1;
+        var keywords = '';
         $(function() {
             // Load danh sách user
             $('#userListData').html(shimmerloader);
-            loadListData(page);
+            loadListData();
+        });
+        // khi nhấn tìm kiếm phải debaounce để tránh gọi hàm loadListData quá nhiều
+        let debounceTimer;
+        $('#searchInput').on('input', function() {
+            // kiểm tra nó có đang xoay không
+            if ($('#searching-data').find('span').length) {
+                return; // Nếu đang xoay thì không làm gì cả
+            }else {
+                // chuyển icon #searching-data sang spinner
+                $('#searching-data').html('<span class="spinner-border spinner-border-sm" role="status"></span>');
+            }
+            clearTimeout(debounceTimer);
+            var query = $(this).val();
+            debounceTimer = setTimeout(function() {
+                keywords = query;
+                page = 1; // Reset về trang đầu tiên khi tìm kiếm
+                loadListData();
+            }, 500); // Chờ 500 sau khi người dùng ngừng gõ
         });
 
-        function loadListData(page) {
+        function loadListData() {
             setTimeout(() => {
                 $.ajax({
                     url: "{{ route('user.index') }}",
                     type: 'GET',
-                    data: {
-                        page: page
-                    },
+                    data: { page: page, keywords: keywords },
                     success: function(res, status, xhr) {
                         $('#userListData').html(res);
-                        // Thêm user
-                        $('#btnCreateUser').on('click', function() {
-                            $('#userCreateModalBody').html(shimmerloader);
-                            $.get("{{ route('user.create') }}", function(data) {
-                                $('#userCreateModalBody').html(data);
-                            }).fail(function(err) {
-                                let msg = err.responseJSON && err.responseJSON.message ? err.responseJSON.message : (err.message ?? 'Lỗi quyền truy cập!');
-                                showBootstrapToast(msg, 'danger');
-                            });
-                        });
-                        // Xem user
-                        $('.btnShowUser').on('click', function() {
-                            $('#userShowModalBody').html(shimmerloader);
-                            var route = $(this).data('route');
-                            $.get(route, function(data) {
-                                $('#userShowModalBody').html(data);
-                                $('#userShowModal').modal('show');
-                            }).fail(function(err) {
-                                let msg = err.responseJSON && err.responseJSON.message ? err.responseJSON.message : (err.message ?? 'Lỗi quyền truy cập!');
-                                showBootstrapToast(msg, 'danger');
-                            });
-                        });
-                        // Sửa user
-                        $('.btnEditUser').on('click', function() {
-                            $('#userEditModalBody').html(shimmerloader);
-                            var route = $(this).data('route');
-                            $.get(route, function(data) {
-                                $('#userEditModalBody').html(data);
-                                $('#userEditModal').modal('show');
-                            }).fail(function(err) {
-                                let msg = err.responseJSON && err.responseJSON.message ? err.responseJSON.message : (err.message ?? 'Lỗi quyền truy cập!');
-                                showBootstrapToast(msg, 'danger');
-                            });
-                        });
-                        // Xóa user
-                        $('.btnDeleteUser').on('click', function() {
-                            var id = $(this).data('id');
-                            $('#userDeleteModalBody').html(
-                                '<p>Bạn có chắc muốn xóa nhân viên này?</p><div class="d-flex justify-content-end gap-2"><button class="btn btn-danger" id="confirmDeleteUser">Xóa</button><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button></div>'
-                                );
-                            $('#userDeleteModal').modal('show');
-                            var route = $(this).data('route');
-                            $(document).off('click', '#confirmDeleteUser').on('click',
-                                '#confirmDeleteUser',
-                                function() {
-                                    $.ajax({
-                                        url: route,
-                                        type: 'DELETE',
-                                        data: {
-                                            _token: "{{ csrf_token() }}"
-                                        },
-                                        success: function(res, status, xhr) {
-                                            if (xhr.status === 202) {
-                                                showBootstrapToast(res
-                                                    .message ??
-                                                    'Xóa thành công!',
-                                                    'success');
-                                                $('#userDeleteModal').modal(
-                                                    'hide');
-                                                loadListData(page);
-                                            } else {
-                                                showBootstrapToast(res
-                                                    .message ??
-                                                    "Lỗi khi xóa nhân viên!",
-                                                    "danger");
-                                            }
-                                        },
-                                        error: function(err) {
-                                            showBootstrapToast(err.responseJSON.message ?? 'Lỗi quyền truy cập!','danger');
-                                        }
-                                    });
-                                });
-                        });
+                        // Sau khi load xong thì chuyển lại icon tìm kiếm
+                        $('#searching-data').html('<i class="bi bi-search"></i>');
                     },
                     error: function(xhr) {
                         $('#userListData').html('<p class="text-danger">Lỗi tải dữ liệu!</p>');
                     }
                 });
-            }, 200);
+            }, 300);
         }
     </script>
 @endsection

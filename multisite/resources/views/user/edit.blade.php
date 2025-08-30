@@ -48,7 +48,7 @@ $(function() {
                     if (xhr.status === 202) {
                         showBootstrapToast(res.message ?? 'Cập nhật thành công!', "success");
                         $('#userEditModal').modal('hide');
-                        loadListData(page);
+                        loadListData();
                     } else {
                         showBootstrapToast(res.message ?? "Vui lòng kiểm tra lại thông tin đã nhập", "danger");
                     }
