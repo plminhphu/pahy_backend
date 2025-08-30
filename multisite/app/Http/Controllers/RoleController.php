@@ -5,16 +5,50 @@ namespace App\Http\Controllers;
 use App\Models\Role;
 use App\Models\Permission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RoleController extends Controller
 {
+    
+    public function __construct()
+    {
+        // Áp dụng middleware permission cho từng action
+        $this->middleware(function ($request, $next) {
+            $action = $request->route()->getActionMethod();
+            switch ($action) {
+                case 'index':   $this->authorizePermission('role','getall'); break;
+                case 'show':    $this->authorizePermission('role','getone'); break;
+                case 'create':
+                case 'store':   $this->authorizePermission('role','created'); break;
+                case 'edit':
+                case 'update':  $this->authorizePermission('role','updated'); break;
+                case 'destroy': $this->authorizePermission('role','deleted'); break;
+            }
+            return $next($request);
+        });
+    }
+
     /**
      * Danh sách Role
      */
-    public function index()
+    public function index(Request $request)
     {
-        $roles = Role::with('permissions')->get();
-        return view('role.index', compact('roles'));
+        if ($request->page) {
+            $keywords = $request->keywords ?? '';
+            $page = $request->page ?? 1;
+            $roles = Role::with('permissions')
+                ->where(function($query) use ($keywords) {
+                    if ($keywords) {
+                        $query->where('roles.name', 'like', "%$keywords%");
+                    }
+                })
+                ->orderBy('roles.created_at', 'desc')
+                ->paginate(10, ['*'], 'page', $page);
+            return view('role.list', compact('roles'))->render();
+        } else {
+            $title = 'Danh sách nhân viên';
+            return view('role.index', compact('title'));
+        }
     }
 
     /**
@@ -32,23 +66,15 @@ class RoleController extends Controller
     {
         $request->validate([
             'name' => 'required|unique:roles,name',
+            'title' => 'required|string|max:255',
         ]);
 
-        $role = Role::create([
+        Role::create([
             'name' => $request->name,
+            'title' => $request->title,
         ]);
 
-        // Nếu có permissions gửi kèm
-        if ($request->has('permissions')) {
-            foreach ($request->permissions as $module => $abilities) {
-                Permission::create(array_merge($abilities, [
-                    'role_id' => $role->id,
-                    'module' => $module,
-                ]));
-            }
-        }
-
-        return redirect()->route('role.index')->with('success', 'Tạo role thành công');
+        return response()->json(['message' => 'Phân quyền đã được tạo thành công'], 201);
     }
 
     /**
@@ -65,8 +91,9 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        $role->load('permissions');
-        return view('role.edit', compact('role'));
+        $role = Role::with('permissions')->find($role->id);
+        $permissions = DB::table('permissions')->select('name', 'title')->distinct('name')->get();
+        return view('role.edit', compact('role', 'permissions'));
     }
 
     /**
@@ -74,27 +101,35 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        $request->validate([
+        $data = $request->validate([
             'name' => 'required|unique:roles,name,' . $role->id,
+            'title' => 'required|string|max:255',
         ]);
 
         $role->update([
             'name' => $request->name,
+            'title' => $request->title,
         ]);
-
-        // Xóa permission cũ, tạo lại
-        $role->permissions()->delete();
-
-        if ($request->has('permissions')) {
-            foreach ($request->permissions as $module => $abilities) {
-                Permission::create(array_merge($abilities, [
+        $permissions = DB::table('permissions')->select('name', 'title')->distinct('name')->get();
+        foreach ($permissions as $permission) {
+            $isset = Permission::where('role_id', $role->id)->where('name', $permission->name)->first()??false;
+            if ($isset==false) {
+                Permission::create([    
                     'role_id' => $role->id,
-                    'module' => $module,
-                ]));
+                    'name' => $permission->name,
+                    'title' => $permission->title,
+                ]);
+                // delay 300ms
+                usleep(500000);
+            }
+            foreach (['getall', 'getone', 'created', 'updated', 'deleted'] as $action) {
+                $value = $request->input($permission->name . '.' . $action, 0);
+                Permission::where('role_id', $role->id)
+                    ->where('name', $permission->name)
+                    ->update([$action => $value]);
             }
         }
-
-        return redirect()->route('role.index')->with('success', 'Cập nhật role thành công');
+        return response()->json(['message' => 'Cập nhật phân quyền thành công'], 202);
     }
 
     /**
@@ -105,6 +140,6 @@ class RoleController extends Controller
         $role->permissions()->delete();
         $role->delete();
 
-        return redirect()->route('role.index')->with('success', 'Xóa role thành công');
+        return response()->json(['message' => 'Xóa phân quyền thành công'],202);
     }
 }

@@ -1,50 +1,68 @@
+
+
 <div class="table-scroll mb-4">
     <table class="table table-bordered table-hover align-middle">
         <thead class="table-light">
             <tr>
                 <th>#</th>
-                <th>Tên</th>
-                <th>Email</th>
-                <th>Vai trò</th>
-                <th>Hành động</th>
+                <th>Mã quyền</th>
+                <th>Tên quyền</th>
+                <th>Đọc</th>
+                <th>Xem</th>
+                <th>Tạo</th>
+                <th>Sửa</th>
+                <th>Xóa</th>
+                <th class="text-center">Hành động</th>
             </tr>
         </thead>
         <tbody>
-            @forelse($users as $index => $user)
+            @forelse($roles as $index => $role)
                 <tr>
-                    <td>{{ ($users->currentPage() - 1) * $users->perPage() + $index + 1 }}</td>
-                    <td>{{ $user->name }}</td>
-                    <td>{{ $user->email }}</td>
+                    <td>{{ ($roles->currentPage() - 1) * $roles->perPage() + $index + 1 }}</td>
+                    <td>{{ $role->name }}</td>
+                    <td>{{ $role->title }}</td>
                     <td>
-                        <span class="badge bg-primary text-light">{{ $user->role_name }}</span>
+                      {{ $role->permissions->where('getall', 1)->count() }}
+                    </td>
+                    <td>
+                      {{ $role->permissions->where('getone', 1)->count() }}
+                    </td>
+                    <td>
+                      {{ $role->permissions->where('created', 1)->count() }}
+                    </td>
+                    <td>
+                      {{ $role->permissions->where('updated', 1)->count() }}
+                    </td>
+                    <td>
+                      {{ $role->permissions->where('deleted', 1)->count() }}
                     </td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-sm btn-info btnShowUser"
-                            data-route="{{ route('user.show', $user->id) }}">
+                        <button type="button" class="btn btn-sm btn-success btnShowRole"
+                            data-route="{{ route('role.show', $role->id) }}">
                             <i class="bi bi-eye"></i>
                         </button>
-                        <button type="button" class="btn btn-sm btn-warning btnEditUser"
-                            data-route="{{ route('user.edit', $user->id) }}">
+                        <button type="button" class="btn btn-sm btn-warning btnEditRole"
+                            data-route="{{ route('role.edit', $role->id) }}">
                             <i class="bi bi-pencil"></i>
                         </button>
-                        <button type="button" class="btn btn-sm btn-danger btnDeleteUser"
-                            data-route="{{ route('user.destroy', $user->id) }}">
+                        <button type="button" class="btn btn-sm btn-danger btnDeleteRole"
+                            data-route="{{ route('role.destroy', $role->id) }}">
                             <i class="bi bi-trash"></i>
                         </button>
                     </td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="5" class="text-center text-muted">Chưa có người dùng nào</td>
+                    <td colspan="4" class="text-center text-muted">Chưa có vai trò nào</td>
                 </tr>
             @endforelse
         </tbody>
     </table>
 </div>
-{!! $users->links('pagination::bootstrap-5') !!}
+{!! $roles->links('pagination::bootstrap-5') !!}
 <script>
     $(function() {
-        $('#userListData').off('click', '.pagination a').on('click', '.pagination a', function(e) {
+        $('#roleListData').off('click', '.pagination a').on('click', '.pagination a', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
             var page = 1;
@@ -53,53 +71,53 @@
             loadListData();
         });
 
-        // Thêm user
-        $('#btnCreateUser').on('click', function() {
-            $('#userCreateModalBody').html(shimmerloader);
-            $.get("{{ route('user.create') }}", function(data) {
-                $('#userCreateModalBody').html(data);
+        // Thêm role
+        $('#btnCreateRole').on('click', function() {
+            $('#roleCreateModalBody').html(shimmerloader);
+            $.get("{{ route('role.create') }}", function(data) {
+                $('#roleCreateModalBody').html(data);
             }).fail(function(err) {
                 let msg = err.responseJSON && err.responseJSON.message ? err.responseJSON
                     .message : (err.message ?? 'Lỗi quyền truy cập!');
                 showBootstrapToast(msg, 'danger');
             });
         });
-        // Xem user
-        $('.btnShowUser').on('click', function() {
-            $('#userShowModalBody').html(shimmerloader);
+        // Xem role
+        $('.btnShowRole').on('click', function() {
+            $('#roleShowModalBody').html(shimmerloader);
             var route = $(this).data('route');
             $.get(route, function(data) {
-                $('#userShowModalBody').html(data);
-                $('#userShowModal').modal('show');
+                $('#roleShowModalBody').html(data);
+                $('#roleShowModal').modal('show');
             }).fail(function(err) {
                 let msg = err.responseJSON && err.responseJSON.message ? err.responseJSON
                     .message : (err.message ?? 'Lỗi quyền truy cập!');
                 showBootstrapToast(msg, 'danger');
             });
         });
-        // Sửa user
-        $('.btnEditUser').on('click', function() {
-            $('#userEditModalBody').html(shimmerloader);
+        // Sửa role
+        $('.btnEditRole').on('click', function() {
+            $('#roleEditModalBody').html(shimmerloader);
             var route = $(this).data('route');
             $.get(route, function(data) {
-                $('#userEditModalBody').html(data);
-                $('#userEditModal').modal('show');
+                $('#roleEditModalBody').html(data);
+                $('#roleEditModal').modal('show');
             }).fail(function(err) {
                 let msg = err.responseJSON && err.responseJSON.message ? err.responseJSON
                     .message : (err.message ?? 'Lỗi quyền truy cập!');
                 showBootstrapToast(msg, 'danger');
             });
         });
-        // Xóa user
-        $('.btnDeleteUser').on('click', function() {
+        // Xóa role
+        $('.btnDeleteRole').on('click', function() {
             var id = $(this).data('id');
-            $('#userDeleteModalBody').html(
-                '<p>Bạn có chắc muốn xóa nhân viên này?</p><div class="d-flex justify-content-end gap-2"><button class="btn btn-danger" id="confirmDeleteUser">Xóa</button><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button></div>'
+            $('#roleDeleteModalBody').html(
+                '<p>Bạn có chắc muốn xóa vai trò này?</p><div class="d-flex justify-content-end gap-2"><button class="btn btn-danger" id="confirmDeleteRole">Xóa</button><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button></div>'
             );
-            $('#userDeleteModal').modal('show');
+            $('#roleDeleteModal').modal('show');
             var route = $(this).data('route');
-            $(document).off('click', '#confirmDeleteUser').on('click',
-                '#confirmDeleteUser',
+            $(document).off('click', '#confirmDeleteRole').on('click',
+                '#confirmDeleteRole',
                 function() {
                     $.ajax({
                         url: route,
@@ -113,13 +131,13 @@
                                     .message ??
                                     'Xóa thành công!',
                                     'success');
-                                $('#userDeleteModal').modal(
+                                $('#roleDeleteModal').modal(
                                     'hide');
                                 loadListData();
                             } else {
                                 showBootstrapToast(res
                                     .message ??
-                                    "Lỗi khi xóa nhân viên!",
+                                    "Lỗi khi xóa vai trò!",
                                     "danger");
                             }
                         },

@@ -12,6 +12,7 @@ class Permission extends Model
     protected $fillable = [
         'role_id',
         'name',
+        'title',
         'getall',
         'getone',
         'created',

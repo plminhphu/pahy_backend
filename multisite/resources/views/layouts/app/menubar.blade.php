@@ -63,9 +63,9 @@ $menuItems = [
         'route' => route('user.index'),
       ],
       [
-        'label' => 'Thêm nhân viên',
-        'icon' => 'bi bi-person-plus',
-        'route' => route('user.create'),
+        'label' => 'Phân quyền',
+        'icon' => 'bi bi-person-gear',
+        'route' => route('role.index'),
       ],
     ],
   ],
