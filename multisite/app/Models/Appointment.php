@@ -16,7 +16,6 @@ class Appointment extends Model
         'region',
         'product_type',
         'service',
-        'sale_date',
         'appointment_date',
     ];
 
