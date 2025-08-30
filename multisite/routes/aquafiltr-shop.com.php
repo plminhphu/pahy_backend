@@ -18,6 +18,7 @@ Route::domain('aquafiltr-shop.com')->group(function () {
                 Route::post('/', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
                 Route::get('/password', [App\Http\Controllers\ProfileController::class, 'password'])->name('password.edit');
                 Route::post('/password', [App\Http\Controllers\ProfileController::class, 'updatePassword'])->name('password.update');
+                Route::put('/avatar', [App\Http\Controllers\ProfileController::class, 'uploadAvatar'])->name('profile.avatar.upload');
             });
             // nhóm lịch hẹn
             Route::resource('appointment', App\Http\Controllers\Aquafiltr\AppointmentController::class);

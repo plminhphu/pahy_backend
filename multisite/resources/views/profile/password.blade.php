@@ -1,41 +1,49 @@
 @extends('layouts.app')
 @section('content')
-  <div class="mx-auto mt-5 p-4 bg-white rounded shadow" style="max-width:360px">
-    <h4 class="mb-3 text-center">Đổi mật khẩu</h4>
-    <form id="changePasswordForm" autocomplete="off">
-      <div class="mb-3">
-        <label for="current_password" class="form-label">Mật khẩu hiện tại</label>
-        <div class="input-group">
-          <input type="password" class="form-control" id="current_password" name="current_password" required>
-          <button type="button" class="btn btn-outline-secondary toggle-password" data-target="#current_password">
-            <i class="bi bi-eye"></i>
-          </button>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-4">
+      <div class="card shadow mb-4">
+          <h5 class="card-header text-center mb-0">Đổi mật khẩu</h5>
+        <div class="card-body">
+          <form id="changePasswordForm" autocomplete="off">
+            <div class="mb-3">
+              <label for="current_password" class="form-label">Mật khẩu hiện tại</label>
+              <div class="input-group">
+                <input type="password" class="form-control" id="current_password" name="current_password" required>
+                <button type="button" class="btn btn-outline-secondary toggle-password" data-target="#current_password">
+                  <i class="bi bi-eye"></i>
+                </button>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="new_password" class="form-label">Mật khẩu mới</label>
+              <div class="input-group">
+                <input type="password" class="form-control" id="new_password" name="new_password" required>
+                <button type="button" class="btn btn-outline-secondary toggle-password" data-target="#new_password">
+                  <i class="bi bi-eye"></i>
+                </button>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="new_password_confirmation" class="form-label">Nhập lại mật khẩu mới</label>
+              <div class="input-group">
+                <input type="password" class="form-control" id="new_password_confirmation" name="new_password_confirmation" required>
+                <button type="button" class="btn btn-outline-secondary toggle-password" data-target="#new_password_confirmation">
+                  <i class="bi bi-eye"></i>
+                </button>
+              </div>
+            </div>
+            <button type="button" id="btnChangePassword" class="btn btn-primary w-100 position-relative">
+              <span id="loading" class="spinner-border spinner-border-sm position-absolute start-0 ms-3" style="display:none"></span>
+              Đổi mật khẩu
+            </button>
+          </form>
         </div>
       </div>
-      <div class="mb-3">
-        <label for="new_password" class="form-label">Mật khẩu mới</label>
-        <div class="input-group">
-          <input type="password" class="form-control" id="new_password" name="new_password" required>
-          <button type="button" class="btn btn-outline-secondary toggle-password" data-target="#new_password">
-            <i class="bi bi-eye"></i>
-          </button>
-        </div>
-      </div>
-      <div class="mb-3">
-        <label for="new_password_confirmation" class="form-label">Nhập lại mật khẩu mới</label>
-        <div class="input-group">
-          <input type="password" class="form-control" id="new_password_confirmation" name="new_password_confirmation" required>
-          <button type="button" class="btn btn-outline-secondary toggle-password" data-target="#new_password_confirmation">
-            <i class="bi bi-eye"></i>
-          </button>
-        </div>
-      </div>
-      <button type="button" id="btnChangePassword" class="btn btn-primary w-100 position-relative">
-        <span id="loading" class="spinner-border spinner-border-sm position-absolute start-0 ms-3" style="display:none"></span>
-        Đổi mật khẩu
-      </button>
-    </form>
+    </div>
   </div>
+</div>
   <script>
   $(function () {
     // Nút ẩn/hiện mật khẩu

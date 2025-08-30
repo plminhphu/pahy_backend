@@ -18,7 +18,7 @@
             <li>
                 <a class="dropdown-item" href="{{ route('profile.edit') }}">
                     <i class="bi bi-person-circle me-2"></i>
-                    Thông tin cá nhân
+                    Trang cá nhân
                 </a>
             </li>
             <li>
