@@ -23,6 +23,16 @@ Route::domain('aquafiltr-shop.com')->group(function () {
             Route::resource('appointment', App\Http\Controllers\Aquafiltr\AppointmentController::class);
             Route::get('appointment/{id}/invoice', [App\Http\Controllers\Aquafiltr\AppointmentController::class, 'invoice'])->name('appointment.invoice');
             Route::get('appointment/{id}/barcode', [App\Http\Controllers\Aquafiltr\AppointmentController::class, 'barcode'])->name('appointment.barcode');
+            // nhóm khách hàng
+            Route::resource('customer', App\Http\Controllers\Aquafiltr\AppointmentController::class);
+            // nhóm thiết bị
+            Route::resource('device', App\Http\Controllers\Aquafiltr\AppointmentController::class);
+            // nhóm tài khoản
+            Route::resource('user', App\Http\Controllers\UserController::class);
+            // nhóm vai trò
+            Route::resource('role', App\Http\Controllers\RoleController::class);
+            // nhóm quyền hạn
+            Route::resource('permission', App\Http\Controllers\PermissionController::class);
         });
         // nhóm đăng nhập
         Route::prefix('/auth')->middleware('guest')->group(function () {

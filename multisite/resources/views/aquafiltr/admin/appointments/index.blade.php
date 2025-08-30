@@ -5,7 +5,7 @@
             <div class="card shadow-sm">
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-3">
-                        <a href="{{ route('appointments.create') }}" class="btn btn-primary">
+                        <a href="{{ route('appointment.create') }}" class="btn btn-primary">
                             + Tạo lịch hẹn mới
                         </a>
                     </div>
@@ -30,9 +30,9 @@
                                         <td>{{ $appt->address }}</td>
                                         <td>{{ $appt->appointment_date }}</td>
                                         <td class="text-nowrap">
-                                            <a href="{{ route('appointments.show', $appt->id) }}" class="btn btn-sm btn-link text-primary">Xem</a>
-                                            <a href="{{ route('appointments.edit', $appt->id) }}" class="btn btn-sm btn-link text-success">Sửa</a>
-                                            <form action="{{ route('appointments.destroy', $appt->id) }}" method="POST" class="d-inline">
+                                            <a href="{{ route('appointment.show', $appt->id) }}" class="btn btn-sm btn-link text-primary">Xem</a>
+                                            <a href="{{ route('appointment.edit', $appt->id) }}" class="btn btn-sm btn-link text-success">Sửa</a>
+                                            <form action="{{ route('appointment.destroy', $appt->id) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-link text-danger"
@@ -40,8 +40,8 @@
                                                     Xóa
                                                 </button>
                                             </form>
-                                            <a href="{{ route('appointments.invoice', $appt->id) }}" class="btn btn-sm btn-link text-purple">Xuất HĐ</a>
-                                            <a href="{{ route('appointments.barcode', $appt->id) }}" class="btn btn-sm btn-link text-secondary">Mã vạch</a>
+                                            <a href="{{ route('appointment.invoice', $appt->id) }}" class="btn btn-sm btn-link text-purple">Xuất HĐ</a>
+                                            <a href="{{ route('appointment.barcode', $appt->id) }}" class="btn btn-sm btn-link text-secondary">Mã vạch</a>
                                         </td>
                                     </tr>
                                 @endforeach

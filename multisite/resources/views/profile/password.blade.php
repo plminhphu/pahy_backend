@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-  <div class="mx-auto mt-5 p-4 bg-white rounded shadow-lg" style="max-width:360px">
+  <div class="mx-auto mt-5 p-4 bg-white rounded shadow" style="max-width:360px">
     <h4 class="mb-3 text-center">Đổi mật khẩu</h4>
     <form id="changePasswordForm" autocomplete="off">
       <div class="mb-3">
