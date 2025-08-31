@@ -2,7 +2,7 @@
 @section('content')
 <div class="container py-5">
   <div class="row justify-content-center">
-    <div class="col-md-4">
+    <div class="col-md-6 col-12">
       <div class="card shadow mb-4">
           <h5 class="card-header text-center mb-0">Đổi mật khẩu</h5>
         <div class="card-body">
@@ -34,7 +34,7 @@
                 </button>
               </div>
             </div>
-            <button type="button" id="btnChangePassword" class="btn btn-primary w-100 position-relative">
+            <button type="button" id="btnChangePassword" class="btn btn-primary w-100 position-relative mt-md-4 mt-2">
               <span id="loading" class="spinner-border spinner-border-sm position-absolute start-0 ms-3" style="display:none"></span>
               Đổi mật khẩu
             </button>

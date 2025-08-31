@@ -51,7 +51,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="4" class="text-center text-muted my-5 py-5">Chưa có vai trò nào</td>
+                    <td colspan="8" class="text-center text-muted my-5 py-5">Chưa có vai trò nào</td>
                 </tr>
             @endforelse
         </tbody>
