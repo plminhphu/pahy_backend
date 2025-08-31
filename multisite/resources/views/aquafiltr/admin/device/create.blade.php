@@ -1,7 +1,7 @@
 
 <form id="formCreateDevice" action="{{ route('device.store') }}" method="POST">
     @csrf
-    <div class="mb-3">
+    <div class="mb-2">
         <label for="name" class="form-label">Tên thiết bị:</label>
         <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror"
             value="{{ old('name') }}" required>
@@ -9,7 +9,7 @@
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror
     </div>
-    <div class="mb-3">
+    <div class="mb-2">
         <label for="model" class="form-label">Kiểu thiết bị:</label>
         <input type="tel" name="model" id="model"
             class="form-control @error('model') is-invalid @enderror" value="{{ old('model') }}" required>

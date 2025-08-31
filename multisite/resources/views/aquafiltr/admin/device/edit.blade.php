@@ -1,11 +1,11 @@
 <form id="formEditDevice" action="{{ route('device.update', $device->id) }}" method="POST">
     @csrf
     @method('PUT')
-    <div class="mb-3">
+    <div class="mb-2">
         <label for="name" class="form-label">Tên thiết bị:</label>
         <input type="text" name="name" id="name" class="form-control" value="{{ $device->name }}" required>
     </div>
-    <div class="mb-3">
+    <div class="mb-2">
         <label for="model" class="form-label">Kiểu thiết bị:</label>
         <input type="text" name="model" id="model" class="form-control" value="{{ $device->model }}" required>
     </div>

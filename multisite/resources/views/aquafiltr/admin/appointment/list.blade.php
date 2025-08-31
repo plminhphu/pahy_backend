@@ -1,5 +1,5 @@
-<div class="table-scroll mb-4">
-    <table class="table table-bordered table-hover align-middle">
+<div class="table-responsive mb-4 w-100">
+    <table class="table table-hover align-middle">
         <thead class="table-light">
             <tr>
                 <th>#</th>
@@ -55,7 +55,7 @@
         });
         // Xem
         $('.btnShowAppointment').on('click', function() {
-            $('#appointmentShowModalBody').html(shimmerloader);
+            $('#appointmentShowModalBody').html(shimmerloader());
             var route = $(this).data('route');
             $.get(route, function(data) {
                 $('#appointmentShowModalBody').html(data);
@@ -67,7 +67,7 @@
         });
         // Sửa
         $('.btnEditAppointment').on('click', function() {
-            $('#appointmentEditModalBody').html(shimmerloader);
+            $('#appointmentEditModalBody').html(shimmerloader());
             var route = $(this).data('route');
             $.get(route, function(data) {
                 $('#appointmentEditModalBody').html(data);

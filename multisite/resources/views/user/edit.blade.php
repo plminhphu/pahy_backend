@@ -1,19 +1,19 @@
 <form id="formEditUser" action="{{ route('user.update', $user->id) }}" method="POST">
     @csrf
     @method('PUT')
-    <div class="mb-3">
+    <div class="mb-2">
         <label for="name" class="form-label">Tên khách hàng:</label>
         <input type="text" name="name" id="name" class="form-control" value="{{ $user->name }}" required>
     </div>
-    <div class="mb-3">
+    <div class="mb-2">
         <label for="email" class="form-label">Tài khoản - Email:</label>
         <input type="email" name="email" id="email" class="form-control" value="{{ $user->email }}" required>
     </div>
-    <div class="mb-3">
+    <div class="mb-2">
         <label for="password" class="form-label">Mật khẩu mới:</label>
         <input type="password" name="password" id="password" class="form-control" placeholder="Để trống nếu không đổi">
     </div>
-    <div class="mb-3">
+    <div class="mb-2">
         <label for="role_id" class="form-label">Vai trò:</label>
         <select name="role_id" id="role_id" class="form-select" required>
             @foreach ($roles as $role)

@@ -3,9 +3,11 @@ body {
 }
 
 #menu {
-  width: 80vw;
+  width: 100%;
 }
-
+main {
+  width: 100vw;
+}
 /* hiệu ứng xoay */
 .rotate-180 {
   transform: rotate(180deg);
@@ -13,7 +15,9 @@ body {
 }
 
 @media (min-width: 768px) {
-
+  main {
+    width: calc(100vw - 260px);
+  }
   /* Sidebar flex item */
   #menu {
     position: relative !important;
@@ -22,7 +26,6 @@ body {
     top: 0;
     left: 0;
     bottom: 0;
-    width: 320px;
     transition: ease .2s;
   }
 
@@ -98,47 +101,6 @@ nav {
   }
 }
 
-.table-scroll {
-  position: relative;
-  height: 70vh;
-  overflow: hidden;
-}
-
-.table-scroll table {
-  width: 100%;
-  margin-bottom: 0;
-}
-
-.table-scroll thead.table-light {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  background: rgba(255, 255, 255, 0.5) !important;
-  backdrop-filter: blur(14px);
-}
-
-.table-scroll tbody {
-  display: block;
-  height: 65vh;
-  overflow-y: auto;
-}
-
-.table-scroll thead,
-.table-scroll tbody tr {
-  display: table;
-  width: 100%;
-  table-layout: fixed;
-}
-
-/* là ... đấy,  */
-.table td {
-  word-break: break-word;
-  text-overflow: ellipsis;
-  overflow-x: auto;
-  max-width: 220px;
-  ;
-}
-
 .upload-btn {
   display: inline-block;
   background: transparent;
@@ -168,5 +130,46 @@ nav {
 
 input[type="file"] {
   display: none;
-  /* Ẩn input gốc */
+}
+.table>:not(caption)>*>*{
+  min-width: 80px;
+  word-break: break-word;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border: var(--bs-border-width) solid var(--bs-border-color);
+}
+.table>:not(caption)>*>*:first-child {
+  min-width: 40px;
+}
+.table>:not(caption)>*>*:last-child {
+  min-width: 180px;
+}
+.table-responsive {
+  min-height: 70vh !important;
+  padding: 1rem !important;
+}
+.table-responsive-sm{
+  min-height: 30vh !important;
+  padding: .5rem !important;
+}
+.table tbody {
+  max-height: 70vh;
+  overflow-y: scroll;
+}
+
+.th-lg{
+  min-width: 280px !important;
+  max-width: 320px !important;
+}
+.th-sm{
+  min-width: 40px !important;
+  max-width: 60px !important;
+}
+/* Sticky table header */
+table thead {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #fff;
 }

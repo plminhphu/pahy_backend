@@ -1,7 +1,7 @@
 
 <form id="formCreateCustomer" action="{{ route('customer.store') }}" method="POST">
     @csrf
-    <div class="mb-3">
+    <div class="mb-2">
         <label for="name" class="form-label">Tên khách hàng:</label>
         <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror"
             value="{{ old('name') }}" required>
@@ -9,7 +9,7 @@
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror
     </div>
-    <div class="mb-3">
+    <div class="mb-2">
         <label for="phone" class="form-label">Số điện thoại:</label>
         <input type="tel" name="phone" id="phone"
             class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone') }}" required>
@@ -17,7 +17,7 @@
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror
     </div>
-    <div class="mb-3">
+    <div class="mb-2">
         <label for="address" class="form-label">Địa chỉ:</label>
         <input type="text" name="address" id="address"
             class="form-control @error('address') is-invalid @enderror" value="{{ old('address') }}" required>
@@ -25,7 +25,7 @@
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror
     </div>
-    <div class="mb-3">
+    <div class="mb-2">
         <label for="region" class="form-label">Vùng:</label>
         <input type="text" name="region" id="region"
             class="form-control @error('region') is-invalid @enderror" value="{{ old('region') }}" required>

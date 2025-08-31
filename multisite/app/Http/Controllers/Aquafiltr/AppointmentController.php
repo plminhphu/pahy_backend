@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Aquafiltr;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Appointment;
-// use Picqer\Barcode\BarcodeGeneratorPNG;
-// use Illuminate\Support\Facades\Response;
-
+use Picqer\Barcode\BarcodeGeneratorPNG;
+use Illuminate\Support\Facades\Response;
 class AppointmentController extends Controller
 {
     public function __construct()
@@ -78,7 +77,7 @@ class AppointmentController extends Controller
 
         $last = Appointment::orderBy('id', 'desc')->first();
         $nextId = $last ? $last->id + 1 : 1;
-        $customerCode = 'KH' . str_pad($nextId, 4, '0', STR_PAD_LEFT);
+        $customerCode = 'AP' . str_pad($nextId, 8, '0', STR_PAD_LEFT);
 
         $appointment = Appointment::create([
             'code'   => $customerCode,
@@ -132,10 +131,19 @@ class AppointmentController extends Controller
     public function barcode($id)
     {
         $appointment = Appointment::find($id);
-
-        // $generator = new BarcodeGeneratorPNG();
-        // $barcode = $generator->getBarcode($appointment->code, $generator::TYPE_CODE_128);
-
-        // return Response::make($barcode, 200, ['Content-Type' => 'image/png']);
+        if ($appointment === null) {
+            return response()->json(['message' => 'Lịch hẹn không tồn tại'], 404);
+        }
+        $generator = new BarcodeGeneratorPNG();
+        $barcode = $generator->getBarcode(
+            strval($appointment->code), 
+            $generator::TYPE_CODE_128, // kiểu barcode
+            5, // độ rộng
+            60 // chiều cao
+        );
+        return Response::make($barcode, 200, [
+            'Content-Type' => 'image/png',
+        ]);
     }
+
 }

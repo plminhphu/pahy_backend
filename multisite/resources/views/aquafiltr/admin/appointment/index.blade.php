@@ -1,25 +1,17 @@
 @extends('layouts.app')
 @section('content')
-<div class="container">
-    <div class="my-3">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#appointmentCreateModal" id="btnCreateAppointment">
-            <i class="bi bi-calendar-plus"></i> Tạo lịch hẹn mới
-        </button>
-        <div class="input-group" style="max-width: 300px; float: right;">
-            <span class="input-group-text" id="searching-data"><i class="bi bi-search"></i></span>
-            <input type="text" class="form-control" placeholder="Tìm kiếm..." aria-label="Search" aria-describedby="searching-data" id="searchInput">
-        </div>
-    </div>
-    <div id="appointmentListData">
-        <div class="shimmer-loader" style="min-height:60vh;">
-            <div class="shimmer-line mb-2" style="width: 80%; height: 20px;"></div>
-            <div class="shimmer-line mb-2" style="width: 60%; height: 20px;"></div>
-            <div class="shimmer-line mb-2" style="width: 90%; height: 20px;"></div>
-        </div>
+<div class="m-3">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#appointmentCreateModal" id="btnCreateAppointment">
+        <i class="bi bi-calendar-plus"></i> Tạo lịch hẹn mới
+    </button>
+    <div class="input-group" style="max-width: 300px; float: right;">
+        <span class="input-group-text" id="searching-data"><i class="bi bi-search"></i></span>
+        <input type="text" class="form-control" placeholder="Tìm kiếm..." aria-label="Search" aria-describedby="searching-data" id="searchInput">
     </div>
 </div>
+<div id="appointmentListData" class="w-100"></div>
 <div class="modal fade" id="appointmentCreateModal" tabindex="-1" aria-labelledby="appointmentCreateModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="appointmentCreateModalLabel">Tạo lịch hẹn mới</h5>
@@ -36,7 +28,7 @@
     var page = 1;
     var keywords = '';
     $(function() {
-        $('#appointmentListData').html(shimmerloader);
+        $('#appointmentListData').html(shimmerloader());
         loadListData();
     });
     let debounceTimer;
@@ -72,7 +64,7 @@
     }
     // Tạo lịch hẹn
     $('#btnCreateAppointment').on('click', function() {
-        $('#appointmentCreateModalBody').html(shimmerloader);
+        $('#appointmentCreateModalBody').html(shimmerloader());
         $.get("{{ route('appointment.create') }}", function(data) {
             $('#appointmentCreateModalBody').html(data);
         }).fail(function(err) {

@@ -1,19 +1,19 @@
 <form id="formEditCustomer" action="{{ route('customer.update', $customer->id) }}" method="POST">
     @csrf
     @method('PUT')
-    <div class="mb-3">
+    <div class="mb-2">
         <label for="name" class="form-label">Tên khách hàng:</label>
         <input type="text" name="name" id="name" class="form-control" value="{{ $customer->name }}" required>
     </div>
-    <div class="mb-3">
+    <div class="mb-2">
         <label for="phone" class="form-label">Số điện thoại:</label>
         <input type="text" name="phone" id="phone" class="form-control" value="{{ $customer->phone }}" required>
     </div>
-    <div class="mb-3">
+    <div class="mb-2">
         <label for="address" class="form-label">Địa chỉ:</label>
         <input type="text" name="address" id="address" class="form-control" value="{{ $customer->address }}" required>
     </div>
-    <div class="mb-3">
+    <div class="mb-2">
         <label for="region" class="form-label">Vùng:</label>
         <input type="text" name="region" id="region" class="form-control" value="{{ $customer->region }}" required>
     </div>

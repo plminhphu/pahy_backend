@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 @php $user = auth()->user(); @endphp
-<div class="container py-5">
+<div class="container py-4">
   <div class="row">
     <div class="col-md-4">
       <div class="card shadow-sm mb-4">
@@ -39,8 +39,9 @@
     <div class="col-md-8">
       <div class="card shadow-sm mb-4">
         <div class="card-header fw-bold">Quyền truy cập của bạn</div>
-        <div class="card-body">
-          <table class="table table-bordered table-sm align-middle mb-0">
+        <div class="card-body p-0">
+          <div class="table-responsive table-responsive-sm">
+            <table class="table table-sm align-middle mb-0">
               <thead class="table-light">
                   <tr>
                       <th></th>
@@ -83,7 +84,8 @@
                   </tr>
                   @endforeach
               </tbody>
-          </table>
+            </table>
+          </div>
         </div>
       </div>
       <div class="card shadow-sm">

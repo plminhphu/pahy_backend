@@ -7,9 +7,9 @@
 <body>
 	<div class="d-flex flex-md-row">
 		@include('layouts.app.menubar')
-		<div class="w-100">
+		<div>
 			@include('layouts.app.navbar')
-			<main class="container">
+			<main>
 				@yield('content')
 			</main>
 		</div>

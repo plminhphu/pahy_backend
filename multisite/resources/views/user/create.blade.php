@@ -1,7 +1,7 @@
 
 <form id="formCreateUser" action="{{ route('user.store') }}" method="POST">
     @csrf
-    <div class="mb-3">
+    <div class="mb-2">
         <label for="name" class="form-label">Tên nhân viên:</label>
         <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror"
             value="{{ old('name') }}" required>
@@ -10,7 +10,7 @@
         @enderror
     </div>
 
-    <div class="mb-3">
+    <div class="mb-2">
         <label for="email" class="form-label">Tài khoản - Email:</label>
         <input type="email" name="email" id="email"
             class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" required>
@@ -19,7 +19,7 @@
         @enderror
     </div>
 
-    <div class="mb-3">
+    <div class="mb-2">
         <label for="password" class="form-label">Mật khẩu:</label>
         <input type="password" name="password" id="password"
             class="form-control @error('password') is-invalid @enderror" required>
@@ -28,7 +28,7 @@
         @enderror
     </div>
 
-    <div class="mb-3">
+    <div class="mb-2">
         <label for="role_id" class="form-label">Vai trò:</label>
         <select name="role_id" id="role_id" class="form-select" required>
             @foreach ($roles as $role)

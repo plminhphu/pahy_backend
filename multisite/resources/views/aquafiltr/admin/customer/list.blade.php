@@ -1,5 +1,5 @@
-<div class="table-scroll mb-4">
-    <table class="table table-bordered table-hover align-middle">
+<div class="table-responsive mb-4 w-100">
+    <table class="table table-hover align-middle">
         <thead class="table-light">
             <tr>
                 <th>Mã khách hàng</th>
@@ -55,7 +55,7 @@
 
         // Thêm customer
         $('#btnCreateCustomer').on('click', function() {
-            $('#customerCreateModalBody').html(shimmerloader);
+            $('#customerCreateModalBody').html(shimmerloader());
             $.get("{{ route('customer.create') }}", function(data) {
                 $('#customerCreateModalBody').html(data);
             }).fail(function(err) {
@@ -66,7 +66,7 @@
         });
         // Xem customer
         $('.btnShowCustomer').on('click', function() {
-            $('#customerShowModalBody').html(shimmerloader);
+            $('#customerShowModalBody').html(shimmerloader());
             var route = $(this).data('route');
             $.get(route, function(data) {
                 $('#customerShowModalBody').html(data);
@@ -79,7 +79,7 @@
         });
         // Sửa customer
         $('.btnEditCustomer').on('click', function() {
-            $('#customerEditModalBody').html(shimmerloader);
+            $('#customerEditModalBody').html(shimmerloader());
             var route = $(this).data('route');
             $.get(route, function(data) {
                 $('#customerEditModalBody').html(data);

@@ -1,26 +1,27 @@
 <form id="formEditAppointment" action="{{ route('appointment.update', $appointment->id) }}" method="POST">
     @csrf
     @method('PUT')
-    <div class="mb-3">
+    <div class="mb-2">
         <label for="customer_name" class="form-label">Tên khách hàng</label>
         <input type="text" name="customer_name" id="customer_name" class="form-control" value="{{ $appointment->customer_name }}" required>
     </div>
-    <div class="mb-3">
+    <div class="mb-2">
         <label for="phone" class="form-label">Số điện thoại</label>
         <input type="text" name="phone" id="phone" class="form-control" value="{{ $appointment->phone }}" required>
     </div>
-    <div class="mb-3">
+    <div class="mb-2">
         <label for="address" class="form-label">Địa chỉ</label>
         <input type="text" name="address" id="address" class="form-control" value="{{ $appointment->address }}" required>
     </div>
-    <div class="mb-3">
+    <div class="mb-2">
         <label for="product_type" class="form-label">Thiết bị</label>
         <input type="text" name="product_type" id="product_type" class="form-control" value="{{ $appointment->product_type }}" required>
     </div>
-    <div class="mb-3">
+    <div class="mb-2">
         <label for="appointment_date" class="form-label">Ngày giờ hẹn</label>
         <input type="datetime-local" name="appointment_date" id="appointment_date" class="form-control" value="{{ $appointment->appointment_date }}" required>
     </div>
+    <hr class="my-4">
     <div class="d-flex justify-content-end gap-2">
         <button type="submit" class="btn btn-primary" id="btnUpdateAppointment">Cập nhật</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>

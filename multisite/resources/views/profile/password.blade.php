@@ -7,7 +7,7 @@
           <h5 class="card-header text-center mb-0">Đổi mật khẩu</h5>
         <div class="card-body">
           <form id="changePasswordForm" autocomplete="off">
-            <div class="mb-3">
+            <div class="mb-2">
               <label for="current_password" class="form-label">Mật khẩu hiện tại</label>
               <div class="input-group">
                 <input type="password" class="form-control" id="current_password" name="current_password" required>
@@ -16,7 +16,7 @@
                 </button>
               </div>
             </div>
-            <div class="mb-3">
+            <div class="mb-2">
               <label for="new_password" class="form-label">Mật khẩu mới</label>
               <div class="input-group">
                 <input type="password" class="form-control" id="new_password" name="new_password" required>
@@ -25,7 +25,7 @@
                 </button>
               </div>
             </div>
-            <div class="mb-3">
+            <div class="mb-2">
               <label for="new_password_confirmation" class="form-label">Nhập lại mật khẩu mới</label>
               <div class="input-group">
                 <input type="password" class="form-control" id="new_password_confirmation" name="new_password_confirmation" required>

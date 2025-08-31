@@ -1,25 +1,77 @@
 <form id="formCreateAppointment" action="{{ route('appointment.store') }}" method="POST">
     @csrf
-    <div class="mb-3">
-        <label for="customer_name" class="form-label">Tên khách hàng</label>
-        <input type="text" name="customer_name" id="customer_name" class="form-control" required>
+    <div class="d-flex gap-3 flex-wrap">
+        <div class="flex-grow-1">
+            <p class="mb-2 fw-bold">Phần khách hàng</p>
+            <hr class="mt-1 mb-3">
+            <div class="mb-2">
+                <label for="customer_name" class="form-label">Tên khách hàng</label>
+                <input type="text" name="customer_name" id="customer_name" class="form-control" required>
+            </div>
+            <div class="mb-2">
+                <label for="phone" class="form-label">Số điện thoại</label>
+                <input type="text" name="phone" id="phone" class="form-control" required>
+            </div>
+            <div class="mb-2">
+                <label for="address" class="form-label">Địa chỉ</label>
+                <input type="text" name="address" id="address" class="form-control" required>
+            </div>
+            <div class="mb-2">
+                <label for="product_type" class="form-label">Thiết bị</label>
+                <input type="text" name="product_type" id="product_type" class="form-control" required>
+            </div>
+            <div class="mb-2">
+                <label for="appointment_date" class="form-label">Ngày giờ hẹn</label>
+                <input type="datetime-local" name="appointment_date" id="appointment_date" class="form-control" required>
+            </div>
+        </div>
+        <div class="flex-grow-1">
+            <div class="mb-2">
+                <label for="customer_name" class="form-label">Tên khách hàng</label>
+                <input type="text" name="customer_name" id="customer_name" class="form-control" required>
+            </div>
+            <div class="mb-2">
+                <label for="phone" class="form-label">Số điện thoại</label>
+                <input type="text" name="phone" id="phone" class="form-control" required>
+            </div>
+            <div class="mb-2">
+                <label for="address" class="form-label">Địa chỉ</label>
+                <input type="text" name="address" id="address" class="form-control" required>
+            </div>
+            <div class="mb-2">
+                <label for="product_type" class="form-label">Thiết bị</label>
+                <input type="text" name="product_type" id="product_type" class="form-control" required>
+            </div>
+            <div class="mb-2">
+                <label for="appointment_date" class="form-label">Ngày giờ hẹn</label>
+                <input type="datetime-local" name="appointment_date" id="appointment_date" class="form-control" required>
+            </div>
+        </div>
+        <div class="flex-grow-1">
+            <div class="mb-2">
+                <label for="customer_name" class="form-label">Tên khách hàng</label>
+                <input type="text" name="customer_name" id="customer_name" class="form-control" required>
+            </div>
+            <div class="mb-2">
+                <label for="phone" class="form-label">Số điện thoại</label>
+                <input type="text" name="phone" id="phone" class="form-control" required>
+            </div>
+            <div class="mb-2">
+                <label for="address" class="form-label">Địa chỉ</label>
+                <input type="text" name="address" id="address" class="form-control" required>
+            </div>
+            <div class="mb-2">
+                <label for="product_type" class="form-label">Thiết bị</label>
+                <input type="text" name="product_type" id="product_type" class="form-control" required>
+            </div>
+            <div class="mb-2">
+                <label for="appointment_date" class="form-label">Ngày giờ hẹn</label>
+                <input type="datetime-local" name="appointment_date" id="appointment_date" class="form-control" required>
+            </div>
+        </div>
+
     </div>
-    <div class="mb-3">
-        <label for="phone" class="form-label">Số điện thoại</label>
-        <input type="text" name="phone" id="phone" class="form-control" required>
-    </div>
-    <div class="mb-3">
-        <label for="address" class="form-label">Địa chỉ</label>
-        <input type="text" name="address" id="address" class="form-control" required>
-    </div>
-    <div class="mb-3">
-        <label for="product_type" class="form-label">Thiết bị</label>
-        <input type="text" name="product_type" id="product_type" class="form-control" required>
-    </div>
-    <div class="mb-3">
-        <label for="appointment_date" class="form-label">Ngày giờ hẹn</label>
-        <input type="datetime-local" name="appointment_date" id="appointment_date" class="form-control" required>
-    </div>
+    <hr class="my-4">
     <div class="d-flex justify-content-end gap-2">
         <button type="submit" class="btn btn-primary" id="btnSaveAppointment">Tạo lịch hẹn</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>

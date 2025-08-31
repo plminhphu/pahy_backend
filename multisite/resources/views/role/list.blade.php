@@ -1,7 +1,7 @@
 
 
-<div class="table-scroll mb-4">
-    <table class="table table-bordered table-hover align-middle">
+<div class="table-responsive mb-4 w-100">
+    <table class="table table-hover align-middle">
         <thead class="table-light">
             <tr>
                 <th>Mã quyền</th>
@@ -71,7 +71,7 @@
 
       // Thêm role
       $('#btnCreateRole').on('click', function() {
-          $('#roleCreateModalBody').html(shimmerloader);
+          $('#roleCreateModalBody').html(shimmerloader());
           $.get("{{ route('role.create') }}", function(data) {
               $('#roleCreateModalBody').html(data);
           }).fail(function(err) {
@@ -82,7 +82,7 @@
       });
       // Xem role
       $('.btnShowRole').on('click', function() {
-          $('#roleShowModalBody').html(shimmerloader);
+          $('#roleShowModalBody').html(shimmerloader());
           var route = $(this).data('route');
           $.get(route, function(data) {
               $('#roleShowModalBody').html(data);
@@ -95,7 +95,7 @@
       });
       // Sửa role
       $('.btnEditRole').on('click', function() {
-          $('#roleEditModalBody').html(shimmerloader);
+          $('#roleEditModalBody').html(shimmerloader());
           var route = $(this).data('route');
           $.get(route, function(data) {
               $('#roleEditModalBody').html(data);

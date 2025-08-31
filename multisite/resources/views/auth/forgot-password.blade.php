@@ -3,7 +3,7 @@
   <div class="mx-auto mt-5 p-4 bg-white rounded shadow-lg" style="max-width:360px">
     <h4 class="mb-3 text-center">Quên mật khẩu</h4>
     <form id="forgotForm" autocomplete="off">
-      <div class="mb-3">
+      <div class="mb-2">
         <label for="email" class="form-label">Email</label>
         <input type="email" class="form-control" id="email" name="email" required>
       </div>

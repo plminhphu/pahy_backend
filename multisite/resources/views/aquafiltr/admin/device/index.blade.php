@@ -1,69 +1,61 @@
 @extends('layouts.app')
 @section('content')
-    <div class="container">
-        <div class="my-3">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deviceCreateModal"
-                id="btnCreateDevice">
-                <i class="bi bi-person-plus"></i> Thêm thiết bị
-            </button>
-            <div class="input-group" style="max-width: 300px; float: right;">
-                <span class="input-group-text" id="searching-data"><i class="bi bi-search"></i></span>
-                <input type="text" class="form-control" placeholder="Tìm kiếm..." aria-label="Search"
-                    aria-describedby="searching-data" id="searchInput">
+<div class="m-3">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deviceCreateModal"
+        id="btnCreateDevice">
+        <i class="bi bi-person-plus"></i> Thêm thiết bị
+    </button>
+    <div class="input-group" style="max-width: 300px; float: right;">
+        <span class="input-group-text" id="searching-data"><i class="bi bi-search"></i></span>
+        <input type="text" class="form-control" placeholder="Tìm kiếm..." aria-label="Search"
+            aria-describedby="searching-data" id="searchInput">
+    </div>
+</div>
+<div id="deviceListData"></div>
+<div class="modal fade" id="deviceShowModal" tabindex="-1" aria-labelledby="deviceShowModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deviceShowModalLabel">Thông tin thiết bị</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-        </div>
-        <div id="deviceListData">
-            <div class="shimmer-loader" style="min-height:60vh;">
-                <div class="shimmer-line mb-2" style="width: 80%; height: 20px;"></div>
-                <div class="shimmer-line mb-2" style="width: 60%; height: 20px;"></div>
-                <div class="shimmer-line mb-2" style="width: 90%; height: 20px;"></div>
-            </div>
+            <div class="modal-body" id="deviceShowModalBody"></div>
         </div>
     </div>
-    <div class="modal fade" id="deviceShowModal" tabindex="-1" aria-labelledby="deviceShowModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deviceShowModalLabel">Thông tin thiết bị</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" id="deviceShowModalBody"></div>
+</div>
+<div class="modal fade" id="deviceCreateModal" tabindex="-1" aria-labelledby="deviceCreateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deviceCreateModalLabel">Thêm thiết bị</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <div class="modal-body" id="deviceCreateModalBody"></div>
         </div>
     </div>
-    <div class="modal fade" id="deviceCreateModal" tabindex="-1" aria-labelledby="deviceCreateModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deviceCreateModalLabel">Thêm thiết bị</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" id="deviceCreateModalBody"></div>
+</div>
+<div class="modal fade" id="deviceEditModal" tabindex="-1" aria-labelledby="deviceEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deviceEditModalLabel">Sửa thiết bị</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <div class="modal-body" id="deviceEditModalBody"></div>
         </div>
     </div>
-    <div class="modal fade" id="deviceEditModal" tabindex="-1" aria-labelledby="deviceEditModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deviceEditModalLabel">Sửa thiết bị</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" id="deviceEditModalBody"></div>
+</div>
+<div class="modal fade" id="deviceDeleteModal" tabindex="-1" aria-labelledby="deviceDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deviceDeleteModalLabel">Xóa thiết bị</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <div class="modal-body" id="deviceDeleteModalBody"></div>
         </div>
     </div>
-    <div class="modal fade" id="deviceDeleteModal" tabindex="-1" aria-labelledby="deviceDeleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deviceDeleteModalLabel">Xóa thiết bị</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" id="deviceDeleteModalBody"></div>
-            </div>
-        </div>
-    </div>
+</div>
 @endsection
 @push('scripts')
 <script>
@@ -71,7 +63,7 @@
     var keywords = '';
     $(function() {
         // Load danh sách device
-        $('#deviceListData').html(shimmerloader);
+        $('#deviceListData').html(shimmerloader());
         loadListData();
     });
     // khi nhấn tìm kiếm phải debaounce để tránh gọi hàm loadListData quá nhiều

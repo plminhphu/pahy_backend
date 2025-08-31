@@ -1,5 +1,5 @@
-<div class="table-scroll mb-4">
-    <table class="table table-bordered table-hover align-middle">
+<div class="table-responsive mb-4 w-100">
+    <table class="table table-hover align-middle">
         <thead class="table-light">
             <tr>
                 <th>Mã số</th>
@@ -53,7 +53,7 @@ $('#userListData').off('click', '.pagination a').on('click', '.pagination a', fu
 });
 // Thêm user
 $('#btnCreateUser').on('click', function() {
-    $('#userCreateModalBody').html(shimmerloader);
+    $('#userCreateModalBody').html(shimmerloader());
     $.get("{{ route('user.create') }}", function(data) {
         $('#userCreateModalBody').html(data);
     }).fail(function(err) {
@@ -64,7 +64,7 @@ $('#btnCreateUser').on('click', function() {
 });
 // Xem user
 $('.btnShowUser').on('click', function() {
-    $('#userShowModalBody').html(shimmerloader);
+    $('#userShowModalBody').html(shimmerloader());
     var route = $(this).data('route');
     $.get(route, function(data) {
         $('#userShowModalBody').html(data);
@@ -77,7 +77,7 @@ $('.btnShowUser').on('click', function() {
 });
 // Sửa user
 $('.btnEditUser').on('click', function() {
-    $('#userEditModalBody').html(shimmerloader);
+    $('#userEditModalBody').html(shimmerloader());
     var route = $(this).data('route');
     $.get(route, function(data) {
         $('#userEditModalBody').html(data);

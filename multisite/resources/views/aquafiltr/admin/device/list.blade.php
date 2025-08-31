@@ -1,5 +1,5 @@
-<div class="table-scroll mb-4">
-    <table class="table table-bordered table-hover align-middle">
+<div class="table-responsive mb-4 w-100">
+    <table class="table table-hover align-middle">
         <thead class="table-light">
             <tr>
                 <th>Mã thiết bị</th>
@@ -64,7 +64,7 @@ $(function() {
 
     // Thêm device
     $('#btnCreateDevice').on('click', function() {
-        $('#deviceCreateModalBody').html(shimmerloader);
+        $('#deviceCreateModalBody').html(shimmerloader());
         $.get("{{ route('device.create') }}", function(data) {
             $('#deviceCreateModalBody').html(data);
         }).fail(function(err) {
@@ -75,7 +75,7 @@ $(function() {
     });
     // Xem device
     $('.btnShowDevice').on('click', function() {
-        $('#deviceShowModalBody').html(shimmerloader);
+        $('#deviceShowModalBody').html(shimmerloader());
         var route = $(this).data('route');
         $.get(route, function(data) {
             $('#deviceShowModalBody').html(data);
@@ -88,7 +88,7 @@ $(function() {
     });
     // Sửa device
     $('.btnEditDevice').on('click', function() {
-        $('#deviceEditModalBody').html(shimmerloader);
+        $('#deviceEditModalBody').html(shimmerloader());
         var route = $(this).data('route');
         $.get(route, function(data) {
             $('#deviceEditModalBody').html(data);
