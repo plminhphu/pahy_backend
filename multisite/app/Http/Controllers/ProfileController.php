@@ -33,7 +33,7 @@ class ProfileController extends Controller
             if ($user->id && file_exists(public_path('images/' . basename($user->id)))) {
                 unlink(public_path('aquafiltr/images/' . basename($user->id)));
             }
-            User::where('id', $user->id)->update(['avatar'=>basename($filename),'updated_at'=>now()]);
+            User::where('id', $user->id)->update(['avatar'=>basename($filename)]);
             return response()->json(['message' => 'Đã tải ảnh đại diện thành công!', 'avatar' => asset('public/aquafiltr/images/' . basename($filename)).'?='.time()]);
         }
         return response()->json(['message' => 'Không có file hình được tải lên!'], 400);

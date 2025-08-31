@@ -63,62 +63,57 @@
             </div>
         </div>
     </div>
-    <script>
-        const shimmerloader = `
-    <div class="shimmer-loader">
-        <div class="shimmer-line mb-2" style="width: 80%; height: 20px;"></div>
-        <div class="shimmer-line mb-2" style="width: 60%; height: 20px;"></div>
-        <div class="shimmer-line mb-2" style="width: 90%; height: 20px;"></div>
-    </div>
-`;
-        var page = 1;
-        var keywords = '';
-        $(function() {
-            // Load danh sách role
-            $('#roleListData').html(shimmerloader);
-            loadListData();
-        });
-        // khi nhấn tìm kiếm phải debounce để tránh gọi hàm loadListData quá nhiều
-        let debounceTimer;
-        $('#searchInput').on('input', function() {
-            if ($('#searching-data').find('span').length) {
-                return;
-            } else {
-                $('#searching-data').html('<span class="spinner-border spinner-border-sm" role="status"></span>');
-            }
-            clearTimeout(debounceTimer);
-            var query = $(this).val();
-            debounceTimer = setTimeout(function() {
-                keywords = query;
-                page = 1;
-                loadListData();
-            }, 500);
-        });
-        function loadListData() {
-            setTimeout(() => {
-                $.ajax({
-                    url: "{{ route('role.index') }}",
-                    type: 'GET',
-                    data: { page: page, keywords: keywords },
-                    success: function(res, status, xhr) {
-                        $('#roleListData').html(res);
-                        $('#searching-data').html('<i class="bi bi-search"></i>');
-                    },
-                    error: function(xhr) {
-                        $('#roleListData').html('<p class="text-danger">Lỗi tải dữ liệu!</p>');
-                    }
-                });
-            }, 300);
-        }
-        // Thêm role
-        $('#btnCreateRole').on('click', function() {
-            $('#roleCreateModalBody').html(shimmerloader);
-            $.get("{{ route('role.create') }}", function(data) {
-                $('#roleCreateModalBody').html(data);
-            }).fail(function(err) {
-                let msg = err.responseJSON && err.responseJSON.message ? err.responseJSON.message : (err.message ?? 'Lỗi quyền truy cập!');
-                showBootstrapToast(msg, 'danger');
-            });
-        });
-    </script>
 @endsection
+@push('scripts')
+<script>
+  var page = 1;
+  var keywords = '';
+  $(function() {
+      // Load danh sách role
+      $('#roleListData').html(shimmerloader);
+      loadListData();
+  });
+  // khi nhấn tìm kiếm phải debounce để tránh gọi hàm loadListData quá nhiều
+  let debounceTimer;
+  $('#searchInput').on('input', function() {
+      if ($('#searching-data').find('span').length) {
+          return;
+      } else {
+          $('#searching-data').html('<span class="spinner-border spinner-border-sm" role="status"></span>');
+      }
+      clearTimeout(debounceTimer);
+      var query = $(this).val();
+      debounceTimer = setTimeout(function() {
+          keywords = query;
+          page = 1;
+          loadListData();
+      }, 500);
+  });
+  function loadListData() {
+      setTimeout(() => {
+          $.ajax({
+              url: "{{ route('role.index') }}",
+              type: 'GET',
+              data: { page: page, keywords: keywords },
+              success: function(res, status, xhr) {
+                  $('#roleListData').html(res);
+                  $('#searching-data').html('<i class="bi bi-search"></i>');
+              },
+              error: function(xhr) {
+                  $('#roleListData').html('<p class="text-danger">Lỗi tải dữ liệu!</p>');
+              }
+          });
+      }, 300);
+  }
+  // Thêm role
+  $('#btnCreateRole').on('click', function() {
+      $('#roleCreateModalBody').html(shimmerloader);
+      $.get("{{ route('role.create') }}", function(data) {
+          $('#roleCreateModalBody').html(data);
+      }).fail(function(err) {
+          let msg = err.responseJSON && err.responseJSON.message ? err.responseJSON.message : (err.message ?? 'Lỗi quyền truy cập!');
+          showBootstrapToast(msg, 'danger');
+      });
+  });
+</script>
+@endpush

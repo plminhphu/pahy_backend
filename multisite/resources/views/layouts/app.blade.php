@@ -9,12 +9,12 @@
 		@include('layouts.app.menubar')
 		<div class="w-100">
 			@include('layouts.app.navbar')
-			<main class="container-fluid">
+			<main class="container">
 				@yield('content')
 			</main>
 		</div>
 	</div>
-	@include('layouts.components.foot')
 </body>
+@include('layouts.components.foot')
 @stack('scripts')
 </html>

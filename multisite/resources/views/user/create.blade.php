@@ -47,7 +47,6 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
     </div>
 </form>
-
 <script>
 $(function() {
     $('#formCreateUser').on('submit', function(e) {

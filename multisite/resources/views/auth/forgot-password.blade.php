@@ -13,35 +13,37 @@
       </button>
     </form>
   </div>
-  <script>
-  $(function () {
-      $("#btnForgot").on("click", function () {
-        let email = $("#email").val().trim();
-        if (!email) {
-            return toastr.error("Vui lòng nhập email!");
-        }
-        $("#loading").show();
-        $("#btnForgot").attr("disabled", true);
-        $.ajax({
-            url: "{{ route('password.email') }}",
-            method: "POST",
-            data: {
-            _token: "{{ csrf_token() }}",
-            email
-            },
-            success: (res) => {
-                toastr.success(res.message || "Vui lòng kiểm tra email!");
-                $("#loading").hide();
-                $("#btnForgot").attr("disabled", false);
-                $("#email").val("");
-            },
-            error: (xhr) => {
-                $("#loading").hide();
-                $("#btnForgot").attr("disabled", false);
-                toastr.error(xhr.responseJSON?.message || "Lấy lại mật khẩu thất bại");
-        }
-        });
-      });
-  });
-  </script>
 @endsection
+@push('scripts')
+<script>
+$(function () {
+    $("#btnForgot").on("click", function () {
+      let email = $("#email").val().trim();
+      if (!email) {
+          return toastr.error("Vui lòng nhập email!");
+      }
+      $("#loading").show();
+      $("#btnForgot").attr("disabled", true);
+      $.ajax({
+          url: "{{ route('password.email') }}",
+          method: "POST",
+          data: {
+          _token: "{{ csrf_token() }}",
+          email
+          },
+          success: (res) => {
+              toastr.success(res.message || "Vui lòng kiểm tra email!");
+              $("#loading").hide();
+              $("#btnForgot").attr("disabled", false);
+              $("#email").val("");
+          },
+          error: (xhr) => {
+              $("#loading").hide();
+              $("#btnForgot").attr("disabled", false);
+              toastr.error(xhr.responseJSON?.message || "Lấy lại mật khẩu thất bại");
+      }
+      });
+    });
+});
+</script>
+@endpush

@@ -2,9 +2,9 @@
 @section('content')
     <div class="container">
         <div class="my-3">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userCreateModal"
-                id="btnCreateUser">
-                <i class="bi bi-person-plus"></i> Thêm nhân viên
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deviceCreateModal"
+                id="btnCreateDevice">
+                <i class="bi bi-person-plus"></i> Thêm thiết bị
             </button>
             <div class="input-group" style="max-width: 300px; float: right;">
                 <span class="input-group-text" id="searching-data"><i class="bi bi-search"></i></span>
@@ -12,7 +12,7 @@
                     aria-describedby="searching-data" id="searchInput">
             </div>
         </div>
-        <div id="userListData">
+        <div id="deviceListData">
             <div class="shimmer-loader" style="min-height:60vh;">
                 <div class="shimmer-line mb-2" style="width: 80%; height: 20px;"></div>
                 <div class="shimmer-line mb-2" style="width: 60%; height: 20px;"></div>
@@ -20,47 +20,47 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="userShowModal" tabindex="-1" aria-labelledby="userShowModalLabel" aria-hidden="true">
+    <div class="modal fade" id="deviceShowModal" tabindex="-1" aria-labelledby="deviceShowModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="userShowModalLabel">Thông tin nhân viên</h5>
+                    <h5 class="modal-title" id="deviceShowModalLabel">Thông tin thiết bị</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" id="userShowModalBody"></div>
+                <div class="modal-body" id="deviceShowModalBody"></div>
             </div>
         </div>
     </div>
-    <div class="modal fade" id="userCreateModal" tabindex="-1" aria-labelledby="userCreateModalLabel" aria-hidden="true">
+    <div class="modal fade" id="deviceCreateModal" tabindex="-1" aria-labelledby="deviceCreateModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="userCreateModalLabel">Thêm nhân viên</h5>
+                    <h5 class="modal-title" id="deviceCreateModalLabel">Thêm thiết bị</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" id="userCreateModalBody"></div>
+                <div class="modal-body" id="deviceCreateModalBody"></div>
             </div>
         </div>
     </div>
-    <div class="modal fade" id="userEditModal" tabindex="-1" aria-labelledby="userEditModalLabel" aria-hidden="true">
+    <div class="modal fade" id="deviceEditModal" tabindex="-1" aria-labelledby="deviceEditModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="userEditModalLabel">Sửa nhân viên</h5>
+                    <h5 class="modal-title" id="deviceEditModalLabel">Sửa thiết bị</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" id="userEditModalBody"></div>
+                <div class="modal-body" id="deviceEditModalBody"></div>
             </div>
         </div>
     </div>
-    <div class="modal fade" id="userDeleteModal" tabindex="-1" aria-labelledby="userDeleteModalLabel" aria-hidden="true">
+    <div class="modal fade" id="deviceDeleteModal" tabindex="-1" aria-labelledby="deviceDeleteModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="userDeleteModalLabel">Xóa nhân viên</h5>
+                    <h5 class="modal-title" id="deviceDeleteModalLabel">Xóa thiết bị</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" id="userDeleteModalBody"></div>
+                <div class="modal-body" id="deviceDeleteModalBody"></div>
             </div>
         </div>
     </div>
@@ -70,8 +70,8 @@
     var page = 1;
     var keywords = '';
     $(function() {
-        // Load danh sách user
-        $('#userListData').html(shimmerloader);
+        // Load danh sách device
+        $('#deviceListData').html(shimmerloader);
         loadListData();
     });
     // khi nhấn tìm kiếm phải debaounce để tránh gọi hàm loadListData quá nhiều
@@ -96,16 +96,16 @@
     function loadListData() {
         setTimeout(() => {
             $.ajax({
-                url: "{{ route('user.index') }}",
+                url: "{{ route('device.index') }}",
                 type: 'GET',
                 data: { page: page, keywords: keywords },
                 success: function(res, status, xhr) {
-                    $('#userListData').html(res);
+                    $('#deviceListData').html(res);
                     // Sau khi load xong thì chuyển lại icon tìm kiếm
                     $('#searching-data').html('<i class="bi bi-search"></i>');
                 },
                 error: function(xhr) {
-                    $('#userListData').html('<p class="text-danger">Lỗi tải dữ liệu!</p>');
+                    $('#deviceListData').html('<p class="text-danger">Lỗi tải dữ liệu!</p>');
                 }
             });
         }, 300);

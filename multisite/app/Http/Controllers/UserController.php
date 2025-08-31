@@ -67,6 +67,7 @@ class UserController extends Controller
         ]);
 
         $validated['password'] = bcrypt($validated['password']);
+        $validated['code'] = 'U' . str_pad(User::max('id') + 1, 5, '0', STR_PAD_LEFT);
         
         User::create($validated);
 

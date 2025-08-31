@@ -2,7 +2,6 @@
 namespace App\Http\Controllers\Aquafiltr;
 
 use App\Http\Controllers\Controller;
-use App\Models\Role;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 
@@ -55,12 +54,14 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'code' => 'required|string|max:50|unique:customers,code',
             'name'  => 'required|string|max:255',
             'phone' => 'required|string|max:20|unique:customers,phone',
             'address' => 'required|string|max:255',
             'region' => 'required|string|max:100',
         ]);
+
+        // Tạo code tự động bằng tiền tố "CM" và id sáu số +1
+        $validated['code'] = 'CM' . str_pad(Customer::max('id') + 1, 6, '0', STR_PAD_LEFT);
         
         Customer::create($validated);
 
@@ -82,7 +83,6 @@ class CustomerController extends Controller
     public function update(Request $request, Customer $customer)
     {
         $validated = $request->validate([
-            'code' => 'required|string|max:50|unique:customers,code',
             'name'  => 'required|string|max:255',
             'phone' => 'required|string|max:20|unique:customers,phone',
             'address' => 'required|string|max:255',

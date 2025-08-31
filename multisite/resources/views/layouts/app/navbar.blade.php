@@ -29,7 +29,7 @@
             </li>
             <li><hr class="dropdown-divider"></li>
             <li>
-                <a class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#modalLogout">
+                <a class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#modalLogout" style="cursor: pointer">
                     <i class="bi bi-box-arrow-right me-2"></i>
                     Đăng xuất
                 </a>

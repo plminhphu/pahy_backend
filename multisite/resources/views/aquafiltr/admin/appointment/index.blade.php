@@ -29,14 +29,10 @@
         </div>
     </div>
 </div>
+@endsection
+@push('scripts')
+
 <script>
-    const shimmerloader = `
-<div class="shimmer-loader">
-    <div class="shimmer-line mb-2" style="width: 80%; height: 20px;"></div>
-    <div class="shimmer-line mb-2" style="width: 60%; height: 20px;"></div>
-    <div class="shimmer-line mb-2" style="width: 90%; height: 20px;"></div>
-</div>
-`;
     var page = 1;
     var keywords = '';
     $(function() {
@@ -85,4 +81,4 @@
         });
     });
 </script>
-@endsection
+@endpush

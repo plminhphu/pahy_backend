@@ -16,75 +16,69 @@
                     </button>
                 </div>
             </div>
-            <div class="d-flex align-items-center justify-content-between mb-3">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="remember" name="remember">
-                    <label class="form-check-label" for="remember">Ghi nhớ đăng nhập</label>
-                </div>
-                <a href="{{ route('password.request') }}">Quên mật khẩu?</a>
-            </div>
-            <button type="button" id="btnLogin" class="btn btn-primary w-100 position-relative">
-                <span id="loading" class="spinner-border spinner-border-sm position-absolute start-0 ms-3" style="display:none"></span>
+            <button type="button" id="btnLogin" class="btn btn-primary w-100 position-relative mt-4">
                 Đăng nhập
             </button>
         </form>
     </div>
-    <script>
-    $(function () {
-        // Ẩn/hiện mật khẩu
-        $("#togglePassword").on("click", function () {
-            const passInput = $("#password");
-            const icon = $(this).find("i");
-            if (passInput.attr("type") === "password") {
-                passInput.attr("type", "text");
-                icon.removeClass("bi-eye").addClass("bi-eye-slash");
-            } else {
-                passInput.attr("type", "password");
-                icon.removeClass("bi-eye-slash").addClass("bi-eye");
-            }
-        });
+@endsection
+@push('scripts')
+<script>
+$(function () {
+    // Ẩn/hiện mật khẩu
+    $("#togglePassword").on("click", function () {
+        const passInput = $("#password");
+        const icon = $(this).find("i");
+        if (passInput.attr("type") === "password") {
+            passInput.attr("type", "text");
+            icon.removeClass("bi-eye").addClass("bi-eye-slash");
+        } else {
+            passInput.attr("type", "password");
+            icon.removeClass("bi-eye-slash").addClass("bi-eye");
+        }
+    });
 
-        // Kiểm tra các trường trước khi gửi
-        $("#btnLogin").on("click", function () {
-            let email = $("#email").val().trim();
-            let password = $("#password").val().trim();
-            let remember = $("#remember").is(":checked");
-            if (!email) {
-                showBootstrapToast("Vui lòng nhập email!", "danger");
-                $("#email").focus();
-                return;
+    // Kiểm tra các trường trước khi gửi
+    $("#btnLogin").on("click", function () {
+        let email = $("#email").val().trim();
+        let password = $("#password").val().trim();
+        let remember = $("#remember").is(":checked");
+        if (!email) {
+            showBootstrapToast("Vui lòng nhập email!", "danger");
+            $("#email").focus();
+            return;
+        }
+        // Kiểm tra định dạng email
+        const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+        if (!emailPattern.test(email)) {
+            showBootstrapToast("Email không hợp lệ!", "danger");
+            $("#email").focus();
+            return;
+        }
+        if (!password) {
+            showBootstrapToast("Vui lòng nhập mật khẩu!", "danger");
+            $("#password").focus();
+            return;
+        }
+        $("#btnLogin").attr("disabled", true);
+        $("#btnLogin").html('<span class="spinner-border spinner-border-sm" role="status"></span>');
+        $.ajax({
+            url: "{{ route('login') }}",
+            method: "POST",
+            data: {
+                _token: "{{ csrf_token() }}",
+                email,
+                password,
+                remember
+            },
+            success: () => window.location.href = "{{ route('dashboard') }}",
+            error: (xhr) => {
+                $("#btnLogin").attr("disabled", false);
+                $("#btnLogin").html('Đăng nhập');
+                showBootstrapToast(xhr.responseJSON?.message || "Đăng nhập thất bại", "danger");
             }
-            // Kiểm tra định dạng email
-            const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
-            if (!emailPattern.test(email)) {
-                showBootstrapToast("Email không hợp lệ!", "danger");
-                $("#email").focus();
-                return;
-            }
-            if (!password) {
-                showBootstrapToast("Vui lòng nhập mật khẩu!", "danger");
-                $("#password").focus();
-                return;
-            }
-            $("#loading").show();
-            $("#btnLogin").attr("disabled", true);
-            $.ajax({
-                url: "{{ route('login') }}",
-                method: "POST",
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    email,
-                    password,
-                    remember
-                },
-                success: () => window.location.href = "{{ route('dashboard') }}",
-                error: (xhr) => {
-                    $("#loading").hide();
-                    $("#btnLogin").attr("disabled", false);
-                    showBootstrapToast(xhr.responseJSON?.message || "Đăng nhập thất bại", "danger");
-                }
-            });
         });
     });
-    </script>
-@endsection
+});
+</script>
+@endpush

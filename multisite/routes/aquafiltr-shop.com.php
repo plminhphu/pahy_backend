@@ -27,7 +27,8 @@ Route::domain('aquafiltr-shop.com')->group(function () {
             // nhóm khách hàng
             Route::resource('customer', App\Http\Controllers\Aquafiltr\CustomerController::class);
             // nhóm thiết bị
-            Route::resource('device', App\Http\Controllers\Aquafiltr\AppointmentController::class);
+            Route::resource('device', App\Http\Controllers\Aquafiltr\DeviceController::class);
+            Route::put('device/upload/{id}', [App\Http\Controllers\Aquafiltr\DeviceController::class, 'upload'])->name('device.upload');
             // nhóm tài khoản
             Route::resource('user', App\Http\Controllers\UserController::class);
             // nhóm vai trò

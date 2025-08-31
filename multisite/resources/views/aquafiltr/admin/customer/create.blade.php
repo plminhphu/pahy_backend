@@ -2,14 +2,6 @@
 <form id="formCreateCustomer" action="{{ route('customer.store') }}" method="POST">
     @csrf
     <div class="mb-3">
-        <label for="code" class="form-label">Mã khách hàng:</label>
-        <input type="text" name="code" id="code" class="form-control @error('name') is-invalid @enderror"
-            value="{{ old('code') }}" required>
-        @error('code')
-            <div class="invalid-feedback">{{ $message }}</div>
-        @enderror
-    </div>
-    <div class="mb-3">
         <label for="name" class="form-label">Tên khách hàng:</label>
         <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror"
             value="{{ old('name') }}" required>

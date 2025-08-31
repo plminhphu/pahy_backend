@@ -11,6 +11,7 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasPermission;
     protected $fillable = [
+        'code',
         'name',
         'email',
         'avatar',

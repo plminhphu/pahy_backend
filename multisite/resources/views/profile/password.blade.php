@@ -44,7 +44,9 @@
     </div>
   </div>
 </div>
-  <script>
+@endsection
+@push('scripts')
+<script>
   $(function () {
     // Nút ẩn/hiện mật khẩu
     $(".toggle-password").on("click", function () {
@@ -98,5 +100,5 @@
       });
     });
   });
-  </script>
-@endsection
+</script>
+@endpush

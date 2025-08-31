@@ -1,7 +1,7 @@
 <?php
+namespace App\Http\Controllers\Aquafiltr;
 
-namespace App\Http\Controllers;
-
+use App\Http\Controllers\Controller;
 use App\Models\Device;
 use Illuminate\Http\Request;
 
@@ -32,39 +32,34 @@ class DeviceController extends Controller
             $page = $request->page ?? 1;
             $devices = Device::where(function($query) use ($keywords) {
                 if ($keywords) {
-                    $query->where('name', 'like', "%$keywords%")
-                          ->orWhere('serial_number', 'like', "%$keywords%")
-                          ->orWhere('model', 'like', "%$keywords%")
-                          ->orWhere('type', 'like', "%$keywords%")
-                          ->orWhere('location', 'like', "%$keywords%")
-                          ->orWhere('status', 'like', "%$keywords%")
-                          ;
+                    $query->where('code', 'like', "%$keywords%")
+                          ->orWhere('name', 'like', "%$keywords%")
+                          ->orWhere('model', 'like', "%$keywords%");
                 }
             })
             ->orderBy('created_at', 'desc')
             ->paginate(10, ['*'], 'page', $page);
-            return view('device.list', compact('devices'))->render();
+            return view('aquafiltr.admin.device.list', compact('devices'))->render();
         } else {
             $title = 'Danh sách thiết bị';
-            return view('device.index', compact('title'));
+            return view('aquafiltr.admin.device.index', compact('title'));
         }
     }
 
     public function create()
     {
-        return view('device.create');
+        return view('aquafiltr.admin.device.create');
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name'  => 'required|string|max:255',
-            'serial_number' => 'required|string|max:255|unique:devices',
-            'model' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
-            'location' => 'nullable|string|max:255',
-            'status' => 'nullable|string|max:255',
+            'name'  => 'required|string|max:250',
+            'model' => 'required|string|max:250',
         ]);
+
+        // Tạo code tự động bằng tiền tố "DV" và id bốn số +1
+        $validated['code'] = 'DV' . str_pad(Device::max('id') + 1, 5, '0', STR_PAD_LEFT);
 
         Device::create($validated);
 
@@ -73,23 +68,19 @@ class DeviceController extends Controller
 
     public function show(Device $device)
     {
-        return view('device.show', compact('device'));
+        return view('aquafiltr.admin.device.show', compact('device'));
     }
 
     public function edit(Device $device)
     {
-        return view('device.edit', compact('device'));
+        return view('aquafiltr.admin.device.edit', compact('device'));
     }
 
     public function update(Request $request, Device $device)
     {
         $validated = $request->validate([
-            'name'  => 'required|string|max:255',
-            'serial_number' => 'required|string|max:255|unique:devices,serial_number,' . $device->id,
-            'model' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
-            'location' => 'nullable|string|max:255',
-            'status' => 'nullable|string|max:255',
+            'name'  => 'required|string|max:250',
+            'model' => 'required|string|max:250',
         ]);
 
         $device->update($validated);
@@ -101,5 +92,28 @@ class DeviceController extends Controller
     {
         $device->delete();
         return response()->json(['message' => 'Thiết bị đã được xóa thành công'], 202);
+    }
+
+    public function upload(Request $request)
+    {
+        $deviceId = $request->route('id');
+        $device = Device::findOrFail($deviceId);
+
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = 'device_' . $device->id . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('aquafiltr/images'), $imageName);
+
+            // Cập nhật đường dẫn ảnh trong cơ sở dữ liệu
+            Device::where('id', $deviceId)->update(['image'=>basename($imageName)]);
+
+            return response()->json(['message' => 'Ảnh thiết bị đã được cập nhật thành công', 'image' => asset('public/aquafiltr/images/' . basename($imageName)).'?='.time()], 202);
+        }
+
+        return response()->json(['message' => 'Không có ảnh nào được tải lên'], 400);
     }
 }

@@ -8,15 +8,6 @@ class Device extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['customer_id','device_code','model','install_date','status'];
+    protected $fillable = ['code','name','model','image'];
 
-    public function customer()
-    {
-        return $this->belongsTo(Customer::class);
-    }
-
-    public function maintenanceReminders()
-    {
-        return $this->hasMany(MaintenanceReminder::class);
-    }
 }

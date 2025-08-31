@@ -11,13 +11,10 @@
           <div class="d-flex flex-column align-items-center p-3">
             @php
               $avatarPath = auth()->user()->avatar ?? null;
-              $avatarFile = file_exists(public_path('aquafiltr/images/' . basename($avatarPath))) ? asset('public/aquafiltr/images/' . basename($avatarPath)) : 'https://yevgenysim-turkey.github.io/dashbrd/assets/img/photos/photo-2.jpg';
+              $avatarFile = file_exists(public_path('aquafiltr/images/' . basename($avatarPath))) ? (asset('public/aquafiltr/images/' . basename($avatarPath)).'?ver='.auth()->user()->updated_at->timestamp) : asset('public/images/avatar.png');
             @endphp
-            <img id="avatar-preview" src="{{ $avatarFile }}" class="card-img-top mb-3" alt="Avatar" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%;">
-            <div class="input-group mb-3 w-100">
-              <input type="file" class="form-control" id="inputGroupFileAvatar" name="avatar" accept="image/*">
-              <label class="input-group-text" for="inputGroupFileAvatar">Đổi ảnh đại diện</label>
-            </div>
+            <img class="upload-btn upload-btn-lg" id="avatar-preview" src="{{ $avatarFile }}" alt="Avatar">
+            <input type="file" id="inputGroupFileAvatar" name="avatar" accept="image/*">
           </div>
         </form>
         <div class="card-body text-center">
@@ -102,42 +99,46 @@
 @push('scripts')
 <script>
 $(function() {
-    // Xem trước ảnh đại diện khi chọn tệp
-    $('#inputGroupFileAvatar').on('change', function() {
-        var input = this;
-        if (input.files && input.files[0]) {        
-            var reader = new FileReader();
-            reader.onload = function(e) {
-              $('#avatar-preview').attr('src', e.target.result);
-            }
-            reader.readAsDataURL(input.files[0]);
-            // Tự động gửi biểu mẫu khi chọn tệp
-            $('#avatar-upload-form').submit();
-        }
-    });
+  // nếu nhấn vào #avatar-preview thì kích hoạt input file
+  $('#avatar-preview').on('click', function() {
+      $('#inputGroupFileAvatar').click();
+  });
+  // Xem trước ảnh đại diện khi chọn tệp
+  $('#inputGroupFileAvatar').on('change', function() {
+      var input = this;
+      if (input.files && input.files[0]) {        
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            $('#avatar-preview').attr('src', e.target.result);
+          }
+          reader.readAsDataURL(input.files[0]);
+          // Tự động gửi biểu mẫu khi chọn tệp
+          $('#avatar-upload-form').submit();
+      }
+  });
 });
 // Xử lý gửi biểu mẫu tải lên ảnh đại diện
 $('#avatar-upload-form').on('submit', function(e) {
-    e.preventDefault();
-    var formData = new FormData(this);
-    $.ajax({
-        url: $(this).attr('action'),
-        type: 'POST',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(res, status, xhr) { 
-            if (xhr.status === 200) {
-              showBootstrapToast(res.message ?? 'Cập nhật ảnh đại diện thành công!', "success");
-              $('#avatar-preview').attr('src', res.avatar ?? $('#avatar-preview').attr('src'));
-            } else {
-              showBootstrapToast(res.message ?? "Vui lòng kiểm tra lại thông tin đã nhập", "danger");
-            }
-        },
-        error: function(err) {
-          showBootstrapToast(err.responseJSON.message ?? 'Lỗi quyền truy cập!','danger');
-        }
-    });
+  e.preventDefault();
+  var formData = new FormData(this);
+  $.ajax({
+      url: $(this).attr('action'),
+      type: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function(res, status, xhr) { 
+          if (xhr.status === 200) {
+            showBootstrapToast(res.message ?? 'Cập nhật ảnh đại diện thành công!', "success");
+            $('#avatar-preview').attr('src', res.avatar ?? $('#avatar-preview').attr('src'));
+          } else {
+            showBootstrapToast(res.message ?? "Vui lòng kiểm tra lại thông tin đã nhập", "danger");
+          }
+      },
+      error: function(err) {
+        showBootstrapToast(err.responseJSON.message ?? 'Lỗi quyền truy cập!','danger');
+      }
+  });
 });
 </script>  
 @endpush

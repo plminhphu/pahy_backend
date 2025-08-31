@@ -64,56 +64,51 @@
             </div>
         </div>
     </div>
-    <script>
-        const shimmerloader = `
-    <div class="shimmer-loader">
-        <div class="shimmer-line mb-2" style="width: 80%; height: 20px;"></div>
-        <div class="shimmer-line mb-2" style="width: 60%; height: 20px;"></div>
-        <div class="shimmer-line mb-2" style="width: 90%; height: 20px;"></div>
-    </div>
-`;
-        var page = 1;
-        var keywords = '';
-        $(function() {
-            // Load danh sách customer
-            $('#customerListData').html(shimmerloader);
-            loadListData();
-        });
-        // khi nhấn tìm kiếm phải debaounce để tránh gọi hàm loadListData quá nhiều
-        let debounceTimer;
-        $('#searchInput').on('input', function() {
-            // kiểm tra nó có đang xoay không
-            if ($('#searching-data').find('span').length) {
-                return; // Nếu đang xoay thì không làm gì cả
-            }else {
-                // chuyển icon #searching-data sang spinner
-                $('#searching-data').html('<span class="spinner-border spinner-border-sm" role="status"></span>');
-            }
-            clearTimeout(debounceTimer);
-            var query = $(this).val();
-            debounceTimer = setTimeout(function() {
-                keywords = query;
-                page = 1; // Reset về trang đầu tiên khi tìm kiếm
-                loadListData();
-            }, 500); // Chờ 500 sau khi người dùng ngừng gõ
-        });
-
-        function loadListData() {
-            setTimeout(() => {
-                $.ajax({
-                    url: "{{ route('customer.index') }}",
-                    type: 'GET',
-                    data: { page: page, keywords: keywords },
-                    success: function(res, status, xhr) {
-                        $('#customerListData').html(res);
-                        // Sau khi load xong thì chuyển lại icon tìm kiếm
-                        $('#searching-data').html('<i class="bi bi-search"></i>');
-                    },
-                    error: function(xhr) {
-                        $('#customerListData').html('<p class="text-danger">Lỗi tải dữ liệu!</p>');
-                    }
-                });
-            }, 300);
-        }
-    </script>
 @endsection
+@push('scripts')
+<script>
+    var page = 1;
+    var keywords = '';
+    $(function() {
+        // Load danh sách customer
+        $('#customerListData').html(shimmerloader);
+        loadListData();
+    });
+    // khi nhấn tìm kiếm phải debaounce để tránh gọi hàm loadListData quá nhiều
+    let debounceTimer;
+    $('#searchInput').on('input', function() {
+        // kiểm tra nó có đang xoay không
+        if ($('#searching-data').find('span').length) {
+            return; // Nếu đang xoay thì không làm gì cả
+        }else {
+            // chuyển icon #searching-data sang spinner
+            $('#searching-data').html('<span class="spinner-border spinner-border-sm" role="status"></span>');
+        }
+        clearTimeout(debounceTimer);
+        var query = $(this).val();
+        debounceTimer = setTimeout(function() {
+            keywords = query;
+            page = 1; // Reset về trang đầu tiên khi tìm kiếm
+            loadListData();
+        }, 500); // Chờ 500 sau khi người dùng ngừng gõ
+    });
+
+    function loadListData() {
+        setTimeout(() => {
+            $.ajax({
+                url: "{{ route('customer.index') }}",
+                type: 'GET',
+                data: { page: page, keywords: keywords },
+                success: function(res, status, xhr) {
+                    $('#customerListData').html(res);
+                    // Sau khi load xong thì chuyển lại icon tìm kiếm
+                    $('#searching-data').html('<i class="bi bi-search"></i>');
+                },
+                error: function(xhr) {
+                    $('#customerListData').html('<p class="text-danger">Lỗi tải dữ liệu!</p>');
+                }
+            });
+        }, 300);
+    }
+</script>
+@endpush

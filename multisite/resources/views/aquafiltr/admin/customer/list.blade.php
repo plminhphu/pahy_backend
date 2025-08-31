@@ -2,9 +2,8 @@
     <table class="table table-bordered table-hover align-middle">
         <thead class="table-light">
             <tr>
-                <th>#</th>
-                <th>Mã KH</th>
-                <th>Tên KH</th>
+                <th>Mã khách hàng</th>
+                <th>Họ tên</th>
                 <th>Số điện thoại</th>
                 <th>Địa chỉ</th>
                 <th>Vùng</th>
@@ -14,7 +13,6 @@
         <tbody>
             @forelse($customers as $index => $customer)
                 <tr>
-                    <td>{{ ($customers->currentPage() - 1) * $customers->perPage() + $index + 1 }}</td>
                     <td>{{ $customer->code }}</td>
                     <td>{{ $customer->name }}</td>
                     <td>{{ $customer->phone }}</td>

@@ -8,6 +8,7 @@
 <main class="flex-grow-1 p-4">
 @yield('content')
 </main>
-@include('layouts.components.foot')
 </body>
+@include('layouts.components.foot')
+@stack('scripts')
 </html>
