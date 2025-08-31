@@ -2,17 +2,19 @@
 <form id="formEditRole" action="{{ route('role.update', $role->id) }}" method="POST">
     @csrf
     @method('PUT')
-    <div class="mb-2">
-        <label for="name" class="form-label">Mã phân quyền:</label>
-        <input type="text" name="name" id="name" class="form-control" value="{{ $role->name }}" required>
+    <div class="row">
+      <div class="mb-2 col-md-6 col-12">
+          <label for="name" class="form-label">Mã phân quyền:</label>
+          <input type="text" name="name" id="name" class="form-control" value="{{ $role->name }}" required>
+      </div>
+      <div class="mb-2 col-md-6 col-12">
+          <label for="title" class="form-label">Tên phân quyền:</label>
+          <input type="text" name="title" id="title" class="form-control" value="{{ $role->title }}" required>
+      </div>
     </div>
-    <div class="mb-2">
-        <label for="title" class="form-label">Tên phân quyền:</label>
-        <input type="text" name="title" id="title" class="form-control" value="{{ $role->title }}" required>
-    </div>
-    <div class="my-4">
+    <div class="my-2">
         <label class="form-label">Cụ thể quyền:</label>
-        <div class="table-responsive">
+        <div class="table-responsive table-responsive-sm">
             <table class="table table-sm align-middle mb-0">
                 <thead class="table-light">
                     <tr>
