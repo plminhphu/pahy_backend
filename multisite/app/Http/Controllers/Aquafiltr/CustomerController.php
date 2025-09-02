@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Aquafiltr;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use Picqer\Barcode\BarcodeGeneratorPNG;
+use Illuminate\Support\Facades\Response;
 
 class CustomerController extends Controller
 {
@@ -100,4 +102,24 @@ class CustomerController extends Controller
         
         return response()->json(['message' => 'Khách hàng đã được xóa thành công'], 202);
     }
+
+    // In mã vạch (barcode)
+    public function barcode($id)
+    {
+        $appointment = Customer::find($id);
+        if ($appointment === null) {
+            return response()->json(['message' => 'Khách hàng không tồn tại'], 404);
+        }
+        $generator = new BarcodeGeneratorPNG();
+        $barcode = $generator->getBarcode(
+            strval($appointment->code), 
+            $generator::TYPE_CODE_128, // kiểu barcode
+            5, // độ rộng
+            60 // chiều cao
+        );
+        return Response::make($barcode, 200, [
+            'Content-Type' => 'image/png',
+        ]);
+    }
+
 }

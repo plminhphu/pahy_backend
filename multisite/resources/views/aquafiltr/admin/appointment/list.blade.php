@@ -2,7 +2,7 @@
     <table class="table table-hover align-middle">
         <thead class="table-light">
             <tr>
-                <th>#</th>
+                <th>Mã đơn</th>
                 <th>Tên KH</th>
                 <th>SĐT</th>
                 <th>Địa chỉ</th>
@@ -14,7 +14,9 @@
         <tbody>
             @forelse($appointments as $index => $appt)
                 <tr>
-                    <td>{{ ($appointments->currentPage() - 1) * $appointments->perPage() + $index + 1 }}</td>
+                    <td>
+                        <img src="{{ route('appointment.barcode', $appt->id) }}" class="img-fluid">
+                    </td>
                     <td>{{ $appt->customer_name }}</td>
                     <td>{{ $appt->phone }}</td>
                     <td>{{ $appt->address }}</td>
@@ -31,7 +33,6 @@
                             <i class="bi bi-trash"></i>
                         </button>
                         <a href="{{ route('appointment.invoice', $appt->id) }}" class="btn btn-sm btn-info"><i class="bi bi-file-earmark-pdf"></i></a>
-                        <a href="{{ route('appointment.barcode', $appt->id) }}" class="btn btn-sm btn-dark"><i class="bi bi-upc-scan"></i></a>
                     </td>
                 </tr>
             @empty

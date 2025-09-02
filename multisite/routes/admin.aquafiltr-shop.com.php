@@ -18,10 +18,11 @@ Route::domain('admin.aquafiltr-shop.com')->group(function () {
         });
         // nhóm lịch hẹn
         Route::resource('appointment', App\Http\Controllers\Aquafiltr\AppointmentController::class);
-        Route::get('appointment/{id}/invoice', [App\Http\Controllers\Aquafiltr\AppointmentController::class, 'invoice'])->name('appointment.invoice');
-        Route::get('appointment/{id}/barcode', [App\Http\Controllers\Aquafiltr\AppointmentController::class, 'barcode'])->name('appointment.barcode');
+        Route::get('appointment/invoice/{id}', [App\Http\Controllers\Aquafiltr\AppointmentController::class, 'invoice'])->name('appointment.invoice');
+        Route::get('appointment/barcode/{id}', [App\Http\Controllers\Aquafiltr\AppointmentController::class, 'barcode'])->name('appointment.barcode');
         // nhóm khách hàng
         Route::resource('customer', App\Http\Controllers\Aquafiltr\CustomerController::class);
+        Route::get('customer/barcode/{id}', [App\Http\Controllers\Aquafiltr\CustomerController::class, 'barcode'])->name('customer.barcode');
         // nhóm thiết bị
         Route::resource('device', App\Http\Controllers\Aquafiltr\DeviceController::class);
         Route::put('device/upload/{id}', [App\Http\Controllers\Aquafiltr\DeviceController::class, 'upload'])->name('device.upload');

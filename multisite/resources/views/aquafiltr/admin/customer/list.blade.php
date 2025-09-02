@@ -13,7 +13,9 @@
         <tbody>
             @forelse($customers as $index => $customer)
                 <tr>
-                    <td>{{ $customer->code }}</td>
+                    <td>
+                        <img src="{{ route('customer.barcode', $customer->id) }}" class="img-fluid">
+                    </td>
                     <td>{{ $customer->name }}</td>
                     <td>{{ $customer->phone }}</td>
                     <td>{{ $customer->address }}</td>
