@@ -5,7 +5,6 @@
     <title>Hóa đơn bán hàng</title>
     <style>
         body { font-family: DejaVu Sans, Arial, sans-serif; font-size: 15px; }
-        .invoice-box { max-width: 700px; margin: auto; padding: 30px; border: 1px solid #eee; background: #fff; }
         .title { font-size: 24px; font-weight: bold; text-align: center; margin-bottom: 20px; }
         .info-table td { padding: 4px 8px; }
         .table { width: 100%; border-collapse: collapse; margin-top: 20px; }
