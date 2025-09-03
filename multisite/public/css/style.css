@@ -50,11 +50,6 @@ nav {
   opacity: 1;
 }
 
-.input-group-text,
-.form-control {
-  border-color: var(--bs-gray);
-}
-
 .form-control:focus {
   border-color: var(--bs-gray);
   box-shadow: none;
@@ -169,4 +164,14 @@ table thead {
   top: 0;
   z-index: 2;
   background: #fff;
+}
+
+.select2-container{
+  z-index: 999 !important;
+  width: 100% !important;
+}
+
+.modal .select2-container{
+  z-index: 199999 !important;
+  width: 100% !important;
 }

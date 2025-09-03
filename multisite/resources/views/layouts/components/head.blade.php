@@ -16,5 +16,7 @@
 <link href="{{ asset('public/css/bootstrap.min.css') }}" rel="stylesheet">
 <link href="{{ asset('public/css/font-family.css') }}" rel="stylesheet">
 <link href="{{ asset('public/css/bootstrap-icons.css') }}" rel="stylesheet">
-<link href="{{ asset('public/css/style.css').'?ver='.env('APP_VER') }}" rel="stylesheet">
 <script src="{{ asset('public/js/jquery-3.7.1.min.js') }}"></script>
+<link href="{{ asset('public/css/select2.min.css') }}" rel="stylesheet">
+<script src="{{ asset('public/js/select2.min.js') }}"></script>
+<link href="{{ asset('public/css/style.css').'?ver='.env('APP_VER') }}" rel="stylesheet">

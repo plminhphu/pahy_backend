@@ -21,10 +21,15 @@ $menuItems = [
     'icon' => 'bi bi-calendar-day',
     'children' => [
       [
+        'label' => 'Đặt lịch hẹn',
+        'icon' => 'bi bi-calendar-plus',
+        'route' => route('appointment.create'),
+      ],
+      [
         'label' => 'DS lịch hẹn',
         'icon' => 'bi bi-calendar-date',
         'route' => route('appointment.index'),
-      ],
+      ]
     ],
   ],
   [

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Aquafiltr;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Appointment;
+use App\Models\Customer;
 use Picqer\Barcode\BarcodeGeneratorPNG;
 use Illuminate\Support\Facades\Response;
 class AppointmentController extends Controller
@@ -37,31 +38,30 @@ class AppointmentController extends Controller
     // Hiển thị danh sách lịch hẹn
     public function index()
     {
-        $title = 'Quản lý lịch hẹn';
-        $keywords = request('keywords', '');
-        $page = request('page', 1);
-        $appointments = Appointment::where(function ($query) use ($keywords) {
-            if ($keywords) {
-                $query->where('customer_name', 'like', "%$keywords%")
-                    ->orWhere('phone', 'like', "%$keywords%")
-                    ->orWhere('address', 'like', "%$keywords%")
-                    ->orWhere('product_type', 'like', "%$keywords%");
-            }
-        })
-            ->orderBy('created_at', 'desc')
-            ->paginate(10, ['*'], 'page', $page);
         if (request()->ajax() || request()->page) {
+        $keywords = request('keywords', '');
+            $page = request('page', 1);
+            $appointments = Appointment::where(function ($query) use ($keywords) {
+                if ($keywords) {
+                    $query->where('customer_name', 'like', "%$keywords%")
+                        ->orWhere('phone', 'like', "%$keywords%")
+                        ->orWhere('address', 'like', "%$keywords%")
+                        ->orWhere('product_type', 'like', "%$keywords%");
+                }
+            })->orderBy('created_at', 'desc')->paginate(10, ['*'], 'page', $page);
             return view('aquafiltr.admin.appointment.list', compact('appointments'))->render();
         } else {
-            return view('aquafiltr.admin.appointment.index', compact('title'));
+            $customers = Customer::all();
+            $title = 'Quản lý lịch hẹn';
+            return view('aquafiltr.admin.appointment.index', compact('title','customers'));
         }
     }
 
     // Form tạo mới
     public function create()
     {
-        $title = 'Tạo lịch hẹn mới';
-        return view('aquafiltr.admin.appointment.create', ['title' => $title]);
+        $customers = Customer::all();
+        return view('aquafiltr.admin.appointment.create', ['customers' => $customers]);
     }
 
     // Lưu lịch hẹn mới

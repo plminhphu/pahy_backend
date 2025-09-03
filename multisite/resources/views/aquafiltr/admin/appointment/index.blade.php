@@ -1,9 +1,11 @@
 @extends('layouts.app')
 @section('content')
 <div class="m-3">
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#appointmentCreateModal" id="btnCreateAppointment">
-        <i class="bi bi-calendar-plus"></i> Tạo lịch hẹn mới
-    </button>
+    <select class="form-control" id="sort_customer_id" name="sort_customer_id" data-placeholder="Vui lòng chọn khách hàng">
+        @foreach ($customers as $customer)
+            <option value="{{ $customer->id }}">{{ $customer->code }} - {{ $customer->name }}</option>
+        @endforeach
+    </select>
     <div class="input-group" style="max-width: 300px; float: right;">
         <span class="input-group-text" id="searching-data"><i class="bi bi-search"></i></span>
         <input type="text" class="form-control" placeholder="Tìm kiếm..." aria-label="Search" aria-describedby="searching-data" id="searchInput">
@@ -14,7 +16,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="appointmentCreateModalLabel">Tạo lịch hẹn mới</h5>
+                <h5 class="modal-title" id="appointmentCreateModalLabel">Đặt lịch hẹn</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="appointmentCreateModalBody"></div>
@@ -30,6 +32,10 @@
     $(function() {
         $('#appointmentListData').html(shimmerloader());
         loadListData();
+    });
+    $("#sort_customer_id").select2({
+        placeholder: 'Hãy chọn khách hàng',
+        allowClear: true,
     });
     let debounceTimer;
     $('#searchInput').on('input', function() {
