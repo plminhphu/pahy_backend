@@ -50,6 +50,9 @@ class CustomerController extends Controller
 
     public function create()
     {
+        if (!request()->ajax()) {
+            abort(403, 'Chỉ chấp nhận yêu cầu AJAX');
+        }
         return view('aquafiltr.admin.customer.create');
     }
 
@@ -72,12 +75,27 @@ class CustomerController extends Controller
 
     public function show(Customer $customer)
     {
+        if (!request()->ajax()) {
+            abort(403, 'Chỉ chấp nhận yêu cầu AJAX');
+        }
         $customer=Customer::where('customers.id', $customer->id)->first();
         return view('aquafiltr.admin.customer.show', compact('customer'));
     }
 
+    public function info($id)
+    {
+        $customer=Customer::select(['id','name','code','phone','address','region'])->where('customers.id', $id)->first();
+        if (!$customer) {
+            return response()->json(['message' => 'Khách hàng không tồn tại'], 404);
+        }
+        return response()->json($customer, 200);
+    }
+
     public function edit(Customer $customer)
     {
+        if (!request()->ajax()) {
+            abort(403, 'Chỉ chấp nhận yêu cầu AJAX');
+        }
         $customer=Customer::where('customers.id', $customer->id)->first();
         return view('aquafiltr.admin.customer.edit', compact('customer'));
     }

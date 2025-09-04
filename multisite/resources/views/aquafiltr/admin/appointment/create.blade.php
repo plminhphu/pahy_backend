@@ -11,24 +11,27 @@
                 </div>
                 <div class="card-body">
                     <div class="mb-2">
-                        <label for="customer_id" class="form-label">Chọn một khách hàng:</label>
-                        <select class="form-control" id="customer_id" name="customer_id" data-placeholder="Vui lòng chọn khách hàng">
+                        <label for="select_customer_id" class="form-label">Chọn một khách hàng:</label>
+                        <select class="form-control" id="select_customer_id" data-placeholder="Vui lòng chọn khách hàng">
+                            <option disabled selected>Chọn từ {{ $customers->count() }} khách hàng</option>
                             @foreach ($customers as $customer)
-                                <option value="{{ $customer->id }}">{{ $customer->code }} - {{ $customer->name }}</option>
+                                <option value="{{ route('customer.info',$customer->id) }}">{{ $customer->code }} - {{ $customer->name }}</option>
                             @endforeach
                         </select>
+                        <input hidden name="customer_id" id="customer_id">
+                        <input hidden name="customer_region" id="customer_region">
                     </div>
                     <div class="mb-2">
                         <label for="customer_name" class="form-label">Tên khách hàng:</label>
                         <input type="text" name="customer_name" id="customer_name" class="form-control" required>
                     </div>
                     <div class="mb-2">
-                        <label for="phone" class="form-label">Số điện thoại:</label>
-                        <input type="text" name="phone" id="phone" class="form-control" required>
+                        <label for="customer_phone" class="form-label">Số điện thoại:</label>
+                        <input type="text" name="customer_phone" id="customer_phone" class="form-control" required>
                     </div>
                     <div class="mb-2">
-                        <label for="address" class="form-label">Địa chỉ:</label>
-                        <input type="text" name="address" id="address" class="form-control" required>
+                        <label for="customer_address" class="form-label">Địa chỉ:</label>
+                        <input type="text" name="customer_address" id="customer_address" class="form-control" required>
                     </div>
                 </div>
             </div>
@@ -37,34 +40,59 @@
             <div class="card shadow-sm">
                 <div class="card-header">
                     <h6 class="card-title mb-0">Phần thiết bị</h6>
-                    <p class="mb-0 text-muted fw-lighter fs-sm">hãy chọn một thiết bị để đặt lịch</p>
+                    <p class="mb-0 text-muted fw-lighter fs-sm">Chọn một thiết bị để đặt lịch, và thêm Imei hoặc mã máy để ghi chú</p>
                 </div>
                 <div class="card-body">
                     <div class="mb-2">
-                        <label for="device_id" class="form-label">Chọn các thiết bị:</label>
-                        <select class="form-control" id="device_id" name="device_id" data-placeholder="Vui lòng chọn thiết bị">
-                            @foreach ($customers as $customer)
-                                <option value="{{ $customer->id }}">{{ $customer->code }} - {{ $customer->name }}</option>
+                        <label for="select_device_id" class="form-label">Chọn các thiết bị:</label>
+                        <select class="form-control" id="select_device_id" data-placeholder="Vui lòng chọn thiết bị">
+                            <option disabled selected>Chọn từ {{ $devices->count() }} thiết bị</option>
+                            @foreach ($devices as $device)
+                                <option value="{{ route('device.info',$device->id) }}">{{ $device->code }} - {{ $device->name }}</option>
                             @endforeach
+                        </select>
+                        <input hidden name="device_id" id="device_id">
+                    </div>
+                    <div class="mb-2">
+                        <label for="device_code_and_name" class="form-label">Thiết bị:</label>
+                        <input type="text" id="device_code_and_name" class="form-control" disabled>
+                        <input hidden name="device_code" id="device_code">
+                        <input hidden name="device_name" id="device_name">
+                        <input hidden name="device_model" id="device_model">
+                    </div>
+                    <div class="mb-2">
+                        <label for="device_model_show" class="form-label">Model:</label>
+                        <input type="text" name="device_model_show" id="device_model_show" class="form-control" disabled>
+                    </div>
+                    <div class="mb-2">
+                        <label for="device_imei" class="form-label">Imei hoặc mã máy:</label>
+                        <input type="text" name="device_imei" id="device_imei" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h6 class="card-title mb-0">Phần lịch hẹn</h6>
+                    <p class="mb-0 text-muted fw-lighter fs-sm">Thiết lập thời gian và chu kì, hệ thống sẽ căn cứ vào ngày để nhắc nhở</p>
+                </div>
+                <div class="card-body">
+                    <div class="mb-2">
+                        <label for="appointment_date" class="form-label">Ngày giờ hẹn:</label>
+                        <input type="datetime-local" name="appointment_date" id="appointment_date" class="form-control" required value="{{ date('Y-m-d\TH:i', strtotime('+1 day')) }}">
+                    </div>
+                    <div class="mb-2">
+                        <label for="reminder_cycle" class="form-label">Nhắc nhở bảo dưỡng:</label>
+                        <select name="reminder_cycle" id="reminder_cycle" class="form-control">
+                            <option value="3" selected>Định kỳ 3 tháng</option>
+                            <option value="6">Định kỳ 6 tháng</option>
+                            <option value="12">Định kỳ 1 năm</option>
                         </select>
                     </div>
                     <div class="mb-2">
-                        <label for="customer_name" class="form-label">Imei hoặc mã máy:</label>
-                        <input type="text" name="customer_name" id="customer_name" class="form-control" required>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-md-4">
-            <div class="card shadow-sm">
-                <div class="card-header">
-                    <h6 class="card-title mb-0">Phần thiết bị</h6>
-                    <p class="mb-0 text-muted fw-lighter fs-sm">hãy chọn một thiết bị để đặt lịch</p>
-                </div>
-                <div class="card-body">
-                    <div class="mb-2">
-                        <label for="appointment_date" class="form-label">Ngày giờ hẹn</label>
-                        <input type="datetime-local" name="appointment_date" id="appointment_date" class="form-control" required>
+                        <label for="note" class="form-label">Ghi chú:</label>
+                        <textarea name="note" id="note" class="form-control" rows="4"></textarea>
                     </div>
                 </div>
             </div>
@@ -80,14 +108,80 @@
 @push('scripts')
 <script>
 $(function() {
-    $("#formCreateAppointment #customer_id").select2({
+    $("#formCreateAppointment #select_customer_id").select2({
         placeholder: 'Hãy chọn khách hàng',
         allowClear: true,
     });
-    $("#formCreateAppointment #device_id").select2({
+    // khi "#formCreateAppointment #customer_id " thay đổi thì điền thông tin khách hàng vào các trường tương ứng
+    $('#formCreateAppointment #select_customer_id').on('change', function() {
+        var routeCustomer = $(this).val();
+        if (routeCustomer) {
+            $.ajax({
+                url: routeCustomer,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    $('#formCreateAppointment #customer_id').val(data.id);
+                    $('#formCreateAppointment #customer_name').val(data.name);
+                    $('#formCreateAppointment #customer_phone').val(data.phone);
+                    $('#formCreateAppointment #customer_address').val(data.address);
+                    $('#formCreateAppointment #customer_region').val(data.region);
+                },
+                error: function() {
+                    $('#formCreateAppointment #customer_id').val('');
+                    $('#formCreateAppointment #customer_name').val('');
+                    $('#formCreateAppointment #customer_phone').val('');
+                    $('#formCreateAppointment #customer_address').val('');
+                    $('#formCreateAppointment #customer_region').val('');
+                }
+            });
+        } else {
+            $('#formCreateAppointment #customer_id').val('');
+            $('#formCreateAppointment #customer_name').val('');
+            $('#formCreateAppointment #customer_phone').val('');
+            $('#formCreateAppointment #customer_address').val('');
+            $('#formCreateAppointment #customer_region').val('');
+        }
+    });
+    $("#formCreateAppointment #select_device_id").select2({
         placeholder: 'Hãy chọn thiết bị',
         allowClear: true,
     });
+    // khi "#formCreateAppointment #device_id " thay đổi thì điền thông tin thiết bị vào các trường tương ứng
+    $('#formCreateAppointment #select_device_id').on('change', function() {
+        var routeDevice = $(this).val();
+        if (routeDevice) {
+            $.ajax({
+                url: routeDevice,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    $('#formCreateAppointment #device_id').val(data.id);
+                    $('#formCreateAppointment #device_code_and_name').val(data.code + ' - ' + data.name);
+                    $('#formCreateAppointment #device_code').val(data.code);
+                    $('#formCreateAppointment #device_name').val(data.name);
+                    $('#formCreateAppointment #device_model').val(data.model);
+                    $('#formCreateAppointment #device_model_show').val(data.model);
+                },
+                error: function() {
+                    $('#formCreateAppointment #device_id').val('');
+                    $('#formCreateAppointment #device_code_and_name').val('');
+                    $('#formCreateAppointment #device_code').val('');
+                    $('#formCreateAppointment #device_name').val('');
+                    $('#formCreateAppointment #device_model').val('');
+                    $('#formCreateAppointment #device_model_show').val('');
+                }
+            });
+        } else {
+            $('#formCreateAppointment #device_id').val('');
+            $('#formCreateAppointment #device_code_and_name').val('');
+            $('#formCreateAppointment #device_code').val('');
+            $('#formCreateAppointment #device_name').val('');
+            $('#formCreateAppointment #device_model').val('');
+            $('#formCreateAppointment #device_model_show').val('');
+        }
+    });
+    // xử lý submit form
     $('#formCreateAppointment').on('submit', function(e) {
         e.preventDefault();
         var $btn = $('#btnSaveAppointment');

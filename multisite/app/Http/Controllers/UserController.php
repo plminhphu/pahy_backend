@@ -53,6 +53,9 @@ class UserController extends Controller
 
     public function create()
     {
+        if (!request()->ajax()) {
+            abort(403, 'Chỉ chấp nhận yêu cầu AJAX');
+        }
         $roles = Role::all();
         return view('user.create', compact('roles'));
     }
@@ -76,12 +79,18 @@ class UserController extends Controller
 
     public function show(User $user)
     {
+        if (!request()->ajax()) {
+            abort(403, 'Chỉ chấp nhận yêu cầu AJAX');
+        }
         $user=User::select('users.*', 'roles.name as role_name')->leftJoin('roles', 'users.role_id', '=', 'roles.id')->where('users.id', $user->id)->first();
         return view('user.show', compact('user'));
     }
 
     public function edit(User $user)
     {
+        if (!request()->ajax()) {
+            abort(403, 'Chỉ chấp nhận yêu cầu AJAX');
+        }
         $roles = Role::all();
         return view('user.edit', compact('user', 'roles'));
     }

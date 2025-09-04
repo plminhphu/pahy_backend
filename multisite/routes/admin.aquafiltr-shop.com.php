@@ -23,9 +23,11 @@ Route::domain('admin.aquafiltr-shop.com')->group(function () {
         // nhóm khách hàng
         Route::resource('customer', App\Http\Controllers\Aquafiltr\CustomerController::class);
         Route::get('customer/barcode/{id}', [App\Http\Controllers\Aquafiltr\CustomerController::class, 'barcode'])->name('customer.barcode');
+        Route::get('customer/info/{id}', [App\Http\Controllers\Aquafiltr\CustomerController::class, 'info'])->name('customer.info');
         // nhóm thiết bị
         Route::resource('device', App\Http\Controllers\Aquafiltr\DeviceController::class);
         Route::put('device/upload/{id}', [App\Http\Controllers\Aquafiltr\DeviceController::class, 'upload'])->name('device.upload');
+        Route::get('device/info/{id}', [App\Http\Controllers\Aquafiltr\DeviceController::class, 'info'])->name('device.info');
         // nhóm tài khoản
         Route::resource('user', App\Http\Controllers\UserController::class);
         // nhóm vai trò

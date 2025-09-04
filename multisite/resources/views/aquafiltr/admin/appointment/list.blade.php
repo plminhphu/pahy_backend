@@ -2,12 +2,13 @@
     <table class="table table-hover align-middle">
         <thead class="table-light">
             <tr>
-                <th>Mã đơn</th>
-                <th>Tên KH</th>
-                <th>SĐT</th>
-                <th>Địa chỉ</th>
+                <th>Mã lịch hẹn</th>
+                <th>Khách hàng</th>
+                <th>Số điện thoại</th>
                 <th>Thiết bị</th>
+                <th>Imei</th>
                 <th>Ngày hẹn</th>
+                <th>Chu kì</th>
                 <th class="text-center">Hành động</th>
             </tr>
         </thead>
@@ -18,10 +19,11 @@
                         <img src="{{ route('appointment.barcode', $appt->id) }}" class="img-fluid">
                     </td>
                     <td>{{ $appt->customer_name }}</td>
-                    <td>{{ $appt->phone }}</td>
-                    <td>{{ $appt->address }}</td>
-                    <td>{{ $appt->product_type }}</td>
+                    <td>{{ preg_replace('/(\+84|0)(\d{3})(\d{3})(\d{3})/', '+84.$2.$3.$4', $appt->customer_phone) }}</td>
+                    <td>{{ $appt->device_name }} - {{ $appt->device_model }}</td>
+                    <td>{{ $appt->device_imei }}</td>
                     <td>{{ $appt->appointment_date }}</td>
+                    <td>{{ $appt->cycle }} tháng</td>
                     <td class="text-center">
                         <button type="button" class="btn btn-sm btn-success btnShowAppointment" data-route="{{ route('appointment.show', $appt->id) }}">
                             <i class="bi bi-eye"></i>

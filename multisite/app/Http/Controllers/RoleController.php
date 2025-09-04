@@ -56,6 +56,9 @@ class RoleController extends Controller
      */
     public function create()
     {
+        if (!request()->ajax()) {
+            abort(403, 'Chỉ chấp nhận yêu cầu AJAX');
+        }
         return view('role.create');
     }
 
@@ -82,6 +85,9 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
+        if (!request()->ajax()) {
+            abort(403, 'Chỉ chấp nhận yêu cầu AJAX');
+        }
         $role->load('permissions');
         return view('role.show', compact('role'));
     }
@@ -91,6 +97,9 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
+        if (!request()->ajax()) {
+            abort(403, 'Chỉ chấp nhận yêu cầu AJAX');
+        }
         $role = Role::with('permissions')->find($role->id);
         $permissions = DB::table('permissions')->select('name', 'title')->distinct('name')->get();
         return view('role.edit', compact('role', 'permissions'));
@@ -106,10 +115,7 @@ class RoleController extends Controller
             'title' => 'required|string|max:255',
         ]);
 
-        $role->update([
-            'name' => $request->name,
-            'title' => $request->title,
-        ]);
+        $role->update($data);
         $permissions = DB::table('permissions')->select('name', 'title')->distinct('name')->get();
         foreach ($permissions as $permission) {
             $isset = Permission::where('role_id', $role->id)->where('name', $permission->name)->first()??false;

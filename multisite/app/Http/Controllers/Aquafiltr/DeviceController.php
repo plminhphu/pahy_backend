@@ -48,6 +48,9 @@ class DeviceController extends Controller
 
     public function create()
     {
+        if (!request()->ajax()) {
+            abort(403, 'Chỉ chấp nhận yêu cầu AJAX');
+        }
         return view('aquafiltr.admin.device.create');
     }
 
@@ -68,11 +71,26 @@ class DeviceController extends Controller
 
     public function show(Device $device)
     {
+        if (!request()->ajax()) {
+            abort(403, 'Chỉ chấp nhận yêu cầu AJAX');
+        }
         return view('aquafiltr.admin.device.show', compact('device'));
+    }
+
+    public function info($id)
+    {
+        $device=Device::select(['id','name','code','model'])->where('devices.id', $id)->first();
+        if (!$device) {
+            return response()->json(['message' => 'Thiết bị không tồn tại'], 404);
+        }
+        return response()->json($device, 200);
     }
 
     public function edit(Device $device)
     {
+        if (!request()->ajax()) {
+            abort(403, 'Chỉ chấp nhận yêu cầu AJAX');
+        }
         return view('aquafiltr.admin.device.edit', compact('device'));
     }
 
