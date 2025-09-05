@@ -11,4 +11,9 @@ class HomeController extends Controller
         $title = 'Trang chủ'; $auth = 'Tuấn NA';
         return view('coming-soon', ['title' => $title, 'auth' => $auth]);
     }
+
+    public function scan()
+    {
+        return view('aquafiltr.home.scan');
+    }
 }
