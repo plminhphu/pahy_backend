@@ -25,14 +25,25 @@
     </div>
 </div>
 <div id="appointmentListData" class="w-100"></div>
-<div class="modal fade" id="appointmentCreateModal" tabindex="-1" aria-labelledby="appointmentCreateModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal fade" id="appointmentShowModal" tabindex="-1" aria-labelledby="appointmentShowModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="appointmentCreateModalLabel">Đặt lịch hẹn</h5>
+                <h5 class="modal-title" id="appointmentShowModalLabel">Thông tin lịch hẹn</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" id="appointmentCreateModalBody"></div>
+            <div class="modal-body" id="appointmentShowModalBody"></div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="appointmentDeleteModal" tabindex="-1" aria-labelledby="appointmentDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="appointmentDeleteModalLabel">Xóa lịch hẹn</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="appointmentDeleteModalBody"></div>
         </div>
     </div>
 </div>
@@ -83,15 +94,6 @@
             });
         }, 300);
     }
-    // Tạo lịch hẹn
-    $('#btnCreateAppointment').on('click', function() {
-        $('#appointmentCreateModalBody').html(shimmerloader());
-        $.get("{{ route('appointment.create') }}", function(data) {
-            $('#appointmentCreateModalBody').html(data);
-        }).fail(function(err) {
-            let msg = err.responseJSON && err.responseJSON.message ? err.responseJSON.message : (err.message ?? 'Lỗi quyền truy cập!');
-            showBootstrapToast(msg, 'danger');
-        });
-    });
+    
 </script>
 @endpush

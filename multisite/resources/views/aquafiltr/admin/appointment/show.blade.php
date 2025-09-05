@@ -1,4 +1,5 @@
 <div class="container py-2">
+    <img src="{{ route('appointment.barcode', $appointment->id) }}" class="img-fluid mb-3">
     <div class="row mb-2">
         <div class="col-4 fw-semibold text-secondary">Tên khách hàng:</div>
         <div class="col-8">{{ $appointment->customer_name }}</div>
@@ -27,4 +28,8 @@
         <div class="col-4 fw-semibold text-secondary">Ngày cập nhật:</div>
         <div class="col-8">{{ $appointment->updated_at }}</div>
     </div>
+    {{-- // nút tải hóa đơn  --}}
+    <button onclick="window.location='{{ route('appointment.invoice', $appointment->id) }}'" class="btn btn-primary mt-3">
+        <i class="bi bi-cloud-arrow-down me-2"></i>Tải xuống hóa đơn
+    </button>
 </div>

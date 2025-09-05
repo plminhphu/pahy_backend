@@ -3,6 +3,10 @@ use Illuminate\Support\Facades\Route;
 
 // Admin dashboard aquafiltr-shop.com
 Route::domain('admin.aquafiltr-shop.com')->group(function () {
+    Route::get('customer/barcode/{id}', [App\Http\Controllers\Aquafiltr\CustomerController::class, 'barcode'])->name('customer.barcode');
+    Route::get('appointment/barcode/{id}', [App\Http\Controllers\Aquafiltr\AppointmentController::class, 'barcode'])->name('appointment.barcode');
+    Route::get('appointment/invoice/{id}', [App\Http\Controllers\Aquafiltr\AppointmentController::class, 'invoice'])->name('appointment.invoice');
+    
     Route::middleware('auth')->group(function () {
         Route::get('/auth/logout', [App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
         // nhóm dashboard
@@ -18,11 +22,8 @@ Route::domain('admin.aquafiltr-shop.com')->group(function () {
         });
         // nhóm lịch hẹn
         Route::resource('appointment', App\Http\Controllers\Aquafiltr\AppointmentController::class);
-        Route::get('appointment/invoice/{id}', [App\Http\Controllers\Aquafiltr\AppointmentController::class, 'invoice'])->name('appointment.invoice');
-        Route::get('appointment/barcode/{id}', [App\Http\Controllers\Aquafiltr\AppointmentController::class, 'barcode'])->name('appointment.barcode');
         // nhóm khách hàng
         Route::resource('customer', App\Http\Controllers\Aquafiltr\CustomerController::class);
-        Route::get('customer/barcode/{id}', [App\Http\Controllers\Aquafiltr\CustomerController::class, 'barcode'])->name('customer.barcode');
         Route::get('customer/info/{id}', [App\Http\Controllers\Aquafiltr\CustomerController::class, 'info'])->name('customer.info');
         // nhóm thiết bị
         Route::resource('device', App\Http\Controllers\Aquafiltr\DeviceController::class);

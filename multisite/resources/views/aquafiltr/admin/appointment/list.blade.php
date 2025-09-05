@@ -15,22 +15,18 @@
         <tbody>
             @forelse($appointments as $index => $appt)
                 <tr>
-                    <td>
-                        <img src="{{ route('appointment.barcode', $appt->id) }}" class="img-fluid">
-                    </td>
+                    <td>{{ $appt->code }}</td>
                     <td>{{ $appt->customer_name }}</td>
                     <td>{{ preg_replace('/(\+84|0)(\d{3})(\d{3})(\d{3})/', '+84.$2.$3.$4', $appt->customer_phone) }}</td>
                     <td>{{ $appt->device_name }} - {{ $appt->device_model }}</td>
                     <td>{{ $appt->device_imei }}</td>
                     <td>{{ $appt->appointment_date }}</td>
-                    <td>{{ $appt->cycle }} tháng</td>
+                    <td>{{ $appt->reminder_cycle }} tháng</td>
                     <td class="text-center">
                         <button type="button" class="btn btn-sm btn-success btnShowAppointment" data-route="{{ route('appointment.show', $appt->id) }}">
                             <i class="bi bi-eye"></i>
                         </button>
-                        <button type="button" class="btn btn-sm btn-warning btnEditAppointment" data-route="{{ route('appointment.edit', $appt->id) }}">
-                            <i class="bi bi-pencil"></i>
-                        </button>
+                        <a href="{{ route('appointment.edit', $appt->id) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
                         <button type="button" class="btn btn-sm btn-danger btnDeleteAppointment" data-route="{{ route('appointment.destroy', $appt->id) }}">
                             <i class="bi bi-trash"></i>
                         </button>
@@ -70,6 +66,7 @@
         });
         // Sửa
         $('.btnEditAppointment').on('click', function() {
+            // chuyển hướng đến route 
             $('#appointmentEditModalBody').html(shimmerloader());
             var route = $(this).data('route');
             $.get(route, function(data) {

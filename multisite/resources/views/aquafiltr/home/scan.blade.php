@@ -1,87 +1,118 @@
-<!doctype html>
-<html lang="vi">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="author" content="ZXing for JS">
-  <title>Decoding from camera stream</title>
-  <link rel="stylesheet" rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null"
-    href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
-  <link rel="stylesheet" rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null"
-    href="https://unpkg.com/normalize.css@8.0.0/normalize.css">
-  <link rel="stylesheet" rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null"
-    href="https://unpkg.com/milligram@1.3.0/dist/milligram.min.css">
-</head>
-<body>
-  <main class="wrapper" style="padding-top:2em">
-    <section class="container" id="demo-content">
-      <div>
-        <a class="button" id="startButton">Start</a>
-        <a class="button" id="resetButton">Reset</a>
-      </div>
-      <div>
-        <video id="video" width="100%" height="300" style="border: 1px solid gray"></video>
-      </div>
-      <div id="sourceSelectPanel" style="display:none">
-        <label for="sourceSelect">Change video source:</label>
-        <select id="sourceSelect" style="max-width:400px">
-        </select>
-      </div>
-      <label>Result:</label>
-      <pre><code id="result"></code></pre>
-    </section>
-  </main>
-  <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest/umd/index.min.js"></script>
-  <script type="text/javascript">
-    window.addEventListener('load', function () {
-      let selectedDeviceId;
-      const codeReader = new ZXing.BrowserMultiFormatReader()
-      console.log('ZXing code reader initialized')
-      codeReader.listVideoInputDevices()
-        .then((videoInputDevices) => {
-          const sourceSelect = document.getElementById('sourceSelect')
-          selectedDeviceId = videoInputDevices[0].deviceId
-          if (videoInputDevices.length >= 1) {
-            videoInputDevices.forEach((element) => {
-              const sourceOption = document.createElement('option')
-              sourceOption.text = element.label
-              sourceOption.value = element.deviceId
-              sourceSelect.appendChild(sourceOption)
-            })
+{{-- 
+Đầu tiên hiện thị Form với chức năng tìm kiếm và nút quét mã QR #startButton
+Sau khi nhấn nút quét mã QR, hiển thị video từ camera và bắt đầu quét mã QR
+Khi quét thành công, trả về code, tiến hành ajax để lấy dữ liệu từ server và hiển thị kết quả
+hoặc khi nhập mã thủ công thì cũng gọi ajax để tìm bằng code đó
+Sử dụng thư viện ZXing để quét mã QR
+--}}
+@extends('layouts.home')
+@section('content')
+  <section class="d-flex flex-column align-items-center my-4">
+    <div class="input-group input-group-lg mb-2" style="max-width: 400px">
+      <span class="input-group-text" onclick="sendScanResult()">
+        <i class="bi bi-search"></i>
+      </span>
+      <input id="valueSearch" type="text" class="form-control" placeholder="Nhập mã tra cứu...">
+      <span class="input-group-text" id="startScanning">
+        <i class="bi bi-upc-scan"></i>
+      </span>
+    </div> 
+    <pre><code id="result"></code></pre>
+    <video id="video" width="300px" height="300px" style="display: none;"></video>
+    <a class="btn btn-danger btn-block mt-2" id="resetscan" style="display: none">Hủy Scan</a>
+  </section>
+  <section class="d-flex flex-column align-items-center text-center">
+    <div id="content" class="w-100" style="max-width: 600px;"></div>
+  </section>
+  <style>
+    /* css animation scanning for #video  */
+    #video {
+      background-color: #000;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+  </style>
+@endsection
+@push('scripts')
+<script type="text/javascript" src="https://unpkg.com/@zxing/library@latest/umd/index.min.js"></script>
+<script>
+  $(function() {
+    let selectedDeviceId;
+    const codeReader = new ZXing.BrowserMultiFormatReader();
 
-            sourceSelect.onchange = () => {
-              selectedDeviceId = sourceSelect.value;
-            };
-
-            const sourceSelectPanel = document.getElementById('sourceSelectPanel')
-            sourceSelectPanel.style.display = 'block'
+    codeReader.listVideoInputDevices().then((videoInputDevices) => {
+      $('#startScanning').on('click', function() {
+        $('#content').html('');
+        $('#valueSearch').val('')
+        $('#video').css('display', 'block');
+        $('#resetscan').css('display', 'inline-block');
+        $('#result').text('');
+        codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
+          if (result) {
+            $('#valueSearch').val(result.text);
+            $('#result').text('');
+            $('#video').css('display', 'none');
+            $('#resetscan').css('display', 'none');
+            codeReader.reset();
+            sendScanResult();
           }
+          if (err && !(err instanceof ZXing.NotFoundException)) {
+            $('#result').text(err);
+          }
+        });
+      });
+      $('#resetscan').on('click', function() {
+        codeReader.reset();
+        $('#result').text('');
+        $('#video').css('display', 'none');
+        $('#resetscan').css('display', 'none');
+      });
+    });
 
-          document.getElementById('startButton').addEventListener('click', () => {
-            codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
-              if (result) {
-                console.log(result)
-                document.getElementById('result').textContent = result.text
-              }
-              if (err && !(err instanceof ZXing.NotFoundException)) {
-                console.error(err)
-                document.getElementById('result').textContent = err
-              }
-            })
-            console.log(`Started continous decode from camera with id ${selectedDeviceId}`)
-          })
 
-          document.getElementById('resetButton').addEventListener('click', () => {
-            codeReader.reset()
-            document.getElementById('result').textContent = '';
-            console.log('Reset.')
-          })
-
-        })
-        .catch((err) => {
-          console.error(err)
-        })
-    })
-  </script>
-</body>
-</html>
+  });
+  $(document).ready(function () {
+    $('#content').html('<div class="text-muted">Vui lòng quét mã QR hoặc nhập mã để tra cứu thông tin.</div>');
+  });
+  // Xử lý nhập mã thủ công khi có thay đổi input
+  $('#valueSearch').change(function() {
+    sendScanResult();
+  });
+  function sendScanResult() {
+    // kiểm tra code nếu đúng định dạng thì mới gửi ajax
+    let code = $('#valueSearch').val().trim();
+    if (!/^AP\d{7}$/.test(code)) {
+      // thêm hiệu ứng loading vào #content
+      $('#content').html('<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Đang tải dữ liệu...</span></div>');
+      // chuyển hướng đến route /scan/{code}
+      window.location.href = location.origin + '/scan/' + code;
+    }else {
+      $('#content').html('<div class="text-danger my-5 text-lg">Mã không đúng định dạng! Mã phải bắt đầu bằng "AP" và theo sau là 8 chữ số.</div>');
+    }
+  }
+  // nếu có id truyền vào thì tự động điền và gửi ajax
+  @if (!empty($id))
+    $(document).ready(function () {
+      // thêm hiệu ứng loading vào #content
+      $('#valueSearch').val('{{ $id }}');
+      $('#content').html('<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Đang tải dữ liệu...</span></div>');
+      // gửi ajax
+      $.ajax({
+        url: location.origin + '/scan-result',
+        method: 'POST',
+        data: { code: '{{ $id }}', _token: '{{ csrf_token() }}' },
+        success: function(data) {
+          setTimeout(() => {
+            $('#content').html(data);
+          }, 1000);
+        },
+        error: function() {
+          $('#content').html('<div class="text-danger my-5 text-lg">Không tìm thấy dữ liệu!</div>');
+        }
+      });
+    });
+  @endif
+</script>
+@endpush
