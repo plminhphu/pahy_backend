@@ -52,5 +52,10 @@
         <button onclick="window.location='{{ route('appointment.invoice', $appointment->id) }}'" class="btn btn-primary mt-3">
             <i class="bi bi-receipt-cutoff me-2"></i>Xem hóa đơn
         </button>
+        @if (strtotime($appointment->appointment_date) <= strtotime(date('Y-m-d', strtotime('+1 day'))))
+            <button onclick="window.location='tel:{{ $appointment->customer_phone }}'" class="btn btn-success mt-3">
+                <i class="bi bi-telephone-fill me-2"></i>Gọi khách
+            </button>
+        @endif
     </div>
 </div>

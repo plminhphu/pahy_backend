@@ -1,22 +1,6 @@
 @extends('layouts.app')
 @section('content')
 <div class="row mt-md-4 mt-3 px-md-3 px-2">
-    <div class="col-md-4 col-6">
-        <select class="form-control" id="sort_customer_id" name="sort_customer_id" data-placeholder="Vui lòng chọn khách hàng">
-            <option value="" selected>Tất cả khách hàng</option>
-            @foreach ($customers as $customer)
-                <option value="{{ $customer->id }}">{{ $customer->name }} - {{ $customer->phone }}</option>
-            @endforeach
-        </select>
-    </div>
-    <div class="col-md-4 col-6">
-        <select class="form-control" id="sort_device_id" name="sort_device_id" data-placeholder="Vui lòng chọn thiết bị">
-            <option value="" selected>Tất cả thiết bị</option>
-            @foreach ($devices as $device)
-                <option value="{{ $device->id }}">{{ $device->name }} - {{ $device->model }}</option>
-            @endforeach
-        </select>
-    </div>
     <div class="col-md-4 col-12 mt-2 mt-md-0">
         <div class="input-group col-md-4 col-12" style="max-width: 250px; float: right;">
             <span class="input-group-text" id="searching-data"><i class="bi bi-search"></i></span>
@@ -56,12 +40,6 @@
     $(function() {
         $('#appointmentListData').html(shimmerloader());
         loadListData();
-    });
-    $("#sort_customer_id").select2({
-        allowClear: true,
-    });
-    $("#sort_device_id").select2({
-        allowClear: true,
     });
     let debounceTimer;
     $('#searchInput').on('input', function() {

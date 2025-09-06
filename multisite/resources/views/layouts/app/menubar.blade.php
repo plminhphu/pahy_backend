@@ -29,7 +29,12 @@ $menuItems = [
         'label' => 'DS lịch hẹn',
         'icon' => 'bi bi-calendar-date',
         'route' => route('appointment.index'),
-      ]
+      ],
+      [
+        'label' => 'Lịch Bảo trì',
+        'icon' => 'bi bi-calendar-check',
+        'route' => route('appointment.checkin'),
+      ],
     ],
   ],
   [
@@ -43,22 +48,22 @@ $menuItems = [
       ],
     ],
   ],
-  [
-    'label' => 'Nhân viên',
-    'icon' => 'bi bi-person-circle',
-    'children' => [
-      [
-        'label' => 'DS nhân viên',
-        'icon' => 'bi bi-person-vcard',
-        'route' => route('user.index'),
-      ],
-      [
-        'label' => 'Phân quyền',
-        'icon' => 'bi bi-person-gear',
-        'route' => route('role.index'),
-      ],
-    ],
-  ],
+  // [
+  //   'label' => 'Nhân viên',
+  //   'icon' => 'bi bi-person-circle',
+  //   'children' => [
+  //     [
+  //       'label' => 'DS nhân viên',
+  //       'icon' => 'bi bi-person-vcard',
+  //       'route' => route('user.index'),
+  //     ],
+  //     [
+  //       'label' => 'Phân quyền',
+  //       'icon' => 'bi bi-person-gear',
+  //       'route' => route('role.index'),
+  //     ],
+  //   ],
+  // ],
 ];
 $currentRoute = url()->current();
 @endphp

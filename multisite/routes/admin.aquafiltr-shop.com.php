@@ -21,6 +21,7 @@ Route::domain('admin.aquafiltr-shop.com')->group(function () {
             Route::put('/avatar', [App\Http\Controllers\ProfileController::class, 'uploadAvatar'])->name('profile.avatar.upload');
         });
         // nhóm lịch hẹn
+        Route::get('appointment/checkin', [App\Http\Controllers\Aquafiltr\AppointmentController::class, 'checkin'])->name('appointment.checkin');
         Route::resource('appointment', App\Http\Controllers\Aquafiltr\AppointmentController::class);
         // nhóm khách hàng
         Route::resource('customer', App\Http\Controllers\Aquafiltr\CustomerController::class);

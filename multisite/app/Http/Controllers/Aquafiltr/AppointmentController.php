@@ -19,6 +19,9 @@ class AppointmentController extends Controller
                 case 'index':
                     $this->authorizePermission('appointment', 'getall');
                     break;
+                case 'check':
+                    $this->authorizePermission('appointment', 'getall');
+                    break;
                 case 'show':
                     $this->authorizePermission('appointment', 'getone');
                     break;
@@ -46,17 +49,16 @@ class AppointmentController extends Controller
             $appointments = Appointment::where(function ($query) use ($keywords) {
                 if ($keywords) {
                     $query->where('customer_name', 'like', "%$keywords%")
-                        ->orWhere('phone', 'like', "%$keywords%")
-                        ->orWhere('address', 'like', "%$keywords%")
-                        ->orWhere('product_type', 'like', "%$keywords%");
+                        ->orWhere('customer_phone', 'like', "%$keywords%")
+                        ->orWhere('customer_address', 'like', "%$keywords%")
+                        ->orWhere('device_code', 'like', "%$keywords%")
+                        ->orWhere('device_name', 'like', "%$keywords%");
                 }
             })->orderBy('created_at', 'desc')->paginate(10, ['*'], 'page', $page);
             return view('aquafiltr.admin.appointment.list', compact('appointments'))->render();
         } else {
             $title = 'Quản lý lịch hẹn';
-            $customers = \App\Models\Customer::all();
-            $devices = \App\Models\Device::all();
-            return view('aquafiltr.admin.appointment.index', compact('title', 'customers', 'devices'));
+            return view('aquafiltr.admin.appointment.index', compact('title'));
         }
     }
 
@@ -288,6 +290,24 @@ class AppointmentController extends Controller
                     ]);
                 }
             }
+        }
+    }
+
+    // danh sách lịch hẹn hôm nay, giống index nhưng chỉ hiện lịch hẹn ngày hiện tại
+    function checkin()
+    {
+        if (request()->ajax()) {
+            // nếu không có request date thì chọn hôm nay
+            $date = request('date', date('Y-m-d'));
+            $tomorow = date('Y-m-d', strtotime($date . ' +1 day'));
+            $appointments = Appointment::whereDate('appointment_date', $date)
+                ->orWhereDate('appointment_date', $tomorow)
+                ->orderBy('created_at', 'desc')
+                ->get();
+            return view('aquafiltr.admin.appointment.checklist', compact('appointments'));
+        } else {
+            $title = 'Kiểm tra lịch hẹn hôm nay';
+            return view('aquafiltr.admin.appointment.check', compact('title'));
         }
     }
 }
