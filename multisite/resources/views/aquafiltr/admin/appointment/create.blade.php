@@ -1,9 +1,9 @@
 @extends('layouts.app')
 @section('content')
-<form class="row p-md-4 p-2" id="formCreateAppointment" action="{{ route('appointment.store') }}" method="POST">
+<form id="formCreateAppointment" action="{{ route('appointment.store') }}" method="POST">
     @csrf
-    <div class="row gap-3">
-        <div class="col-12 col-md-4">
+    <div class="row px-4 py-2">
+        <div class="col-12 col-md-6 p-2">
             <div class="card shadow-sm">
                 <div class="card-header">
                     <h6 class="card-title mb-0">Phần khách hàng</h6>
@@ -44,7 +44,33 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-6 p-2">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h6 class="card-title mb-0">Phần lịch hẹn</h6>
+                    <p class="mb-0 text-muted fw-lighter fs-sm">Thiết lập thời gian và chu kì, hệ thống sẽ căn cứ vào ngày để nhắc nhở</p>
+                </div>
+                <div class="card-body">
+                    <div class="mb-2">
+                        <label for="appointment_date" class="form-label">Ngày giờ hẹn:</label>
+                        <input type="datetime-local" name="appointment_date" id="appointment_date" class="form-control" required value="{{ date('Y-m-d\TH:i', strtotime('+1 day')) }}">
+                    </div>
+                    <div class="mb-2">
+                        <label for="reminder_cycle" class="form-label">Nhắc nhở bảo dưỡng:</label>
+                        <select name="reminder_cycle" id="reminder_cycle" class="form-control">
+                            <option value="3" selected>Định kỳ 3 tháng</option>
+                            <option value="6">Định kỳ 6 tháng</option>
+                            <option value="12">Định kỳ 1 năm</option>
+                        </select>
+                    </div>
+                    <div class="mb-2">
+                        <label for="note" class="form-label">Ghi chú:</label>
+                        <textarea name="note" id="note" class="form-control" rows="4"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 p-2">
             <div class="card shadow-sm">
                 <div class="card-header">
                     <h6 class="card-title mb-0">Phần thiết bị</h6>
@@ -53,7 +79,7 @@
                 <div class="card-body">
                     <div class="mb-2">
                         <label for="select_device_id" class="form-label">Chọn các thiết bị:</label>
-                        <select class="form-control" id="select_device_id" data-placeholder="Vui lòng chọn thiết bị">
+                        <select class="form-control" id="select_device_id" multiple data-placeholder="Vui lòng chọn thiết bị">
                             <option disabled selected>Chọn từ {{ $devices->count() }} thiết bị</option>
                             @foreach ($devices as $device)
                                 <option value="{{ route('device.info',$device->id) }}">{{ $device->code }} - {{ $device->name }}</option>
@@ -85,38 +111,13 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-md-4">
-            <div class="card shadow-sm">
-                <div class="card-header">
-                    <h6 class="card-title mb-0">Phần lịch hẹn</h6>
-                    <p class="mb-0 text-muted fw-lighter fs-sm">Thiết lập thời gian và chu kì, hệ thống sẽ căn cứ vào ngày để nhắc nhở</p>
-                </div>
-                <div class="card-body">
-                    <div class="mb-2">
-                        <label for="appointment_date" class="form-label">Ngày giờ hẹn:</label>
-                        <input type="datetime-local" name="appointment_date" id="appointment_date" class="form-control" required value="{{ date('Y-m-d\TH:i', strtotime('+1 day')) }}">
-                    </div>
-                    <div class="mb-2">
-                        <label for="reminder_cycle" class="form-label">Nhắc nhở bảo dưỡng:</label>
-                        <select name="reminder_cycle" id="reminder_cycle" class="form-control">
-                            <option value="3" selected>Định kỳ 3 tháng</option>
-                            <option value="6">Định kỳ 6 tháng</option>
-                            <option value="12">Định kỳ 1 năm</option>
-                        </select>
-                    </div>
-                    <div class="mb-2">
-                        <label for="note" class="form-label">Ghi chú:</label>
-                        <textarea name="note" id="note" class="form-control" rows="4"></textarea>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
     <hr class="my-4">
-    <div class="d-flex justify-content-end gap-2">
+    <div class="d-flex justify-content-end gap-2 px-4 py-2">
         <a href="{{ route('appointment.index') }}" type="button" class="btn btn-secondary">Trở lại</a>
         <button type="submit" class="btn btn-primary" id="btnSaveAppointment">Tạo lịch hẹn</button>
     </div>
+    <br class="my-4">
 </form>
 @endsection
 @push('scripts')

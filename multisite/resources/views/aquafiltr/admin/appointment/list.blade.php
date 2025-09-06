@@ -10,6 +10,8 @@
                 <th>Imei</th>
                 <th>Ngày hẹn</th>
                 <th>Chu kì</th>
+                <th>STT</th>
+                <th class="text-center">Thao tác</th>
                 <th class="text-center">Hành động</th>
             </tr>
         </thead>
@@ -24,6 +26,19 @@
                     <td>{{ $appt->device_imei }}</td>
                     <td>{{ $appt->appointment_date }}</td>
                     <td>{{ $appt->reminder_cycle }} tháng</td>
+                    <td>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" value="{{ $appt->id }}" {{ ($appt->status == true || $appt->status == 1)?'checked':'' }} role="switch" id="switchCheckDefault">
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        @if ($appt->customer_phone )
+                            @php $d = date('d', strtotime($appt->appointment_date));$m = date('m', strtotime($appt->appointment_date));$y = date('Y', strtotime($appt->appointment_date)); @endphp
+                            <a href="sms:{{ ltrim($appt->customer_phone, '0') }}&body=📢 Aquafiltrshop kính chào Quý khách {{ $appt->customer_name }}, cảm ơn Quý khách đã tin tưởng.Chúng tôi xin thông báo lịch lắp đặt của Quý khách đã được duyệt.⏰ Thời gian: ngày {{ $d }} tháng {{ $m }} năm {{ $y }}" target="_blank" class="btn btn-sm btn-info"><i class="bi bi-chat-dots-fill me-1"></i>🇻🇳</a>
+                            <a href="sms:{{ ltrim($appt->customer_phone, '0') }}&body=📢 Aquafiltrshop Vás srdečně zdraví a děkuje za Vaši důvěru {{ $appt->customer_name }}.Rádi bychom Vás informovali, že Váš termín instalace byl schválen.⏰ Termín: {{ $d }}-{{ $m }}-{{ $y }}" target="_blank" class="btn btn-sm btn-info"><i class="bi bi-chat-dots-fill me-1"></i>🇨🇿</a>
+                            <a href="tel:{{ $appt->customer_phone }}" class="btn btn-sm btn-primary"><i class="bi bi-telephone-fill"></i></a>
+                        @endif
+                    </td>
                     <td class="text-center">
                         <button type="button" class="btn btn-sm btn-success btnShowAppointment" data-route="{{ route('appointment.show', $appt->id) }}">
                             <i class="bi bi-eye"></i>
@@ -102,6 +117,30 @@
                     }
                 });
             });
+        });
+    });
+    // Cập nhật trạng thái
+    $('input[type="checkbox"]').change(function() {
+        var status = $(this).is(':checked') ? 1 : 0;
+        var appointmentId = $(this).val();
+        $.ajax({
+            url: "{{ route('appointment.status') }}",
+            type: 'POST',
+            data: {
+                _token: "{{ csrf_token() }}",
+                id: appointmentId,
+                status: status
+            },
+            success: function(res, status, xhr) {
+                if (xhr.status === 201) {
+                    showBootstrapToast(res.message ?? 'Cập nhật trạng thái thành công!', 'success');
+                } else {
+                    showBootstrapToast(res.message ?? 'Lỗi khi cập nhật trạng thái!', 'danger');
+                }
+            },
+            error: function(err) {
+                showBootstrapToast(err.responseJSON.message ?? 'Lỗi quyền truy cập!', 'danger');
+            }
         });
     });
 </script>

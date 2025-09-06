@@ -8,7 +8,7 @@
     <div class="btn-group">
         <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
             @if (Auth::check()) 
-                <i class="bi bi-person-circle me-2"></i>
+                <i class="bi bi-person-circle me-2" style="font-size: larger;"></i>
                 {{ Auth::user()->name }}
             @else
                 <a href="{{ rote('login') }}">Đăng nhập</a>

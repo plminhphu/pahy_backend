@@ -7,7 +7,8 @@
                 <th>Số điện thoại</th>
                 <th>Địa chỉ</th>
                 <th>Vùng</th>
-                <th>Hành động</th>
+                <th class="text-center">Thao tác</th>
+                <th class="text-center">Hành động</th>
             </tr>
         </thead>
         <tbody>
@@ -19,18 +20,6 @@
                     <td>{{ $customer->address }}</td>
                     <td>{{ $customer->region }}</td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-sm btn-info btnShowCustomer"
-                            data-route="{{ route('customer.show', $customer->id) }}">
-                            <i class="bi bi-eye"></i>
-                        </button>
-                        <button type="button" class="btn btn-sm btn-warning btnEditCustomer"
-                            data-route="{{ route('customer.edit', $customer->id) }}">
-                            <i class="bi bi-pencil"></i>
-                        </button>
-                        <button type="button" class="btn btn-sm btn-danger btnDeleteCustomer"
-                            data-route="{{ route('customer.destroy', $customer->id) }}">
-                            <i class="bi bi-trash"></i>
-                        </button>
                         @if($customer->phone)
                         <a href="tel:{{ $customer->phone }}" class="btn btn-sm btn-primary" title="Gọi điện">
                             <i class="bi bi-telephone-fill"></i>
@@ -46,6 +35,20 @@
                         <a href="https://www.ppl.cz/balik-pro-tebe/formular?recipientPhone={{ preg_replace('/(\+84|0)(\d{3})(\d{3})(\d{3})/', '+84$2$3$4', $customer->phone) }}&recipientName={{ urlencode($customer->name) }}&recipientAddress={{ urlencode($customer->address) }}" target="_blank" class="btn btn-sm btn-dark" title="Gửi hàng PPL">
                             <i class="bi bi-box-seam"></i>
                         </a>
+                    </td>
+                    <td class="text-center">
+                        <button type="button" class="btn btn-sm btn-info btnShowCustomer"
+                            data-route="{{ route('customer.show', $customer->id) }}">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-warning btnEditCustomer"
+                            data-route="{{ route('customer.edit', $customer->id) }}">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-danger btnDeleteCustomer"
+                            data-route="{{ route('customer.destroy', $customer->id) }}">
+                            <i class="bi bi-trash"></i>
+                        </button>
                     </td>
                 </tr>
             @empty

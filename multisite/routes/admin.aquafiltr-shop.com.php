@@ -23,6 +23,8 @@ Route::domain('admin.aquafiltr-shop.com')->group(function () {
         // nhóm lịch hẹn
         Route::get('appointment/checkin', [App\Http\Controllers\Aquafiltr\AppointmentController::class, 'checkin'])->name('dashboard');
         Route::resource('appointment', App\Http\Controllers\Aquafiltr\AppointmentController::class);
+        Route::post('appointment/status', [App\Http\Controllers\Aquafiltr\AppointmentController::class, 'status'])->name('appointment.status');
+        // route in hóa đơn
         // nhóm khách hàng
         Route::resource('customer', App\Http\Controllers\Aquafiltr\CustomerController::class);
         Route::get('customer/info/{id}', [App\Http\Controllers\Aquafiltr\CustomerController::class, 'info'])->name('customer.info');

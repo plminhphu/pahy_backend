@@ -17,18 +17,17 @@ class Appointment extends Model
         'customer_phone',
         'customer_address',
         'customer_region',
-        'device_id',
-        'device_code',
-        'device_name',
-        'device_model',
-        'device_price',
-        'device_info',
-        'device_imei',
-        'appointment_date', //2025-09-04T20:49
+        'appointment_date',
         'reminder_cycle',
         'note',
         'status',
         'created_at',
         'updated_at'
     ];
+
+    // tạo liên kết với bảng appointment_device để quản lý nhiều thiết bị cho một cuộc hẹn
+    public function devices()
+    {
+        return $this->hasMany(AppointmentDevice::class);
+    }
 }

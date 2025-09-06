@@ -310,4 +310,22 @@ class AppointmentController extends Controller
             return view('aquafiltr.admin.appointment.check', compact('title'));
         }
     }
+
+    // thay đổi trạng thái hoàn thành lịch hẹn
+    public function status(Request $request)
+    {
+        // kiểm tra ajax
+        if (!request()->ajax()) {
+            abort(403, 'Chỉ chấp nhận yêu cầu AJAX');
+        }
+        // validate
+        $request->validate([
+            'id' => 'required|exists:appointments,id',
+            'status' => 'required|boolean',
+        ]);
+        $appointment = Appointment::find($request->id);
+        $appointment->status = $request->status;
+        $appointment->save();
+        return response()->json(['message' => $request->status? 'Đã xác nhận lịch hẹn' : ' Đã bỏ xác nhận lịch hẹn'], 201);
+    }
 }

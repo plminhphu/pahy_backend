@@ -1,10 +1,10 @@
 @extends('layouts.app')
 @section('content')
-<form class="row p-md-4 p-2" id="formEditAppointment" action="{{ route('appointment.update', $appointment->id) }}" method="POST">
+<form id="formEditAppointment" action="{{ route('appointment.update', $appointment->id) }}" method="POST">
     @csrf
     @method('PUT')
-    <div class="row gap-3">
-        <div class="col-12 col-md-4">
+    <div class="row px-4 py-2">
+        <div class="col-12 col-md-4 p-2">
             <div class="card shadow-sm">
                 <div class="card-header">
                     <h6 class="card-title mb-0">Phần khách hàng</h6>
@@ -46,7 +46,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-4 p-2">
             <div class="card shadow-sm">
                 <div class="card-header">
                     <h6 class="card-title mb-0">Phần thiết bị</h6>
@@ -87,7 +87,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-4 p-2">
             <div class="card shadow-sm">
                 <div class="card-header">
                     <h6 class="card-title mb-0">Phần lịch hẹn</h6>
@@ -115,10 +115,11 @@
         </div>
     </div>
     <hr class="my-4">
-    <div class="d-flex justify-content-end gap-2 p-2">
+    <div class="d-flex justify-content-end gap-2 px-4 py-2">
         <a href="{{ route('appointment.index') }}" type="button" class="btn btn-secondary">Trở lại</a>
         <button type="submit" class="btn btn-primary" id="btnUpdateAppointment">Cập nhật lịch hẹn</button>
     </div>
+    <br class="my-4">
 </form>
 @endsection
 @push('scripts')
