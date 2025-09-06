@@ -12,6 +12,14 @@
         <div class="col-8">{{ $device->model }}</div>
     </div>
     <div class="row mb-2">
+        <div class="col-4 fw-semibold text-secondary">Giá thiết bị:</div>
+        <div class="col-8">{{ $device->price ? number_format($device->price) : 'Chưa cập nhật' }}</div>
+    </div>
+    <div class="row mb-2">
+        <div class="col-4 fw-semibold text-secondary">Thông tin thiết bị:</div>
+        <div class="col-8">{{ $device->info ?? 'Chưa cập nhật' }}</div>
+    </div>
+    <div class="row mb-2">
         <div class="col-4 fw-semibold text-secondary">Ngày tạo:</div>
         <div class="col-8">{{ $device->created_at }}</div>
     </div>

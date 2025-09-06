@@ -17,6 +17,21 @@
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror
     </div>
+    <div class="mb-2">
+        <label for="price" class="form-label">Giá thiết bị:</label>
+        <input type="number" name="price" id="price"
+            class="form-control @error('price') is-invalid @enderror" value="{{ old('price') }}" min="0" step="1000">
+        @error('price')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
+    <div class="mb-2">
+        <label for="info" class="form-label">Thông tin thiết bị:</label>
+        <textarea name="info" id="info" class="form-control @error('info') is-invalid @enderror" rows="3">{{ old('info') }}</textarea>
+        @error('info')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
     <hr class="my-4">
     <div class="d-flex justify-content-end gap-2">
         <button type="submit" class="btn btn-primary" id="btnSaveDevice">

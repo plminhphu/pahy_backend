@@ -123,6 +123,7 @@
                         <tr><td><strong>{{ $appointment->device_code ?? 'N/A' }}</strong></td></tr>
                         <tr><td>Name: {{ $appointment->device_name ?? 'N/A' }}</td></tr>
                         <tr><td>Model: {{ $appointment->device_model ?? 'N/A' }}</td></tr>
+                        <tr><td>Price: {{ number_format($appointment->device_price ?? 0) }}</td></tr>
                         <tr><td>Imei: <strong>{{ $appointment->device_imei ?? 'N/A' }}</strong></td></tr>
                     </table>
                 </div>
@@ -138,21 +139,27 @@
         </table>
     </div>
 </div>
-{{-- <table class="invoice-totals-table">
+<table class="invoice-totals-table">
     <tr>
         <td style="width:60%"></td>
         <td style="width:40%">
-            <div class="invoice-total-row">
+            {{-- <div class="invoice-total-row">
                 <span>Rounding</span>
                 <span>0,00 $</span>
-            </div>
+            </div> --}}
+            @if(($appointment->device_price??0)>0)
             <div class="invoice-total-row total-sum">
                 <span>Total including VAT:</span>
                 <span>745,89 $</span>
             </div>
+            @endif
         </td>
     </tr>
-</table> --}}
-{{-- <div style="display: block;text-align: right; padding-top:10px">Prices are governed by the valid price list at the time of delivery.</div> --}}
+</table>
+@if (($appointment->device_info??'') != '')
+<div style="display: block;text-align: right; padding-top:10px">
+    {{ $appointment->device_info }}
+</div>
+@endif
 </body>
 </html>

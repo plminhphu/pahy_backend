@@ -9,6 +9,14 @@
         <label for="model" class="form-label">Kiểu thiết bị:</label>
         <input type="text" name="model" id="model" class="form-control" value="{{ $device->model }}" required>
     </div>
+    <div class="mb-2">
+        <label for="price" class="form-label">Giá thiết bị:</label>
+        <input type="number" name="price" id="price" class="form-control" value="{{ $device->price }}" min="0">
+    </div>
+    <div class="mb-2"></div>
+        <label for="info" class="form-label">Thông tin thiết bị:</label>
+        <textarea name="info" id="info" class="form-control" rows="3">{{ $device->info }}</textarea>
+    </div>
     <hr class="my-4">
     <div class="d-flex justify-content-end gap-2">
         <button type="submit" class="btn btn-primary" id="btnUpdateDevice">

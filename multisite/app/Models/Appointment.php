@@ -21,6 +21,8 @@ class Appointment extends Model
         'device_code',
         'device_name',
         'device_model',
+        'device_price',
+        'device_info',
         'device_imei',
         'appointment_date', //2025-09-04T20:49
         'reminder_cycle',

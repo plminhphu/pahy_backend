@@ -8,6 +8,6 @@ class Device extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['code','name','model','image'];
+    protected $fillable = ['code','name','model','image','price','info'];
 
 }

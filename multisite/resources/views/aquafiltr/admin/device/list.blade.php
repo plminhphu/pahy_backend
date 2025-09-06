@@ -2,10 +2,11 @@
     <table class="table table-hover align-middle">
         <thead class="table-light">
             <tr>
-                <th>Mã thiết bị</th>
-                <th>Tên thiết bị</th>
-                <th>Kiểu thiết bị</th>
-                <th>Hình ảnh</th>
+                <th>Mã</th>
+                <th>Tên</th>
+                <th>Kiểu</th>
+                <th>Giá</th>
+                <th>Ảnh</th>
                 <th>Hành động</th>
             </tr>
         </thead>
@@ -15,6 +16,7 @@
                     <td>{{ $device->code }}</td>
                     <td>{{ $device->name }}</td>
                     <td>{{ $device->model }}</td>
+                    <td>{{ $device->price ? number_format($device->price) : 'Chưa cập nhật' }}</td>
                     @php
                         $imagePath = $device->image ?? null;
                         $imageFile = $imagePath && file_exists(public_path('aquafiltr/images/' . basename($imagePath))) ? (asset('public/aquafiltr/images/' . basename($imagePath)).'?ver='.$device->updated_at->timestamp) : asset('public/images/device-aqua.png');

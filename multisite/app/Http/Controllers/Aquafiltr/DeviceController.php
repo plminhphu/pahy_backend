@@ -59,6 +59,8 @@ class DeviceController extends Controller
         $validated = $request->validate([
             'name'  => 'required|string|max:250',
             'model' => 'required|string|max:250',
+            'price' => 'nullable|numeric',
+            'info'  => 'nullable|string|max:500',
         ]);
 
         // Tạo code tự động bằng tiền tố "DV" và id bốn số +1
@@ -99,6 +101,8 @@ class DeviceController extends Controller
         $validated = $request->validate([
             'name'  => 'required|string|max:250',
             'model' => 'required|string|max:250',
+            'price' => 'nullable|numeric',
+            'info'  => 'nullable|string|max:500',
         ]);
 
         $device->update($validated);

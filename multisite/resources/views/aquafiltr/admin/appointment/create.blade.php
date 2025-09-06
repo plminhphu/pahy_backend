@@ -59,10 +59,12 @@
                         <input hidden name="device_code" id="device_code">
                         <input hidden name="device_name" id="device_name">
                         <input hidden name="device_model" id="device_model">
+                        <input hidden name="device_price" id="device_price">
+                        <input hidden name="device_info" id="device_info">
                     </div>
                     <div class="mb-2">
-                        <label for="device_model_show" class="form-label">Model:</label>
-                        <input type="text" name="device_model_show" id="device_model_show" class="form-control" disabled>
+                        <label for="device_price_show" class="form-label">Giá bán:</label>
+                        <input type="text" name="device_price_show" id="device_price_show" class="form-control" disabled>
                     </div>
                     <div class="mb-2">
                         <label for="device_imei" class="form-label">Imei hoặc mã máy:</label>
@@ -161,7 +163,9 @@ $(function() {
                     $('#formCreateAppointment #device_code').val(data.code);
                     $('#formCreateAppointment #device_name').val(data.name);
                     $('#formCreateAppointment #device_model').val(data.model);
-                    $('#formCreateAppointment #device_model_show').val(data.model);
+                    $('#formCreateAppointment #device_price_show').val(data.model);
+                    $('#formCreateAppointment #device_price').val(data.price);
+                    $('#formCreateAppointment #device_info').val(data.info);
                 },
                 error: function() {
                     $('#formCreateAppointment #device_id').val('');
@@ -169,7 +173,9 @@ $(function() {
                     $('#formCreateAppointment #device_code').val('');
                     $('#formCreateAppointment #device_name').val('');
                     $('#formCreateAppointment #device_model').val('');
-                    $('#formCreateAppointment #device_model_show').val('');
+                    $('#formCreateAppointment #device_price_show').val('');
+                    $('#formCreateAppointment #device_price').val('');
+                    $('#formCreateAppointment #device_info').val('');
                 }
             });
         } else {
@@ -178,7 +184,9 @@ $(function() {
             $('#formCreateAppointment #device_code').val('');
             $('#formCreateAppointment #device_name').val('');
             $('#formCreateAppointment #device_model').val('');
-            $('#formCreateAppointment #device_model_show').val('');
+            $('#formCreateAppointment #device_price_show').val('');
+            $('#formCreateAppointment #device_price').val('');
+            $('#formCreateAppointment #device_info').val('');
         }
     });
     // xử lý submit form

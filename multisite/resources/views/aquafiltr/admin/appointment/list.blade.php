@@ -6,6 +6,7 @@
                 <th>Khách hàng</th>
                 <th>Số điện thoại</th>
                 <th>Thiết bị</th>
+                <th>Giá thiết bị</th>
                 <th>Imei</th>
                 <th>Ngày hẹn</th>
                 <th>Chu kì</th>
@@ -19,6 +20,7 @@
                     <td>{{ $appt->customer_name }}</td>
                     <td>{{ preg_replace('/(\+84|0)(\d{3})(\d{3})(\d{3})/', '+84.$2.$3.$4', $appt->customer_phone) }}</td>
                     <td>{{ $appt->device_name }} - {{ $appt->device_model }}</td>
+                    <td>{{ number_format($appt->device_price ?? 0) }}</td>
                     <td>{{ $appt->device_imei }}</td>
                     <td>{{ $appt->appointment_date }}</td>
                     <td>{{ $appt->reminder_cycle }} tháng</td>
