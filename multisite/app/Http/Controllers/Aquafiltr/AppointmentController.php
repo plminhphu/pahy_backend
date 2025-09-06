@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Aquafiltr;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Appointment;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Picqer\Barcode\BarcodeGeneratorPNG;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Mail;
 class AppointmentController extends Controller
 {
     public function __construct()
@@ -125,6 +127,41 @@ class AppointmentController extends Controller
         }
     }
 
+    // Form sửa lịch hẹn
+    public function edit($id)
+    {
+        $appointment = Appointment::find($id);
+        $customers = \App\Models\Customer::all();
+        $devices = \App\Models\Device::all();
+        return view('aquafiltr.admin.appointment.edit', compact('appointment', 'customers', 'devices'));
+    }
+
+    // Cập nhật lịch hẹn không được tạo mới và thay đoi khách hàng, không đc thay đổi mã code
+    public function update(Request $request, $id)
+    {
+        $appointment = Appointment::find($id);
+        $request->validate([
+            'customer_name' => 'required|string|max:100',
+            'customer_address' => 'required|string|max:255',
+            'customer_region' => 'nullable|string|max:50',
+            'device_id' => 'nullable|string|max:100',
+            'device_code' => 'nullable|string|max:20',
+            'device_name' => 'nullable|string|max:100',
+            'device_model' => 'nullable|string|max:50',
+            'device_imei' => 'nullable|string|max:50',
+            'appointment_date' => 'required|date',
+            'reminder_cycle' => 'nullable|integer',
+            'note' => 'nullable|string',
+        ]);
+        $data = $request->only([
+            'customer_name', 'customer_address', 'customer_region',
+            'device_id', 'device_code', 'device_name', 'device_model', 'device_imei',
+            'appointment_date', 'reminder_cycle', 'note'
+        ]);
+        $appointment->update($data);
+        return response()->json(['message' => 'Lịch hẹn đã được cập nhật thành công'], 201);
+    }
+
     // Xem chi tiết lịch hẹn
     public function show($id)
     {
@@ -154,18 +191,30 @@ class AppointmentController extends Controller
     }
 
     // Xuất hóa đơn PDF
-    public function invoice($id)
-    {
-    $appointment = Appointment::find($id);
-    $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('aquafiltr.admin.appointment.invoice', ['appointment' => $appointment]);
-    return $pdf->download("invoice_{$id}.pdf");
-    }
-
-    // Xem hóa đơn trong trình duyệt
-    public function viewinvoice($id)
+    public function invoice($id, $type = 'preview')
     {
         $appointment = Appointment::find($id);
-        return view('aquafiltr.admin.appointment.invoice', ['appointment' => $appointment]);
+        // lấy thông tin user qua $appointment->user_id
+        $user = User::find($appointment->user_id);
+        if ($type === 'preview' || $type === 'download') {
+            $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('aquafiltr.admin.appointment.invoice', ['appointment' => $appointment, 'user' => $user]);
+            $pdf->addInfo([
+                'Title' => "Service Invoice - Appointment Schedule {$appointment->code}",
+                'Author' => 'Aquafiltr Shop - plminhphu.vn',
+                'Subject' => "Service Invoice - Appointment Schedule {$appointment->code}",
+                'Keywords' => 'Service,Invoice,Aquafiltr,Appointment,Schedule'
+            ]);
+            $pdf->setPaper('A4', 'portrait');
+            $pdf->setOptions(['dpi' => 150, 'defaultFont' => 'DejaVu Sans']);
+            $pdf->setWarnings(false);
+            if ($type === 'download'){
+                return $pdf->download("invoice_{$appointment->code}.pdf");
+            }else{
+                return $pdf->stream("invoice_{$appointment->code}.pdf");
+            }
+        }else {
+            return view('aquafiltr.admin.appointment.invoice', ['appointment' => $appointment, 'user' => $user]);
+        }
     }
 
     // In mã vạch (barcode)
@@ -187,4 +236,54 @@ class AppointmentController extends Controller
         ]);
     }
 
+    /* Xóa lịch hẹn */
+    public function destroy($id)
+    {
+        $appointment = Appointment::find($id);
+        $appointment->delete();
+        return response()->json(['message' => 'Lịch hẹn đã được xóa thành công'], 202);
+    }
+
+    /* cron job gửi nhắc lịch hẹn */
+    public function sendReminders()
+    {
+        $today = date('Y-m-d');
+        $appointments = Appointment::where('reminder_cycle', '>', 0)
+            ->whereDate('appointment_date', '>=', $today)
+            ->get();
+        foreach ($appointments as $appointment) {
+            $reminderDate = date('Y-m-d', strtotime($appointment->appointment_date . " -{$appointment->reminder_cycle} days"));
+            if ($reminderDate == $today) {
+                // kiểm tra đã gửi nhắc chưa
+                $existingReminder = \App\Models\Reminder::where('appointment_id', $appointment->id)
+                    ->whereDate('reminder_date', $today)
+                    ->first();
+                if ($existingReminder) {
+                    continue; // đã gửi nhắc rồi, bỏ qua lịch hẹn này
+                } else {
+                    // gửi tin nhắn nhắc lịch hẹn
+                    $message = "Nhắc lịch hẹn: Quý khách {$appointment->customer_name}, mã lịch hẹn {$appointment->code} vào ngày " . date('d/m/Y H:i', strtotime($appointment->appointment_date)) . ". Cảm ơn quý khách!";
+
+                    // gửi email nhắc lịch hẹn
+                    try {
+                        Mail::send([], [], function ($mail) use ($appointment, $message) {
+                            $mail->to($appointment->customer_email ?? '@yourdomain.com')
+                                ->subject('Nhắc lịch hẹn')
+                                ->setBody($message, 'text/html');
+                        });
+                        $sent = 1;
+                    } catch (\Exception $e) {
+                        $sent = 0;
+                    }
+
+                    // lưu vào bảng reminders
+                    \App\Models\Reminder::create([
+                        'appointment_id' => $appointment->id,
+                        'reminder_date' => $today,
+                        'sent' => $sent,
+                    ]);
+                }
+            }
+        }
+    }
 }

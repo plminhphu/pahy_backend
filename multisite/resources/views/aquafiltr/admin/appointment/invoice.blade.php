@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>ORDER DELIVERED</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Service Invoice - Appointment Schedule {{$appointment->code}}</title>
     <style>
         body{
-            font: 0.9em sans-serif;
+            font-size: 0.8em;
+            font-family: 'DejaVu Sans', Arial, sans-serif;
         }
         .invoice-box {
             border: 2px solid #222;
@@ -28,12 +31,12 @@
             font-weight: bold;
             font-style: italic;
             text-decoration: underline;
-            padding-bottom: 5px;
+            padding: 10px;
         }
         .invoice-body-main{
-            padding-top: 10px;
-            padding-left: 5px;
-            padding-right: 5px;
+            padding-left: 10px;
+            padding-right: 10px;
+            margin-bottom: 10px
         }
         .invoice-body-row{
             width: 100%;
@@ -48,14 +51,14 @@
         .invoice-content-table th, .invoice-content-table td {
             border: 1px solid #222;
             padding: 8px;
-            font-size: 1em;
+            font-size: 0.9em;
         }
         .invoice-totals-table {
             width: 100%;
             margin-top: 10px;
         }
         .invoice-total-row {
-            font-size: 1.1em;
+            font-size: 1em;
             padding: 5px 10px;
             text-align: right;
         }
@@ -76,7 +79,7 @@
         <table class="invoice-head-table">
             <tr>
                 <td class="left" style="width:50%">{{ $appointment->code ?? 'N/A' }}</td>
-                <td class="right" style="width:50%">ORDER DELIVERED</td>
+                <td class="right" style="width:50%">Service Invoice</td>
             </tr>
         </table>
     </div>
@@ -86,10 +89,8 @@
                 <div class="invoice-body-title">Supplier:</div>
                 <div class="invoice-body-main">
                     <table style="width:100%">
-                        <tr><td><strong>PENAM, a.s.</strong></td><td>Phone: +420 545 518 111</td></tr>
-                        <tr><td>Cejl 38</td><td>E-mail: penam@penam.cz</td></tr>
-                        <tr><td>602 00 BRNO</td><td>IR: 469 67 851</td></tr>
-                        <tr><td>Czech Republic</td><td>VAT: CZ469 67 851</td></tr>
+                        <tr><td><strong>{{ $user->name ?? 'N/A' }}</strong></td><td>Phone: {{ $user->phone ?? 'N/A' }}</td></tr>
+                        <tr><td>{{ $user->title ?? '' }}</td><td>E-mail: {{ $user->email ?? 'N/A' }}</td></tr>
                     </table>
                 </div>
             </td>
@@ -97,9 +98,8 @@
                 <div class="invoice-body-title">Document:</div>
                 <div class="invoice-body-main">
                     <table style="width:100%">
-                        <tr><td>Delivery identification:</td><td>1st delivery</td></tr>
-                        <tr><td>Delivery day:</td><td>03.09.2025 0:01:00</td></tr>
-                        <tr><td>Order date:</td><td>02.09.2025 12:41:46</td></tr>
+                        <tr><td>Appointment date:</td><td>{{ \Carbon\Carbon::parse($appointment->appointment_date)->format('d/m/Y H:i') }}</td></tr>
+                        <tr><td>Created at:</td><td>{{ $appointment->created_at->format('d/m/Y H:i') }}</td></tr>
                     </table>
                 </div>
             </td>
@@ -109,71 +109,36 @@
                 <div class="invoice-body-title">Recipient:</div>
                 <div class="invoice-body-main">
                     <table style="width:100%">
-                        <tr><td>Food BEAR</td></tr>
-                        <tr><td>Hornoměstská 494/7</td></tr>
-                        <tr><td>795 01 Rymarov</td></tr>
+                        <tr><td><strong>{{ $appointment->customer_name ?? 'N/A' }}</strong></td></tr>
+                        <tr><td>Phone: {{ $appointment->customer_phone ?? 'N/A' }}</td></tr>
+                        <tr><td>Address: {{ $appointment->customer_address ?? 'N/A' }}</td></tr>
+                        <tr><td>Region: {{ $appointment->customer_region ?? 'N/A' }}</td></tr>
                     </table>
                 </div>
             </td>
             <td style="width:50%; vertical-align:top;">
-                <div class="invoice-body-title">Subscriber:</div>
+                <div class="invoice-body-title">Device:</div>
                 <div class="invoice-body-main">
                     <table style="width:100%">
-                        <tr><td><strong>{{ $appointment->customer_name ?? 'N/A' }}</strong></td></tr>
-                        <tr><td>Kigginsova 1514/8</td></tr>
-                        <tr><td>627 00 Brno-Slatina</td></tr>
-                        <tr><td>Phone: +420 545 518 111</td></tr>
-                        <tr><td>E-mail: penam@penam.cz</td></tr>
-                        <tr><td>IR: 469 67 851</td></tr>
+                        <tr><td><strong>{{ $appointment->device_code ?? 'N/A' }}</strong></td></tr>
+                        <tr><td>Name: {{ $appointment->device_name ?? 'N/A' }}</td></tr>
+                        <tr><td>Model: {{ $appointment->device_model ?? 'N/A' }}</td></tr>
+                        <tr><td>Imei: <strong>{{ $appointment->device_imei ?? 'N/A' }}</strong></td></tr>
                     </table>
                 </div>
             </td>
         </tr>
     </table>
-    <table class="invoice-content-table">
-        <thead>
+    <div class="invoice-head" style="border-bottom:none;">
+        <table class="invoice-head-table">
             <tr>
-                <th>No</th>
-                <th>Code</th>
-                <th>Name</th>
-                <th>Price/MJ incl. VAT</th>
-                <th>Unit of measure</th>
-                <th>Quantity</th>
-                <th>Total price including VAT</th>
+                <td class="left" style="width:40%">Reminder cycle: {{ $appointment->reminder_cycle ?? '0' }} M</td>
+                <td class="right" style="width:60%">{{ $appointment->note ?? 'N/A' }}</td>
             </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td>33254</td>
-                <td>Rohlík 43g</td>
-                <td>2,40 $</td>
-                <td>KS</td>
-                <td>105,00</td>
-                <td>251,66 $</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>33254</td>
-                <td>Rohlík 43g</td>
-                <td>2,40 $</td>
-                <td>KS</td>
-                <td>105,00</td>
-                <td>251,66 $</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>33254</td>
-                <td>Rohlík 43g</td>
-                <td>2,40 $</td>
-                <td>KS</td>
-                <td>105,00</td>
-                <td>251,66 $</td>
-            </tr>
-        </tbody>
-    </table>
+        </table>
+    </div>
 </div>
-<table class="invoice-totals-table">
+{{-- <table class="invoice-totals-table">
     <tr>
         <td style="width:60%"></td>
         <td style="width:40%">
@@ -187,8 +152,7 @@
             </div>
         </td>
     </tr>
-</table>
-<div style="display: block;text-align: right;">Prices are governed by the valid price list at the time of delivery.</div>
-
+</table> --}}
+{{-- <div style="display: block;text-align: right; padding-top:10px">Prices are governed by the valid price list at the time of delivery.</div> --}}
 </body>
 </html>

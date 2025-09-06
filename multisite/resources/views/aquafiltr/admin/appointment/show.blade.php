@@ -28,8 +28,9 @@
         <div class="col-4 fw-semibold text-secondary">Ngày cập nhật:</div>
         <div class="col-8">{{ $appointment->updated_at }}</div>
     </div>
-    {{-- // nút tải hóa đơn  --}}
-    <button onclick="window.location='{{ route('appointment.invoice', $appointment->id) }}'" class="btn btn-primary mt-3">
-        <i class="bi bi-cloud-arrow-down me-2"></i>Tải xuống hóa đơn
-    </button>
+    <div class="d-flex gap-4">
+        <button onclick="window.location='{{ route('appointment.invoice', $appointment->id) }}'" class="btn btn-primary mt-3">
+            <i class="bi bi-receipt-cutoff me-2"></i>Xem hóa đơn
+        </button>
+    </div>
 </div>

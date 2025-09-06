@@ -1,4 +1,5 @@
 <div class="container py-2">
+<img src="{{ route('customer.barcode', $customer->id) }}" class="img-fluid mb-3">
     <div class="row mb-2">
         <div class="col-4 fw-semibold text-secondary">Mã khách hàng:</div>
         <div class="col-8">{{ $customer->code }}</div>

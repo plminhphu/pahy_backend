@@ -100,8 +100,8 @@
     </div>
     <hr class="my-4">
     <div class="d-flex justify-content-end gap-2">
+        <a href="{{ route('appointment.index') }}" type="button" class="btn btn-secondary">Trở lại</a>
         <button type="submit" class="btn btn-primary" id="btnSaveAppointment">Tạo lịch hẹn</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
     </div>
 </form>
 @endsection

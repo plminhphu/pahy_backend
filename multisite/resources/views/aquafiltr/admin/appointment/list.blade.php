@@ -30,7 +30,6 @@
                         <button type="button" class="btn btn-sm btn-danger btnDeleteAppointment" data-route="{{ route('appointment.destroy', $appt->id) }}">
                             <i class="bi bi-trash"></i>
                         </button>
-                        <a href="{{ route('appointment.invoice', $appt->id) }}" class="btn btn-sm btn-info"><i class="bi bi-file-earmark-pdf"></i></a>
                     </td>
                 </tr>
             @empty

@@ -74,7 +74,7 @@ Sử dụng thư viện ZXing để quét mã QR
 
   });
   $(document).ready(function () {
-    $('#content').html('<div class="text-muted">Vui lòng quét mã QR hoặc nhập mã để tra cứu thông tin.</div>');
+    $('#content').html('<div class="text-muted">Vui lòng nhập hoặc quýet mã để tra cứu thông tin.</div>');
   });
   // Xử lý nhập mã thủ công khi có thay đổi input
   $('#valueSearch').change(function() {
