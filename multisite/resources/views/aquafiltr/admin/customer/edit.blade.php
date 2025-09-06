@@ -15,7 +15,12 @@
     </div>
     <div class="mb-2">
         <label for="region" class="form-label">Vùng:</label>
-        <input type="text" name="region" id="region" class="form-control" value="{{ $customer->region }}" required>
+        <select class="form-control" name="region" id="region" required data-placeholder="Vui lòng chọn vùng">
+            <option disabled selected>Chọn vùng</option>
+            @foreach (config('app.aquafiltr_regions') as $region)
+                <option value="{{ trim($region) }}" {{ $customer->region == trim($region) ? 'selected' : '' }}>{{ trim($region) }}</option>
+            @endforeach
+        </select>
     </div>
     <hr class="my-4">
     <div class="d-flex justify-content-end gap-2">

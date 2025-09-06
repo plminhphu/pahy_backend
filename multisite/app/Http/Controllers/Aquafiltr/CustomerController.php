@@ -102,9 +102,10 @@ class CustomerController extends Controller
 
     public function update(Request $request, Customer $customer)
     {
+        // phone unique với bản ghi khác
         $validated = $request->validate([
             'name'  => 'required|string|max:255',
-            'phone' => 'required|string|max:20|unique:customers,phone',
+            'phone' => 'required|string|max:20|unique:customers,phone,' . $customer->id,
             'address' => 'required|string|max:255',
             'region' => 'required|string|max:100',
         ]);

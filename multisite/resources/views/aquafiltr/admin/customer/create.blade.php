@@ -27,11 +27,12 @@
     </div>
     <div class="mb-2">
         <label for="region" class="form-label">Vùng:</label>
-        <input type="text" name="region" id="region"
-            class="form-control @error('region') is-invalid @enderror" value="{{ old('region') }}" required>
-        @error('region')
-            <div class="invalid-feedback">{{ $message }}</div>
-        @enderror
+        <select class="form-control" name="region" id="region" required data-placeholder="Vui lòng chọn vùng">
+            <option disabled selected>Chọn vùng</option>
+            @foreach (config('app.aquafiltr_regions') as $region)
+                <option value="{{ trim($region) }}" {{ old('region') == trim($region) ? 'selected' : '' }}>{{ trim($region) }}</option>
+            @endforeach
+        </select>
     </div>
     <hr class="my-4">
     <div class="d-flex justify-content-end gap-2">

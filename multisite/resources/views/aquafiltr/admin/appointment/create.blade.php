@@ -2,7 +2,7 @@
 @section('content')
 <form class="row p-md-4 p-2" id="formCreateAppointment" action="{{ route('appointment.store') }}" method="POST">
     @csrf
-    <div class="row">
+    <div class="row gap-3">
         <div class="col-12 col-md-4">
             <div class="card shadow-sm">
                 <div class="card-header">
@@ -19,7 +19,6 @@
                             @endforeach
                         </select>
                         <input hidden name="customer_id" id="customer_id">
-                        <input hidden name="customer_region" id="customer_region">
                     </div>
                     <div class="mb-2">
                         <label for="customer_name" class="form-label">Tên khách hàng:</label>
@@ -32,6 +31,15 @@
                     <div class="mb-2">
                         <label for="customer_address" class="form-label">Địa chỉ:</label>
                         <input type="text" name="customer_address" id="customer_address" class="form-control" required>
+                    </div>
+                    <div class="mb-2">
+                        <label for="customer_region" class="form-label">Khu vực:</label>
+                        <select class="form-control" id="customer_region" required data-placeholder="Vui lòng chọn vùng">
+                            <option disabled selected>Chọn vùng</option>
+                            @foreach (config('app.aquafiltr_regions') as $region)
+                                <option value="{{ trim($region) }}">{{ trim($region) }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
             </div>
@@ -61,6 +69,10 @@
                         <input hidden name="device_model" id="device_model">
                         <input hidden name="device_price" id="device_price">
                         <input hidden name="device_info" id="device_info">
+                    </div>
+                    <div class="mb-2">
+                        <label for="device_model_show" class="form-label">Model:</label>
+                        <input type="text" name="device_model_show" id="device_model_show" class="form-control" disabled>
                     </div>
                     <div class="mb-2">
                         <label for="device_price_show" class="form-label">Giá bán:</label>
@@ -127,14 +139,14 @@ $(function() {
                     $('#formCreateAppointment #customer_name').val(data.name);
                     $('#formCreateAppointment #customer_phone').val(data.phone);
                     $('#formCreateAppointment #customer_address').val(data.address);
-                    $('#formCreateAppointment #customer_region').val(data.region);
+                    $('#formCreateAppointment #customer_region').val(data.region).trigger('change');
                 },
                 error: function() {
                     $('#formCreateAppointment #customer_id').val('');
                     $('#formCreateAppointment #customer_name').val('');
                     $('#formCreateAppointment #customer_phone').val('');
                     $('#formCreateAppointment #customer_address').val('');
-                    $('#formCreateAppointment #customer_region').val('');
+                    $('#formCreateAppointment #customer_region').val('').trigger('change');
                 }
             });
         } else {
@@ -142,7 +154,7 @@ $(function() {
             $('#formCreateAppointment #customer_name').val('');
             $('#formCreateAppointment #customer_phone').val('');
             $('#formCreateAppointment #customer_address').val('');
-            $('#formCreateAppointment #customer_region').val('');
+            $('#formCreateAppointment #customer_region').val('').trigger('change');
         }
     });
     $("#formCreateAppointment #select_device_id").select2({
@@ -163,9 +175,10 @@ $(function() {
                     $('#formCreateAppointment #device_code').val(data.code);
                     $('#formCreateAppointment #device_name').val(data.name);
                     $('#formCreateAppointment #device_model').val(data.model);
-                    $('#formCreateAppointment #device_price_show').val(data.model);
                     $('#formCreateAppointment #device_price').val(data.price);
                     $('#formCreateAppointment #device_info').val(data.info);
+                    $('#formCreateAppointment #device_model_show').val(data.model);
+                    $('#formCreateAppointment #device_price_show').val(data.price ? new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(data.price) : '');
                 },
                 error: function() {
                     $('#formCreateAppointment #device_id').val('');
@@ -173,9 +186,10 @@ $(function() {
                     $('#formCreateAppointment #device_code').val('');
                     $('#formCreateAppointment #device_name').val('');
                     $('#formCreateAppointment #device_model').val('');
-                    $('#formCreateAppointment #device_price_show').val('');
                     $('#formCreateAppointment #device_price').val('');
                     $('#formCreateAppointment #device_info').val('');
+                    $('#formCreateAppointment #device_price_show').val('');
+                    $('#formCreateAppointment #device_model_show').val('');
                 }
             });
         } else {
@@ -184,9 +198,10 @@ $(function() {
             $('#formCreateAppointment #device_code').val('');
             $('#formCreateAppointment #device_name').val('');
             $('#formCreateAppointment #device_model').val('');
-            $('#formCreateAppointment #device_price_show').val('');
             $('#formCreateAppointment #device_price').val('');
             $('#formCreateAppointment #device_info').val('');
+            $('#formCreateAppointment #device_price_show').val('');
+            $('#formCreateAppointment #device_model_show').val('');
         }
     });
     // xử lý submit form
@@ -218,6 +233,19 @@ $(function() {
             }
         });
     });
+});
+$(document).ready(function () {
+    // nếu có customer_id truyền vào thì chọn sẵn select_customer_id
+    var customerId = '{{ request()->get('customer_id') }}';
+    if (customerId) {
+        // tìm option có value là customerId và chọn nó
+        var option = $('#formCreateAppointment #select_customer_id option').filter(function() {
+            return $(this).val().endsWith('/' + customerId);
+        });
+        if (option.length) {
+            $('#formCreateAppointment #select_customer_id').val(option.val()).trigger('change');
+        }
+    }
 });
 </script>
 @endpush

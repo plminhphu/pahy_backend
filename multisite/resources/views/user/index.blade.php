@@ -3,9 +3,9 @@
 <div class="m-3">
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userCreateModal"
         id="btnCreateUser">
-        <i class="bi bi-person-plus"></i> Thêm nhân viên
+        <i class="bi bi-person-plus"></i> Thêm <span class="d-none d-sm-block">nhân viên</span>
     </button>
-    <div class="input-group" style="max-width: 300px; float: right;">
+    <div class="input-group" style="max-width: 250px; float: right;">
         <span class="input-group-text" id="searching-data"><i class="bi bi-search"></i></span>
         <input type="text" class="form-control" placeholder="Tìm kiếm..." aria-label="Search"
             aria-describedby="searching-data" id="searchInput">

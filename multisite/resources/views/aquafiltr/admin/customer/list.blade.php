@@ -31,6 +31,21 @@
                             data-route="{{ route('customer.destroy', $customer->id) }}">
                             <i class="bi bi-trash"></i>
                         </button>
+                        @if($customer->phone)
+                        <a href="tel:{{ $customer->phone }}" class="btn btn-sm btn-primary" title="Gọi điện">
+                            <i class="bi bi-telephone-fill"></i>
+                        </a>
+                        <a href="sms:{{ $customer->phone }}" class="btn btn-sm btn-primary" title="Nhắn tin">
+                            <i class="bi bi-chat-dots-fill"></i>
+                        </a>
+                        @endif
+                        <button type="button" class="btn btn-sm btn-success"
+                            onclick="window.location='{{ route('appointment.create', ['customer_id' => $customer->id]) }}'">
+                            <i class="bi bi-plus-circle-fill"></i>
+                        </button>
+                        <a href="https://www.ppl.cz/balik-pro-tebe/formular?recipientPhone={{ preg_replace('/(\+84|0)(\d{3})(\d{3})(\d{3})/', '+84$2$3$4', $customer->phone) }}&recipientName={{ urlencode($customer->name) }}&recipientAddress={{ urlencode($customer->address) }}" target="_blank" class="btn btn-sm btn-dark" title="Gửi hàng PPL">
+                            <i class="bi bi-box-seam"></i>
+                        </a>
                     </td>
                 </tr>
             @empty

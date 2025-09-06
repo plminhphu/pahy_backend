@@ -3,7 +3,7 @@
 <form class="row p-md-4 p-2" id="formEditAppointment" action="{{ route('appointment.update', $appointment->id) }}" method="POST">
     @csrf
     @method('PUT')
-    <div class="row">
+    <div class="row gap-3">
         <div class="col-12 col-md-4">
             <div class="card shadow-sm">
                 <div class="card-header">
@@ -20,7 +20,6 @@
                             @endforeach
                         </select>
                         <input hidden name="customer_id" id="customer_id" value="{{ $appointment->customer_id }}">
-                        <input hidden name="customer_region" id="customer_region" value="{{ $appointment->customer_region }}">
                     </div>
                     <div class="mb-2">
                         <label for="customer_name" class="form-label">Tên khách hàng:</label>
@@ -34,6 +33,16 @@
                         <label for="customer_address" class="form-label">Địa chỉ:</label>
                         <input type="text" name="customer_address" id="customer_address" class="form-control" required value="{{ $appointment->customer_address }}">
                     </div>
+                    <div class="mb-2">
+                        <label for="customer_region" class="form-label">Khu vực:</label>
+                        <select class="form-control" id="customer_region" required data-placeholder="Vui lòng chọn vùng">
+                            <option disabled selected>Chọn vùng</option>
+                            @foreach (config('app.aquafiltr_regions') as $region)
+                                <option value="{{ trim($region) }}" {{ $appointment->customer_region == trim($region) ? 'selected' : '' }}>{{ trim($region) }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -62,6 +71,10 @@
                         <input hidden name="device_info" id="device_info" value="{{ $appointment->device_info }}">
                         <input hidden name="device_model" id="device_model" value="{{ $appointment->device_model }}">
                         <input hidden name="device_price" id="device_price" value="{{ $appointment->device_price }}">
+                    </div>
+                    <div class="mb-2">
+                        <label for="device_model_show" class="form-label">Model:</label>
+                        <input type="text" name="device_model_show" id="device_model_show" class="form-control" value="{{ $appointment->device_model }}">
                     </div>
                     <div class="mb-2">
                         <label for="device_price_show" class="form-label">Giá bán:</label>
@@ -102,7 +115,7 @@
         </div>
     </div>
     <hr class="my-4">
-    <div class="d-flex justify-content-end gap-2">
+    <div class="d-flex justify-content-end gap-2 p-2">
         <a href="{{ route('appointment.index') }}" type="button" class="btn btn-secondary">Trở lại</a>
         <button type="submit" class="btn btn-primary" id="btnUpdateAppointment">Cập nhật lịch hẹn</button>
     </div>
@@ -167,6 +180,7 @@ $(function() {
                     $('#formCreateAppointment #device_info').val(data.info);
                     $('#formCreateAppointment #device_price').val(data.price);
                     $('#formCreateAppointment #device_price_show').val(data.price ? new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(data.price) : '');
+                    $('#formCreateAppointment #device_model_show').val(data.model);
                 },
                 error: function() {
                     $('#formCreateAppointment #device_id').val('');
@@ -177,6 +191,7 @@ $(function() {
                     $('#formCreateAppointment #device_info').val('');
                     $('#formCreateAppointment #device_price').val('');
                     $('#formCreateAppointment #device_price_show').val('');
+                    $('#formCreateAppointment #device_model_show').val('');
                 }
             });
         } else {
@@ -188,6 +203,7 @@ $(function() {
             $('#formCreateAppointment #device_info').val('');
             $('#formCreateAppointment #device_price').val('');
             $('#formCreateAppointment #device_price_show').val('');
+            $('#formCreateAppointment #device_model_show').val('');
         }
     });
     // xử lý submit form

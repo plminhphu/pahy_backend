@@ -123,4 +123,21 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
     
+    'aquafiltr_regions' => [
+        'Praha (Prague)',
+        'Brno',
+        'Ostrava',
+        'Plzeň',
+        'Liberec',
+        'Olomouc',
+        'České Budějovice',
+        'Hradec Králové',
+        'Ústí nad Labem',
+        'Pardubice',
+        'Zlín',
+        'Havířov',
+        'Kladno',
+        'Most',
+        'Karlovy Vary',
+    ],
 ];
