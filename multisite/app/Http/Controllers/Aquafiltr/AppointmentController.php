@@ -156,9 +156,16 @@ class AppointmentController extends Controller
     // Xuất hóa đơn PDF
     public function invoice($id)
     {
+    $appointment = Appointment::find($id);
+    $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('aquafiltr.admin.appointment.invoice', ['appointment' => $appointment]);
+    return $pdf->download("invoice_{$id}.pdf");
+    }
+
+    // Xem hóa đơn trong trình duyệt
+    public function viewinvoice($id)
+    {
         $appointment = Appointment::find($id);
-        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('aquafiltr.admin.appointment.invoice', ['appointment' => $appointment]);
-        return $pdf->download("invoice_{$appointment->code}.pdf");
+        return view('aquafiltr.admin.appointment.invoice', ['appointment' => $appointment]);
     }
 
     // In mã vạch (barcode)

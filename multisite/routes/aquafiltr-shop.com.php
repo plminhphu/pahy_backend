@@ -10,7 +10,8 @@ Route::domain('aquafiltr-shop.com')->group(function () {
     Route::post('scan-result', [App\Http\Controllers\Aquafiltr\HomeController::class, 'scanResult']);
     Route::get('customer/barcode/{id}', [App\Http\Controllers\Aquafiltr\CustomerController::class, 'barcode'])->name('customer.barcode');
     Route::get('appointment/barcode/{id}', [App\Http\Controllers\Aquafiltr\AppointmentController::class, 'barcode'])->name('appointment.barcode');
-    Route::get('appointment/invoice/{id}', [App\Http\Controllers\Aquafiltr\AppointmentController::class, 'invoice'])->name('appointment.invoice');
+    Route::get('appointment/invoice/export/{id}', [App\Http\Controllers\Aquafiltr\AppointmentController::class, 'invoice'])->name('appointment.invoice');
+    Route::get('appointment/invoice/view/{id}', [App\Http\Controllers\Aquafiltr\AppointmentController::class, 'viewinvoice'])->name('appointment.view.invoice');
     
     // mọi path sau /admin đều chuyển hướng sang admin.aquafiltr-shop.com
     Route::any('/admin/{any?}', function ($any = null) {

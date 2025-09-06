@@ -5,7 +5,8 @@ use Illuminate\Support\Facades\Route;
 Route::domain('admin.aquafiltr-shop.com')->group(function () {
     Route::get('customer/barcode/{id}', [App\Http\Controllers\Aquafiltr\CustomerController::class, 'barcode'])->name('customer.barcode');
     Route::get('appointment/barcode/{id}', [App\Http\Controllers\Aquafiltr\AppointmentController::class, 'barcode'])->name('appointment.barcode');
-    Route::get('appointment/invoice/{id}', [App\Http\Controllers\Aquafiltr\AppointmentController::class, 'invoice'])->name('appointment.invoice');
+    Route::get('appointment/invoice/export/{id}', [App\Http\Controllers\Aquafiltr\AppointmentController::class, 'invoice'])->name('appointment.invoice');
+    Route::get('appointment/invoice/view/{id}', [App\Http\Controllers\Aquafiltr\AppointmentController::class, 'viewinvoice'])->name('appointment.view.invoice');
     
     Route::middleware('auth')->group(function () {
         Route::get('/auth/logout', [App\Http\Controllers\AuthController::class, 'logout'])->name('logout');

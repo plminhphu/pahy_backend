@@ -1,7 +1,7 @@
 @extends('layouts.guest')
 @section('content')
 <div class="pt-md-5 pt-2 mt-md-5 mt-2">
-    <div class="mx-auto mt-5 p-4 mx-2 bg-white rounded shadow-lg" style="max-width:400px">
+    <div class="mx-auto mt-5 p-md-5 p-4 mx-2 bg-white rounded shadow-lg" style="max-width:460px">
         <h4 class="mb-3 text-center">Đăng nhập</h4>
         <form id="loginForm" autocomplete="off">
             <div class="mb-2">
