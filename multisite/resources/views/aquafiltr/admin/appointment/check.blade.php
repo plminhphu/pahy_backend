@@ -23,7 +23,7 @@
     function loadListData() {
         setTimeout(() => {
             $.ajax({
-                url: "{{ route('appointment.checkin') }}",
+                url: "{{ route('dashboard') }}",
                 type: 'GET',
                 data: { type:'load' },
                 success: function(res, status, xhr) {

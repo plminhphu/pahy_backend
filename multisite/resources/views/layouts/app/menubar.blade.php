@@ -1,11 +1,6 @@
 @php
 $menuItems = [
   [
-    'label' => 'Bảng điều khiển',
-    'route' => route('dashboard'),
-    'icon' => 'bi bi-house',
-  ],
-  [
     'label' => 'Khách hàng',
     'icon' => 'bi bi-person-rolodex',
     'children' => [
@@ -33,7 +28,7 @@ $menuItems = [
       [
         'label' => 'Lịch Bảo trì',
         'icon' => 'bi bi-calendar-check',
-        'route' => route('appointment.checkin'),
+        'route' => route('dashboard'),
       ],
     ],
   ],

@@ -11,7 +11,7 @@ Route::domain('admin.aquafiltr-shop.com')->group(function () {
         Route::get('/auth/logout', [App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
         // nhóm dashboard
         Route::get('/', [App\Http\Controllers\Aquafiltr\DashboardController::class, 'index'])->name('admin');
-        Route::get('/dashboard', [App\Http\Controllers\Aquafiltr\DashboardController::class, 'index'])->name('dashboard');
+        // Route::get('/dashboard', [App\Http\Controllers\Aquafiltr\DashboardController::class, 'index'])->name('dashboard');
         // nhóm hồ sơ
         Route::prefix('/profile')->group(function () {
             Route::get('/', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
@@ -21,7 +21,7 @@ Route::domain('admin.aquafiltr-shop.com')->group(function () {
             Route::put('/avatar', [App\Http\Controllers\ProfileController::class, 'uploadAvatar'])->name('profile.avatar.upload');
         });
         // nhóm lịch hẹn
-        Route::get('appointment/checkin', [App\Http\Controllers\Aquafiltr\AppointmentController::class, 'checkin'])->name('appointment.checkin');
+        Route::get('appointment/checkin', [App\Http\Controllers\Aquafiltr\AppointmentController::class, 'checkin'])->name('dashboard');
         Route::resource('appointment', App\Http\Controllers\Aquafiltr\AppointmentController::class);
         // nhóm khách hàng
         Route::resource('customer', App\Http\Controllers\Aquafiltr\CustomerController::class);
